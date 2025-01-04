@@ -1,0 +1,113 @@
+<?php 
+
+return [
+    'search' => 'تلاش کریں',
+    'welcome_admin' => 'خوش آمدید، ایڈمن!',
+    'no_messages' => 'کوئی پیغام نہیں',
+    'no_notification' => 'کوئی اطلاع نہیں',
+    'see_all_notification' => 'تمام اطلاعات دیکھیں',
+    'my_profile' => 'میری پروفائل',
+    'logout' => 'لاگ آؤٹ',
+    'today_sale' => 'آج کی فروخت',
+    'total_sale' => 'کل فروخت',
+    'revenue' => 'آمدنی',
+    'add' => 'شامل کریں',
+    'querries' => 'سوالات',
+    'property_name' => 'پراپرٹی کا نام',
+    'admin' => 'ایڈمن',
+    'dashboard' => 'ڈیش بورڈ',
+    'property' => 'پراپرٹی',
+    'create_property' => 'پراپرٹی بنائیں',
+    'agent_request' => 'ایجنٹ کی درخواست',
+    'agents' => 'ایجنٹس',
+    'all_listed_properties' => 'تمام درج پراپرٹیز',
+    'export_all' => 'سب کو ایکسپورٹ کریں',
+    's_no' => 'نمبر',
+    'name' => 'نام',
+    'address' => 'پتہ',
+    'demand_sqft' => 'طلب/سکوائر فٹ',
+    'action' => 'عمل',
+    'edit' => 'ترمیم',
+    'properties_of' => 'کی پراپرٹیز',
+    'edit_property' => 'پراپرٹی کی ترمیم',
+    'delete' => 'حذف کریں',
+    'pdf_export' => 'پی ڈی ایف ایکسپورٹ',
+    'property_details' => 'پراپرٹی کی تفصیلات',
+    'plot_size' => 'پلاٹ کا سائز',
+    'dimension_sqft' => 'سائز سکوائر فٹ',
+    'dimension_front' => 'سامنے کی پیمائش',
+    'dimension_width' => 'چوڑائی کی پیمائش',
+    'total_size' => 'کل سائز',
+    'leased_area' => 'لیزڈ ایریا',
+    'nearest_landmark' => 'قریبی نشان',
+    'corner' => 'کونہ',
+    'yes' => 'ہاں',
+    'no' => 'نہیں',
+    'floor_details' => 'مکان کی تفصیلات',
+    'for_rent' => 'کرائے کے لیے',
+    'add_floor' => 'مکان شامل کریں',
+    'floor_no' => 'مکان نمبر:',
+    'suite_no' => 'سوئیٹ نمبر:',
+    'area_sqft' => 'رقبہ سکوائر فٹ',
+    'rate_sqft' => 'ریٹ سکوائر فٹ',
+    'rent' => 'کرایہ',
+    'sell' => 'فروخت',
+    'other_information' => 'دیگر معلومات',
+    'parking_cap' => 'پارکنگ کیپ',
+    'abs_value' => 'ایبز ویلیو',
+    'agent_details' => 'ایجنٹ کی تفصیلات',
+    'agent_name' => 'ایجنٹ کا نام',
+    'agent_contact' => 'ایجنٹ کا رابطہ',
+    'contact_person' => 'رابطے کا فرد',
+    'upload_file' => 'فائل اپ لوڈ کریں',
+    'choose_file' => 'فائل کا انتخاب کریں',
+    'submit' => 'جمع کریں',
+    'pending_requests' => 'منتظر درخواستیں',
+    'agency_name' => 'ایجنسی کا نام',
+    'agency_address' => 'ایجنسی کا پتہ',
+    'agency_city' => 'ایجنسی کا شہر',
+    'cnic' => 'شناختی کارڈ نمبر',
+    'cnic_expire' => 'شناختی کارڈ کی میعاد ختم',
+    'enroll_date' => 'اندراج کی تاریخ',
+    'approval' => 'منظوری',
+    'approved_agents' => 'منظور شدہ ایجنٹس',
+    'agent_details_export' => 'ایجنٹ کی تفصیلات ایکسپورٹ کریں',
+    'membership_no' => 'رکنیت نمبر',
+    'excel' => 'ایکسسل',
+    'agent_properties' => 'ایجنٹ کی پراپرٹیز',
+    'welcome_agent' => 'خوش آمدید، ایجنٹ!',
+    'agent' => 'ایجنٹ',
+
+    'update' => 'اپ ڈیٹ کریں',
+    'rate' => 'ریٹ',
+    'size' => 'سائز',
+    
+    
+    
+    // Agent Register
+'example' => '(مثال کے طور پر - ڈیفکلاریا)',
+
+// Dashboard
+
+'plot_type' => 'پلاٹ کی قسم',
+
+'square_yard' => 'مربع گز',
+'square_fit' => 'مربع فٹ',
+'acre' => 'ایکڑ',
+'full_name' => 'پورا نام',
+'email' => 'ای میل',
+'phone' => 'فون',
+'mobile' => 'موبائل',
+
+'total_agents' => 'کل ایجنٹ',
+'landing_page' => 'لینڈنگ پیج',
+
+'total_properties' => 'کل پراپرٹیز',
+'total_floors_available' => 'دستیاب کل منزلیں',
+    
+   
+    
+
+
+
+];
