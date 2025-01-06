@@ -9,13 +9,38 @@
 
         }
 
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            margin: 0;
-        }
+        input[type="number"] {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+    background-color: #f4f6f9; /* Light gray background */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="number"]:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+input[type="number"]:disabled {
+    background-color: #e9ecef; /* Slightly darker background for disabled state */
+    cursor: not-allowed;
+}
+
 
         :root {
             --colorPrimaryNormal: #0d6efd;
@@ -132,7 +157,14 @@
         }
     </style>
 
-    <h1 class="text" style="margin-left: 0px !important; font-family: sans-serif"><b>@lang('back.create_property')</b></h1>
+<h1 class="text" style="margin-left: 0px !important; font-family: sans-serif; 
+    font-size: 2.5rem; font-weight: bold; 
+    color: #000000; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
+    padding: 20px; background-color: #0d6efd; border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center;">
+    @lang('back.create_property')
+</h1>
+
     {{-- <p class="text-secondary" style="font-size:14px;">Enter the following details, carefully review and then submit</p> --}}
     <div class="container-fluid px-1 py-0 mx-auto">
         <div class="row d-flex justify-content-center">
@@ -361,7 +393,6 @@
                                     </div>
                                     <div class="form-group col-sm-4 flex-column d-flex">
                                         <label class="form-control-label px-3"><b>@lang('back.abs_value')</b>
-                                            <span style="font-size: 11px !important;" class="text-danger">Starting property demand</span>
                                             </label>
                                         <input type="number" id="absValue" name="absValue"
                                             value="{{ old('absValue') }}" >
