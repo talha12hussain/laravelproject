@@ -3,6 +3,8 @@
 
 @section('content')
     <style>
+
+        
         body {
             color: #000;
             overflow-x: hidden;
@@ -171,7 +173,11 @@ input[type="number"]:disabled {
             <div class="col-xl-12 col-lg-12 col-md-12 col-11 text-center">
                 <div class="card">
                     <div class="col-sm-3">
-                        <h2 class="d-flex justify-start my-3 mb-4 px-2" style="border-left: 4px solid blue;">@lang('back.property_details')</h2>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+    <h2 class="my-3 mb-4 px-3 py-2 text-black font-weight-bold text-uppercase d-flex align-items-center justify-content-start border-left border-4 border-primary shadow-sm">
+        @lang('back.property_details')
+    </h2>
+</div>
 
 
                     </div>
@@ -196,91 +202,102 @@ input[type="number"]:disabled {
                         enctype="multipart/form-data">
                         @csrf
                         <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-4 flex-column d-flex">
-                                <label class="form-control-label px-3"><b class="">@lang('back.name') </b><span
-                                        class="text-danger">*</span></label>
-                                <input type="text" id="name" value="{{ old('name') }}" name="name"
-                                    >
-                                @error('name')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-sm-8 flex-column d-flex">
-                                <label class="form-control-label px-3"><b>@lang('back.address')</b><span
-                                        class="text-danger">*</span></label>
-                                <input type="text" id="address" value="{{ old('address') }}" name="address"
-                                   >
-                                @error('address')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        @lang('back.name') <span class="text-danger">*</span>
+    </label>
+    <input type="text" id="name" value="{{ old('name') }}" name="name" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_name')">
+    @error('name')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-8 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        @lang('back.address') <span class="text-danger">*</span>
+    </label>
+    <input type="text" id="address" value="{{ old('address') }}" name="address" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_address')">
+    @error('address')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
                             
                         </div>
                         <div class="row justify-content-between mt-3 text-left">
-                            <div class="form-group col-sm-4 flex-column d-flex">
-                                <label class="form-control-label px-3"><b>@lang('back.dimension_front')</b><span
-                                        class="text-danger">*</span></label>
-                                <input type="number" id="dimFront" value="{{ old('dimFront') }}" name="dimFront"
-                                    >
-                                @error('dimFront')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-sm-4 flex-column d-flex">
-                                <label class="form-control-label px-3"><b>@lang('back.dimension_width')</b><span
-                                        class="text-danger">*</span></label>
-                                <input type="number" id="dimWidth" value="{{ old('dimWidth') }}" name="dimWidth"
-                                    >
-                                @error('dimWidth')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-sm-4 flex-column d-flex">
-                                <label class="form-control-label px-3"><b>@lang('back.total_size')</b><span
-                                        class="text-danger">*</span></label>
-                                <input type="text" id="totalSize" value="{{ old('totalSize') }}" name="totalSize"
-                                    >
-                                @error('totalSize')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        @lang('back.dimension_front') <span class="text-danger">*</span>
+    </label>
+    <input type="number" id="dimFront" value="{{ old('dimFront') }}" name="dimFront" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_dimension_front')">
+    @error('dimFront')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        @lang('back.dimension_width') <span class="text-danger">*</span>
+    </label>
+    <input type="number" id="dimWidth" value="{{ old('dimWidth') }}" name="dimWidth" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_dimension_width')">
+    @error('dimWidth')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        @lang('back.total_size') <span class="text-danger">*</span>
+    </label>
+    <input type="text" id="totalSize" value="{{ old('totalSize') }}" name="totalSize" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_total_size')">
+    @error('totalSize')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
                         </div>
 
                         <div class="row justify-content-between mt-3 text-left">
                             
-                            <div class="form-group col-sm-4 flex-column d-flex">
-                                <label class="form-control-label px-3"><b>@lang('back.plot_size')</b><span
-                                        class="text-danger">*</span></label>
-                                <input type="number" id="plotSize" value="{{ old('plotSize') }}" name="plotSize"
-                                    >
-                                @error('plotSize')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        @lang('back.plot_size') <span class="text-danger">*</span>
+    </label>
+    <input type="number" id="plotSize" value="{{ old('plotSize') }}" name="plotSize" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_plot_size')">
+    @error('plotSize')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
 
 
-                            <div class="form-group col-sm-4 flex-column d-flex">
-                                <label class="form-control-label mb-2 px-3"><b>@lang('back.plot_type')</b> <span class="text-danger">*</span></label>
-                                <select class="p-2 border rounded-3" id="plotType" name="plot_type">
-                                    <option value="commercial">@lang('messages.commercial')</option>
-                                    <option value="warehouse">@lang('messages.warehouse')</option>
-                                    <option value="shop">@lang('messages.shop')</option>
-                                    <option value="showroom">@lang('messages.showroom')</option>
-                                </select>
-                            </div>
+<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label mb-2 px-3 text-dark font-weight-bold">
+        @lang('back.plot_type') <span class="text-danger">*</span>
+    </label>
+    <select class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" id="plotType" name="plot_type">
+        <option value="commercial">@lang('messages.commercial')</option>
+        <option value="warehouse">@lang('messages.warehouse')</option>
+        <option value="shop">@lang('messages.shop')</option>
+        <option value="showroom">@lang('messages.showroom')</option>
+    </select>
+</div>
+
 
                             @error('plot_type')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             
-                            <div class="form-group col-sm-4 flex-column d-flex">
-                                <label for="size_type" class="form-control-label mb-2 px-3"><b>@lang('back.size')</b> <span class="text-danger">*</span></label>
-                                <select class="p-2 border rounded-3"  id="sizeType" name="size_type">
-                                    <option value="sq_yard">@lang('back.square_yard')</option>
-                                    <option value="sq_fit">@lang('back.square_fit')</option>
-                                    <option value="acre">@lang('back.acre')</option>
-                                </select>
-                            </div>
+                                <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label for="size_type" class="form-control-label mb-2 px-3 text-dark font-weight-bold">
+        @lang('back.size') <span class="text-danger">*</span>
+    </label>
+    <select class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" id="sizeType" name="size_type">
+        <option value="sq_yard">@lang('back.square_yard')</option>
+        <option value="sq_fit">@lang('back.square_fit')</option>
+        <option value="acre">@lang('back.acre')</option>
+    </select>
+</div>
+
 
                             @error('size_type')
                                     <div class="text-danger">{{ $message }}</div>
@@ -290,23 +307,26 @@ input[type="number"]:disabled {
 
 
                         <div class="row justify-content-left mt-3 text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3"><b>@lang('back.leased_area')</b></label>
-                                <input type="number" id="leasedArea" value="{{ old('leasedArea') }}" name="leasedArea"
-                                    >
-                                @error('leasedArea')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group col-sm-6 flex-column d-flex">
-                                <label class="form-control-label px-3"><b>@lang('back.nearest_landmark')</b><span
-                                        class="text-danger">*</span></label>
-                                <input type="text" id="nearestLand" value="{{ old('nearestLand') }}" name="nearestLand"
-                                    >
-                                @error('nearestLand')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label mb-2 px-3 text-dark font-weight-bold">
+        @lang('back.leased_area')
+    </label>
+    <input type="number" id="leasedArea" value="{{ old('leasedArea') }}" name="leasedArea" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_leased_area')">
+    @error('leasedArea')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
+    <label class="form-control-label mb-2 px-3 text-dark font-weight-bold">
+        @lang('back.nearest_landmark') <span class="text-danger">*</span>
+    </label>
+    <input type="text" id="nearestLand" value="{{ old('nearestLand') }}" name="nearestLand" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_nearest_landmark')">
+    @error('nearestLand')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
                         </div>
                         <div class="my-5">
                             <h3 class="d-flex justify-start my-3">@lang('back.corner')</h3>
@@ -370,36 +390,45 @@ input[type="number"]:disabled {
 
 
                                 <div class="row justify-content-start mt-3 text-left">
-                                    <h2 class="d-flex justify-start px-2 my-5" style="border-left: 4px solid blue;">@lang('back.other_information')</h2>
-                                    <div class="form-group col-sm-4  flex-column d-flex">
-                                        <label class="form-control-label px-3"><b>@lang('back.parking_cap')</b>
-                                            <span
-                                                class="text-danger">*</span>
-                                        </label>
-                                        <input type="number" id="parkingcap" value="{{ old('parkingcap') }}"
-                                            name="parkingcap" >
-                                        @error('parkingcap')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-sm-4 flex-column d-flex">
-                                        <label class="form-control-label px-3"><b>@lang('back.demand_sqft')</b><span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" id="demandSqft" value="{{ old('demandSqft') }}"
-                                            name="demandSqft" >
-                                        @error('demandSqft')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-sm-4 flex-column d-flex">
-                                        <label class="form-control-label px-3"><b>@lang('back.abs_value')</b>
-                                            </label>
-                                        <input type="number" id="absValue" name="absValue"
-                                            value="{{ old('absValue') }}" >
-                                        @error('absValue')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                  <!-- Section Title with Border Left -->
+<h2 class="d-flex justify-start px-2 my-5" style="border-left: 4px solid blue;">
+    @lang('back.other_information')
+</h2>
+
+<!-- Parking Capacity Input -->
+<div class="form-group col-sm-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.parking_cap')</b><span class="text-danger">*</span>
+    </label>
+    <input type="number" id="parkingcap" value="{{ old('parkingcap') }}" name="parkingcap" 
+        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_parking_cap')">
+    @error('parkingcap')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.demand_sqft')</b><span class="text-danger">*</span>
+    </label>
+    <input type="number" id="demandSqft" value="{{ old('demandSqft') }}" name="demandSqft"
+        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_demand_sqft')">
+    @error('demandSqft')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-4 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.abs_value')</b>
+    </label>
+    <input type="number" id="absValue" name="absValue" value="{{ old('absValue') }}"
+        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_abs_value')">
+    @error('absValue')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
                                 </div>
                             </div>
                             <hr class=""
@@ -410,76 +439,81 @@ input[type="number"]:disabled {
                             <div class="row justify-content-between mt-5 mb-4 text-left">
 
 
-                                <div class="form-group col-sm-3 flex-column d-flex">
+                            <div class="form-group col-sm-3 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.agent_name')</b><span class="text-danger">*</span>
+    </label>
+    <input type="text" id="agentname" name="agentname" value="{{ old('agentname') }}"
+        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_agent_name')">
+    @error('agentname')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
 
-                                    <label class="form-control-label px-3"><b>@lang('back.agent_name')</b><span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" id="agentname" name="agentname"
-                                        value="{{ old('agentname') }}" >
-                                    @error('agentname')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-sm-3 flex-column d-flex">
-                                    <label class="form-control-label px-3"><b>@lang('back.agent_contact')</b><span
-                                            class="text-danger">*</span></label>
-                                    <input type="number" id="agentcontact" value="{{ old('agentcontact') }}"
-                                        name="agentcontact" onblur="validateContact()" oninput="maxValidation()" >
-                                    @error('agentcontact')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-sm-3 flex-column d-flex">
-                                    <label class="form-control-label px-3"><b>@lang('back.agent_details')</b><span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" id="agentdetail" value="{{ old('agentdetail') }}"
-                                        name="agentdetail" >
-                                    @error('agentdetail')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-sm-3 flex-column d-flex">
-                                    <label class="form-control-label px-3"><b>@lang('back.contact_person')</b><span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" id="contactPerson" value="{{ old('contactPerson') }}"
-                                        name="contactPerson" >
-                                    @error('contactPerson')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
+<div class="form-group col-sm-3 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.agent_contact')</b><span class="text-danger">*</span>
+    </label>
+    <input type="number" id="agentcontact" value="{{ old('agentcontact') }}" name="agentcontact"
+        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" 
+        onblur="validateContact()" oninput="maxValidation()" placeholder="@lang('back.enter_agent_contact')">
+    @error('agentcontact')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-3 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.agent_details')</b><span class="text-danger">*</span>
+    </label>
+    <input type="text" id="agentdetail" value="{{ old('agentdetail') }}" name="agentdetail"
+        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_agent_details')">
+    @error('agentdetail')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="form-group col-sm-3 flex-column d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.contact_person')</b><span class="text-danger">*</span>
+    </label>
+    <input type="text" id="contactPerson" value="{{ old('contactPerson') }}" name="contactPerson"
+        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_contact_person')">
+    @error('contactPerson')
+        <div class="text-danger mt-2">{{ $message }}</div>
+    @enderror
+</div>
+
                             </div>
                             <div class="row justify-content-between mt-3 text-left">
 
-                                <div class="form-group  col-md-12 flex-column my-4 d-flex">
-                                    <label class="form-control-label  px-3"><b>@lang('back.upload_file')</b><span
-                                            class="text-danger">*</span></label>
-                                    {{-- <input type="file" id="file" name="file" accept="image/jpeg, image/png, image/svg+xml"> --}}
-                                    <form action="{{ route('admin.dashboard.storeProperty') }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
+                            <div class="form-group col-md-12 flex-column my-4 d-flex">
+    <label class="form-control-label px-3 text-dark font-weight-bold">
+        <b>@lang('back.upload_file')</b><span class="text-danger">*</span>
+    </label>
+    <form action="{{ route('admin.dashboard.storeProperty') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-                                        <!-- Form fields here -->
-                                        <input type="file" name="images[]" class="py-5 col-sm-12"
-                                            accept="image/jpeg, image/png, image/svg+xml" multiple required>
+        <input type="file" name="images[]" class="form-control-file py-5 col-sm-12 rounded-start border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" accept="image/jpeg, image/png, image/svg+xml" multiple required>
 
+        @if ($errors->has('images'))
+            <div class="text-danger mt-2">{{ $errors->first('images') }}</div>
+        @endif
 
-                                        @if ($errors->has('images'))
-                                            <div class="text-danger">{{ $errors->first('images') }}</div>
-                                        @endif
+        @foreach ($errors->get('images.*') as $error)
+            <div class="text-danger mt-2">{{ $error[0] }}</div>
+        @endforeach
+    </form>
+</div>
 
-                                        @foreach ($errors->get('images.*') as $error)
-                                            <div class="text-danger">{{ $error[0] }}</div>
-                                        @endforeach
-                                    
-                                    </form>
-
-
-                                </div>
                             </div>
                             <div class="row justify-content-center mt-5 text-left">
-                                <div class="form-group col-sm-4 flex-column d-flex">
-                                    <button type="submit" onclick="SubmitCheck(event)" class="btn btn-primary">@lang('back.submit')</button>
-                                </div>
+                            <div class="form-group col-sm-4 flex-column d-flex">
+    <button type="submit" onclick="SubmitCheck(event)" class="btn btn-primary btn-sm w-100 py-2 text-white font-weight-bold rounded shadow-lg transition-all hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary">
+        @lang('back.submit')
+    </button>
+</div>
+
                    
                 </div>
                 </form>
