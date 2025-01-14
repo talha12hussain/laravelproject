@@ -1,8 +1,8 @@
 ## fivestar multiservices application 
 
 ## Sign In
-username :admin@demo.com
-passwrod : 123456
+username : talha12hussain@gmail.com
+passwrod : 12345
 
 ## setup 
 
