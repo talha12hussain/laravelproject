@@ -24,9 +24,9 @@ use App\Http\Controllers\PropertyNewFormController;
 
 
 Route::get('/admin-property', [PropertyNewFormController::class, 'show'])->name('admin.dashboard.propertyTable');
+Route::get('/admin-property/export', [PropertyNewFormController::class, 'export'])->name('admin.property.export');
 Route::post('/realestate/store', [PropertyNewFormController::class, 'store'])->name('realestate.store');
 Route::delete('/admin-property/{id}', [PropertyNewFormController::class, 'destroy'])->name('properties.destroy');
-Route::delete('/properties/{id}', [PropertyNewFormController::class, 'destroy'])->name('properties.destroy');
 
 
 

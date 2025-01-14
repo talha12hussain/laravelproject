@@ -2,84 +2,90 @@
 
 @section('content')
     @if (session('delete'))
-        <div class="alert alert-danger"><b> Deleted!! </b> Product deleted successfully</div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Deleted!</strong> Product deleted successfully.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
 
     @if (session('update'))
-        <div class="alert alert-warning"><b> Updated!! </b>{{ session('update') }}</div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Updated!</strong> {{ session('update') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
 
-    <div class="d-flex justify-content-between">
+    <div class="container-fluid">
+        <div class="row mb-4 align-items-center">
+            <!-- Search Form -->
+            <div class="col-md-4">
+                <form action="{{ url()->current() }}" method="GET" class="d-flex">
+                    <input type="search" name="search" value="{{ request('search') }}" class="form-control me-2"
+                        placeholder="@lang('back.search')..." aria-label="Search">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> @lang('back.search')</button>
+                </form>
+            </div>
 
-        <div class="" >
-            <form action="{{ url()->current() }}" method="GET" class="">
-                <div class="input-group col-md-12" >
-                    <input type="search" name="search" value="{{ request('search') }}"  style="bottom: -30px !important;" class="form-control " placeholder="@lang('back.search')..."
-                    
-                    >
-                    <button class="btn btn-primary" style="bottom: -30px !important;" type="submit">@lang('back.search')</button>
-        
-                    <!-- Reset Button -->
-                    {{-- <a href="{{ url('admin-property') }}" class="btn btn-dark mx-3">
-                        Reset
-                    </a> --}}
-                </div>
-            </form>
+            <!-- Page Title -->
+            <div class="col-md-4 text-center">
+                <h1 class="h4 my-3 text-primary">@lang('back.all_listed_properties')</h1>
+            </div>
+
+            <!-- Export Button -->
+            <div class="col-md-4 text-end">
+                <a href="{{ route('admin.property.export') }}" class="btn btn-success">
+                    <i class="fas fa-download"></i> @lang('back.export_all')
+                </a>
+            </div>
         </div>
 
-        <div class="">
-            <h1 class="my-3 mb-4">@lang('back.all_listed_properties')</h1>
+        <!-- Properties Table -->
+        <div class="table-responsive shadow-lg rounded">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th class="border-end">@lang('property_id')</th>
+                        <th class="border-end">@lang('property_type')</th>
+                        <th class="border-end">@lang('city')</th>
+                        <th class="border-end">@lang('address')</th>
+                        <th class="border-end">@lang('size')</th>
+                        <th class="border-end">@lang('price')</th>
+                        <th class="border-end">@lang('agent')</th>
+                        <th>@lang('actions')</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($properties as $property)
+                        <tr>
+                            <td class="text-center border-end">{{ $property->id }}</td>
+                            <td class="border-end">{{ $property->property_type }}</td>
+                            <td class="border-end">{{ $property->city }}</td>
+                            <td class="border-end">{{ $property->address }}</td>
+                            <td class="text-center border-end">{{ $property->property_size }}</td>
+                            <td class="text-end border-end">{{ number_format($property->asking_price, 2) }} @lang('back.currency')</td>
+                            <td class="border-end">{{ $property->agent_name }}</td>
+                            <td class="text-center">
+                                <a href="#" class="btn btn-warning btn-sm me-1">
+                                    <i class="fas fa-edit"></i> @lang('back.edit')
+                                </a>
+                                <form action="{{ route('properties.destroy', $property->id) }}" method="POST" 
+                                      style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> @lang('back.delete')
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
-        <div class="mt-4 mx-4">
-            <a href="{{ route('property.export') }}" class="btn btn-primary"> @lang('back.export_all')</a>
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            {{ $properties->links() }}
         </div>
     </div>
-
-    <!-- Search Bar -->
-    
-
-    <table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Property ID</th>
-            <th>Property Type</th>
-            <th>City</th>
-            <th>Address</th>
-            <th>Size</th>
-            <th>Price</th>
-            <th>Agent</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($properties as $property)
-            <tr>
-                <td>{{ $property->id }}</td>
-                <td>{{ $property->property_type }}</td>
-                <td>{{ $property->city }}</td>
-                <td>{{ $property->address }}</td>
-                <td>{{ $property->property_size }}</td>
-                <td>{{ $property->asking_price }}</td>
-                <td>{{ $property->agent_name }}</td>
-                <td>
-                    <a  class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('properties.destroy', $property->id) }}" method="POST" style="display: inline-block;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-    </form>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<!-- Pagination Links -->
-<div class="mt-3">
-    {{ $properties->links() }}
-</div>
-
-    <!-- Pagination -->
-   
 @endsection

@@ -12,13 +12,16 @@
 namespace Barryvdh\LaravelIdeHelper\Console;
 
 use Barryvdh\LaravelIdeHelper\Contracts\ModelHookInterface;
+use Barryvdh\LaravelIdeHelper\Generator;
 use Barryvdh\LaravelIdeHelper\Parsers\PhpDocReturnTypeParser;
 use Barryvdh\Reflection\DocBlock;
 use Barryvdh\Reflection\DocBlock\Context;
+use Barryvdh\Reflection\DocBlock\ContextFactory;
 use Barryvdh\Reflection\DocBlock\Serializer as DocBlockSerializer;
 use Barryvdh\Reflection\DocBlock\Tag;
 use Composer\ClassMapGenerator\ClassMapGenerator;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
@@ -46,7 +49,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use phpDocumentor\Reflection\Types\ContextFactory;
+use Illuminate\View\Factory as ViewFactory;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionObject;
@@ -81,6 +84,14 @@ class ModelsCommand extends Command
      * @var Filesystem $files
      */
     protected $files;
+
+    /**
+     * @var Repository
+     */
+    protected $config;
+
+    /** @var ViewFactory */
+    protected $view;
 
     /**
      * The console command name.
@@ -131,10 +142,12 @@ class ModelsCommand extends Command
     /**
      * @param Filesystem $files
      */
-    public function __construct(Filesystem $files)
+    public function __construct(Filesystem $files, Repository $config, ViewFactory $view)
     {
-        parent::__construct();
+        $this->config = $config;
         $this->files = $files;
+        $this->view = $view;
+        parent::__construct();
     }
 
     /**
@@ -187,6 +200,27 @@ class ModelsCommand extends Command
                 $this->error("Failed to write model information to $filename");
             }
         }
+
+        $helperFilename = $this->config->get('ide-helper.filename');
+        $writeHelper = $this->option('write-eloquent-helper');
+
+        if (!$writeHelper && !$this->files->exists($helperFilename) && ($this->write || $this->write_mixin)) {
+            if ($this->confirm("{$helperFilename} does not exist.
+            Do you want to generate a minimal helper to generate the Eloquent methods?")) {
+                $writeHelper = true;
+            }
+        }
+
+        if ($writeHelper) {
+            $generator = new Generator($this->config, $this->view, $this->getOutput());
+            $content = $generator->generateEloquent();
+            $written = $this->files->put($helperFilename, $content);
+            if ($written !== false) {
+                $this->info("Eloquent helper was written to $helperFilename");
+            } else {
+                $this->error("Failed to write eloquent helper to $helperFilename");
+            }
+        }
     }
 
 
@@ -217,9 +251,12 @@ class ModelsCommand extends Command
             ['write-mixin', 'M', InputOption::VALUE_NONE,
                 "Write models to {$this->filename} and adds @mixin to each model, avoiding IDE duplicate declaration warnings",
             ],
+            ['write-eloquent-helper', 'E', InputOption::VALUE_NONE,
+                'Write Eloquent helper file to _ide_helper.php',
+            ],
             ['nowrite', 'N', InputOption::VALUE_NONE, 'Don\'t write to Model file'],
             ['reset', 'R', InputOption::VALUE_NONE, 'Remove the original phpdocs instead of appending'],
-            ['smart-reset', 'r', InputOption::VALUE_NONE, 'Refresh the properties/methods list, but keep the text'],
+            ['smart-reset', 'r', InputOption::VALUE_NONE, 'Retained for compatibility, while it no longer has any effect'],
             ['phpstorm-noinspections', 'p', InputOption::VALUE_NONE,
                 'Add PhpFullyQualifiedNameUsageInspection and PhpUnnecessaryFullyQualifiedNameInspection PHPStorm ' .
                 'noinspection tags',
@@ -381,12 +418,15 @@ class ModelsCommand extends Command
                     $realType = 'bool';
                     break;
                 case 'decimal':
+                    $realType = 'numeric';
+                    break;
                 case 'string':
+                case 'hashed':
                     $realType = 'string';
                     break;
                 case 'array':
                 case 'json':
-                    $realType = 'array';
+                    $realType = 'array<array-key, mixed>';
                     break;
                 case 'object':
                     $realType = 'object';
@@ -409,13 +449,11 @@ class ModelsCommand extends Command
                 case 'immutable_datetime':
                     $realType = '\Carbon\CarbonImmutable';
                     break;
-                case AsCollection::class:
-                case AsEnumCollection::class:
                 case 'collection':
-                    $realType = '\Illuminate\Support\Collection';
+                    $realType = '\Illuminate\Support\Collection<array-key, mixed>';
                     break;
                 case AsArrayObject::class:
-                    $realType = '\ArrayObject';
+                    $realType = '\ArrayObject<array-key, mixed>';
                     break;
                 default:
                     // In case of an optional custom cast parameter , only evaluate
@@ -434,6 +472,18 @@ class ModelsCommand extends Command
             }
             if ($this->isInboundCast($realType)) {
                 continue;
+            }
+
+            if (Str::startsWith($type, AsCollection::class)) {
+                $realType = $this->getTypeInModel($model, $params[0] ?? null) ?? '\Illuminate\Support\Collection';
+            }
+
+            if (Str::startsWith($type, AsEnumCollection::class)) {
+                $realType = '\Illuminate\Support\Collection';
+                $relatedModel = $this->getTypeInModel($model, $params[0] ?? null);
+                if ($relatedModel) {
+                    $realType = $this->getCollectionTypeHint($realType, $relatedModel);
+                }
             }
 
             $realType = $this->checkForCastableCasts($realType, $params);
@@ -552,7 +602,7 @@ class ModelsCommand extends Command
                 $this->setMethod(
                     Str::camel('where_' . $name),
                     $this->getClassNameInDestinationFile($model, $builderClass)
-                    . '|'
+                    . '<static>|'
                     . $this->getClassNameInDestinationFile($model, get_class($model)),
                     ['$value']
                 );
@@ -631,14 +681,14 @@ class ModelsCommand extends Command
                             new ReflectionClass($model),
                             get_class($model)
                         );
-                        $this->setMethod($name, $builder . '|' . $modelName, $args, $comment);
+                        $this->setMethod($name, $builder . '<static>|' . $modelName, $args, $comment);
                     }
                 } elseif (in_array($method, ['query', 'newQuery', 'newModelQuery'])) {
                     $builder = $this->getClassNameInDestinationFile($model, get_class($model->newModelQuery()));
 
                     $this->setMethod(
                         $method,
-                        $builder . '|' . $this->getClassNameInDestinationFile($model, get_class($model))
+                        $builder . '<static>|' . $this->getClassNameInDestinationFile($model, get_class($model))
                     );
 
                     if ($this->write_model_external_builder_methods) {
@@ -707,20 +757,37 @@ class ModelsCommand extends Command
                                     $relationReturnType === 'many' ||
                                     (
                                         !$relationReturnType &&
-                                        strpos(get_class($relationObj), 'Many') !== false
+                                        str_contains(get_class($relationObj), 'Many')
                                     )
                                 ) {
                                     if ($relationObj instanceof BelongsToMany) {
                                         $pivot = get_class($relationObj->newPivot());
                                         if (!in_array($pivot, [Pivot::class, MorphPivot::class])) {
+                                            $pivot = $this->getClassNameInDestinationFile($model, $pivot);
+
+                                            if ($existingPivot = ($this->properties[$relationObj->getPivotAccessor()] ?? null)) {
+                                                $existingClasses = explode('|', $existingPivot['type']);
+
+                                                if (!in_array($pivot, $existingClasses)) {
+                                                    array_unshift($existingClasses, $pivot);
+                                                }
+                                            } else {
+                                                // No existing pivot property, so we need to add a null type
+                                                $existingClasses = [$pivot, 'null'];
+                                            }
+
+                                            // create a union type of all pivot classes
+                                            $unionType = implode('|', $existingClasses);
+
                                             $this->setProperty(
                                                 $relationObj->getPivotAccessor(),
-                                                $this->getClassNameInDestinationFile($model, $pivot),
+                                                $unionType,
                                                 true,
                                                 false
                                             );
                                         }
                                     }
+
                                     //Collection or array of models (because Collection is Arrayable)
                                     $relatedClass = '\\' . get_class($relationObj->getRelated());
                                     $collectionClass = $this->getCollectionClass($relatedClass);
@@ -752,10 +819,16 @@ class ModelsCommand extends Command
                                         $relation === 'morphTo'
                                     )
                                 ) {
+                                    $matches = [];
+                                    $returnType = $this->getReturnTypeFromDocBlock($reflection);
+                                    if ($returnType !== null) {
+                                        preg_match('/MorphTo<(.+?)(?:,|>)/i', $returnType, $matches);
+                                    }
+
                                     // Model isn't specified because relation is polymorphic
                                     $this->setProperty(
                                         $method,
-                                        $this->getClassNameInDestinationFile($model, Model::class) . '|\Eloquent',
+                                        $matches[1] ?? $this->getClassNameInDestinationFile($model, Model::class) . '|\Eloquent',
                                         true,
                                         null,
                                         $comment,
@@ -806,13 +879,15 @@ class ModelsCommand extends Command
         $fkProp = $reflectionObj->getProperty('foreignKey');
         $fkProp->setAccessible(true);
 
+        $enforceNullableRelation = $this->laravel['config']->get('ide-helper.enforce_nullable_relationships', true);
+
         foreach (Arr::wrap($fkProp->getValue($relationObj)) as $foreignKey) {
             if (isset($this->nullableColumns[$foreignKey])) {
                 return true;
             }
 
             if (!in_array($foreignKey, $this->foreignKeyConstraintsColumns, true)) {
-                return true;
+                return $enforceNullableRelation;
             }
         }
 
@@ -904,7 +979,7 @@ class ModelsCommand extends Command
     {
         $modelName = $this->getClassNameInDestinationFile($model, get_class($model));
         $builder = $this->getClassNameInDestinationFile($model, $classType);
-        return $builder . '|' . $modelName;
+        return $builder . '<static>|' . $modelName;
     }
 
     /**
@@ -923,13 +998,19 @@ class ModelsCommand extends Command
             $reflection->getParentClass()->getInterfaceNames()
         );
 
+        $phpdoc = new DocBlock($reflection, new Context($namespace));
         if ($this->reset) {
-            $phpdoc = new DocBlock('', new Context($namespace));
             $phpdoc->setText(
                 (new DocBlock($reflection, new Context($namespace)))->getText()
             );
-        } else {
-            $phpdoc = new DocBlock($reflection, new Context($namespace));
+            foreach ($phpdoc->getTags() as $tag) {
+                if (
+                    in_array($tag->getName(), ['property', 'property-read', 'property-write', 'method', 'mixin'])
+                    || ($tag->getName() === 'noinspection' && in_array($tag->getContent(), ['PhpUnnecessaryFullyQualifiedNameInspection', 'PhpFullyQualifiedNameUsageInspection']))
+                ) {
+                    $phpdoc->deleteTag($tag);
+                }
+            }
         }
 
         $properties = [];
@@ -1263,10 +1344,11 @@ class ModelsCommand extends Command
      * Get method return type based on it DocBlock comment
      *
      * @param \ReflectionMethod $reflection
+     * @param ?\Reflector $reflectorForContext
      *
      * @return null|string
      */
-    protected function getReturnTypeFromDocBlock(\ReflectionMethod $reflection, \Reflector $reflectorForContext = null)
+    protected function getReturnTypeFromDocBlock(\ReflectionMethod $reflection, ?\Reflector $reflectorForContext = null)
     {
         $phpDocContext = (new ContextFactory())->createFromReflector($reflectorForContext ?? $reflection);
         $context = new Context(
@@ -1319,9 +1401,9 @@ class ModelsCommand extends Command
         if (in_array('Illuminate\\Database\\Eloquent\\SoftDeletes', $traits)) {
             $modelName = $this->getClassNameInDestinationFile($model, get_class($model));
             $builder = $this->getClassNameInDestinationFile($model, \Illuminate\Database\Eloquent\Builder::class);
-            $this->setMethod('withTrashed', $builder . '|' . $modelName, []);
-            $this->setMethod('withoutTrashed', $builder . '|' . $modelName, []);
-            $this->setMethod('onlyTrashed', $builder . '|' . $modelName, []);
+            $this->setMethod('withTrashed', $builder . '<static>|' . $modelName, []);
+            $this->setMethod('withoutTrashed', $builder . '<static>|' . $modelName, []);
+            $this->setMethod('onlyTrashed', $builder . '<static>|' . $modelName, []);
         }
     }
 
@@ -1495,7 +1577,9 @@ class ModelsCommand extends Command
      */
     protected function getUsedClassNames(ReflectionClass $reflection): array
     {
-        $namespaceAliases = array_flip((new ContextFactory())->createFromReflector($reflection)->getNamespaceAliases());
+        $namespaceAliases = array_flip(array_map(function ($alias) {
+            return ltrim($alias, '\\');
+        }, (new ContextFactory())->createFromReflector($reflection)->getNamespaceAliases()));
         $namespaceAliases[$reflection->getName()] = $reflection->getShortName();
 
         return $namespaceAliases;
@@ -1525,7 +1609,7 @@ class ModelsCommand extends Command
 
             $this->setMethod(
                 $builderMethod,
-                $builderClassBasedOnFQCNOption . '|' . $this->getClassNameInDestinationFile($model, get_class($model)),
+                $builderClassBasedOnFQCNOption . '<static>|' . $this->getClassNameInDestinationFile($model, get_class($model)),
                 $args
             );
         }

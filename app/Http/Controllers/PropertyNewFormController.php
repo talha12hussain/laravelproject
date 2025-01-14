@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PropertyNewForm;
+use App\Exports\PropertiesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PropertyNewFormController extends Controller
 {
@@ -41,6 +43,11 @@ class PropertyNewFormController extends Controller
              } else {
                  return redirect()->back()->with('error', 'Property not found!');
              }
+         }
+         
+         public function export()
+         {
+             return Excel::download(new PropertiesExport, 'properties.xlsx');
          }
          
      
