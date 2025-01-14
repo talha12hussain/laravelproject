@@ -39,54 +39,47 @@
     <!-- Search Bar -->
     
 
-    <table class="table table-bordered border">
-        <thead class="table-primary">
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Property ID</th>
+            <th>Property Type</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Agent</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($properties as $property)
             <tr>
-                <th scope="col">@lang('back.s_no')</th>
-                <th scope="col">@lang('back.property_name')</th>
-                <th scope="col">@lang('back.address')</th>
-                <th scope="col">@lang('back.total_size')</th>
-                <th scope="col">@lang('back.demand_sqft')</th>
-                <th scope="col">@lang('back.agent_name')</th>
-                <th scope="col">@lang('back.action')</th>
+                <td>{{ $property->id }}</td>
+                <td>{{ $property->property_type }}</td>
+                <td>{{ $property->city }}</td>
+                <td>{{ $property->address }}</td>
+                <td>{{ $property->property_size }}</td>
+                <td>{{ $property->asking_price }}</td>
+                <td>{{ $property->agent_name }}</td>
+                <td>
+                    <a  class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('properties.destroy', $property->id) }}" method="POST" style="display: inline-block;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach ($all_home as $home)
-                <tr>
-                    <th scope="row">{{ ($all_home->currentPage() - 1) * $all_home->perPage() + $loop->iteration }}</th>
-                    <td class="">
-                        <a href="{{ route('admin.dashboard.showProperty', $home->id) }}" class="text-dark"
-                            style="text-decoration:none;">{{ $home->name }}</a>
-                    </td>
-                    <td>{{ $home->address }}</td>
-                    <td>{{ $home->totalSize }}</td>
-                    <td>{{ $home->demandSqft }}</td>
-                    <td>{{ $home->agentname }}</td>
-                    <td>
-                        <div class="d-flex justify-content-center">
-                            <a href="{{ route('admin.dashboard.editProperty', $home->id) }}" class="">
-                                <div class="btn btn-warning btn-sm">@lang('back.edit')</div>
-                            </a>
-                            <form class="mx-1" action="{{ url('/property/' . $home->id . '/delete') }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn px-2 py-1 btn btn-sm btn-danger p-0">
-                                    @lang('back.delete')
-                                </button>
-                            </form>
-                            <a href="{{ route('property.export.pdf', $home->id) }}" class="">
-                                <div class="btn btn-success btn-sm">@lang('back.pdf_export')</div>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
+
+<!-- Pagination Links -->
+<div class="mt-3">
+    {{ $properties->links() }}
+</div>
 
     <!-- Pagination -->
-    <div class="align-self-center">
-        {{ $all_home->appends(request()->query())->links('pagination::bootstrap-5') }}
-    </div>
+   
 @endsection

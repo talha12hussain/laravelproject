@@ -14,6 +14,8 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\PropertyNewForm;
+
 
 class productController extends Controller
 {
@@ -432,6 +434,7 @@ public function updatePropertyForm(Request $request, string $id)
     /**
      * Display the specified resource.
      */
+   
     public function showAll()
     {
         if(Auth::guard('web')->check()){

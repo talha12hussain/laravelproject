@@ -14,6 +14,19 @@ use Illuminate\Support\Facades\File;
 use App\Http\Controllers\pdfController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PropertiesController;
+
+use App\Http\Controllers\NewPropertyController;
+use App\Http\Controllers\PropertyRecordController;
+use App\Http\Controllers\RealEstateController;
+use App\Http\Controllers\PropertyNewFormController;
+
+
+
+Route::get('/admin-property', [PropertyNewFormController::class, 'show'])->name('admin.dashboard.propertyTable');
+Route::post('/realestate/store', [PropertyNewFormController::class, 'store'])->name('realestate.store');
+Route::delete('/admin-property/{id}', [PropertyNewFormController::class, 'destroy'])->name('properties.destroy');
+Route::delete('/properties/{id}', [PropertyNewFormController::class, 'destroy'])->name('properties.destroy');
 
 
 
@@ -90,7 +103,6 @@ Route::middleware('role:admin')->group(function () {
     Route::get('property/excel-export/', [ProductController::class, 'export'])->name('property.export');
     Route::get('property/export/pdf/{id}', [PdfController::class, 'PDFexport'])->name('property.export.pdf');
     Route::get('dashboard', [AdminController::class, 'dashboardCheck'])->name('admin.adminMain');
-    Route::get('admin-property', [ProductController::class, 'showAll'])->name('admin.dashboard.propertyTable');
     Route::get('admin/home', [AdminController::class, 'home'])->name('admin.dashboard.home');
     Route::get('create-property', [ProductController::class, 'createPropertyForm'])->name('admin.dashboard.createProperty');
     Route::get('store-property', [ProductController::class, 'storePropertyForm'])->name('admin.dashboard.storeProperty');

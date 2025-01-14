@@ -11,37 +11,10 @@
 
         }
 
-        input[type="number"] {
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-    appearance: textfield;
-    border-radius: 0.25rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border: 1px solid #ced4da;
-    background-color: #f4f6f9; /* Light gray background */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
+       
 
-input[type="number"]:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-    outline: none;
-}
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    margin: 0;
-}
 
-input[type="number"]:disabled {
-    background-color: #e9ecef; /* Slightly darker background for disabled state */
-    cursor: not-allowed;
-}
 
 
         :root {
@@ -60,43 +33,11 @@ input[type="number"]:disabled {
             --colorLinkHover: #3c87f7;
         }
 
-        .upload_dropZone {
-            color: #0f3c4b;
-            background-color: var(--colorPrimaryPale, #c8dadf);
-            outline: 2px dashed var(--colorPrimaryHalf, #c1ddef);
-            outline-offset: -12px;
-            transition:
-                outline-offset 0.2s ease-out,
-                outline-color 0.3s ease-in-out,
-                background-color 0.2s ease-out;
-        }
+      
 
-        .upload_dropZone.highlight {
-            outline-offset: -4px;
-            outline-color: var(--colorPrimaryNormal, #0576bd);
-            background-color: var(--colorPrimaryEighth, #c8dadf);
-        }
-
-        .upload_svg {
-            fill: var(--colorPrimaryNormal, #0576bd);
-        }
-
-        .btn-upload {
-            color: #fff;
-            background-color: var(--colorPrimaryNormal);
-        }
-
-        .btn-upload:hover,
-        .btn-upload:focus {
-            color: #fff;
-            background-color: var(--colorPrimaryGlare);
-        }
-
-        .upload_img {
-            width: calc(33.333% - (2rem / 3));
-            object-fit: contain;
-        }
-
+     
+       
+     
         .card {
             padding: 30px 40px;
             margin-top: 10px;
@@ -113,50 +54,13 @@ input[type="number"]:disabled {
             margin-bottom: 0
         }
 
-        input,
-        textarea,
-        button {
-            padding: 8px 15px;
-            border-radius: 5px !important;
-            margin: 5px 0px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            font-size: 18px !important;
-            font-weight: 300
-        }
 
-        input:focus,
-        textarea:focus {
-            -moz-box-shadow: none !important;
-            -webkit-box-shadow: none !important;
-            box-shadow: none !important;
-            border: 1px solid #00BCD4;
-            outline-width: 0;
-            font-weight: 400
-        }
 
-        .btn-block {
-            text-transform: uppercase;
-            font-size: 15px !important;
-            font-weight: 400;
-            height: 43px;
-            cursor: pointer
-        }
+    
 
-        .floor-group {
-            margin-bottom: 20px;
-        }
+      
 
-        .btn-block:hover {
-            color: #fff !important
-        }
-
-        button:focus {
-            -moz-box-shadow: none !important;
-            -webkit-box-shadow: none !important;
-            box-shadow: none !important;
-            outline-width: 0
-        }
+       
     </style>
 
 <h1 class="text" style="margin-left: 0px !important; font-family: sans-serif; 
@@ -174,531 +78,459 @@ input[type="number"]:disabled {
                 <div class="card">
                     <div class="col-sm-3">
                     <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-    <h2 class="my-3 mb-4 px-3 py-2 text-black font-weight-bold text-uppercase d-flex align-items-center justify-content-start border-left border-4 border-primary shadow-sm">
-        @lang('back.property_details')
-    </h2>
+   
 </div>
 
 
-                    </div>
-                    @if (session('success'))
-                        <div class="alert alert-success"><b> Success!! </b>{{ session('success') }}</div>
-                    @endif
                     
                     
-                         @if (session('error'))
-                            <div class="alert alert-danger">
-                                <b>ERROR!! {{ session('error') }}</b>
-                            </div>
-                        @endif
-
-
-                    @if(session('contactError'))
-                    <div class="alert alert-danger">
-                        {{ session('contactError') }}
-                    </div>
-                    @endif
-                    <form class="form-card" method="POST" action="{{ route('admin.dashboard.storeProperty') }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        @lang('back.name') <span class="text-danger">*</span>
-    </label>
-    <input type="text" id="name" value="{{ old('name') }}" name="name" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_name')">
-    @error('name')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-8 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        @lang('back.address') <span class="text-danger">*</span>
-    </label>
-    <input type="text" id="address" value="{{ old('address') }}" name="address" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_address')">
-    @error('address')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-                            
-                        </div>
-                        <div class="row justify-content-between mt-3 text-left">
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        @lang('back.dimension_front') <span class="text-danger">*</span>
-    </label>
-    <input type="number" id="dimFront" value="{{ old('dimFront') }}" name="dimFront" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_dimension_front')">
-    @error('dimFront')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        @lang('back.dimension_width') <span class="text-danger">*</span>
-    </label>
-    <input type="number" id="dimWidth" value="{{ old('dimWidth') }}" name="dimWidth" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_dimension_width')">
-    @error('dimWidth')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        @lang('back.total_size') <span class="text-danger">*</span>
-    </label>
-    <input type="text" id="totalSize" value="{{ old('totalSize') }}" name="totalSize" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_total_size')">
-    @error('totalSize')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-                        </div>
-
-                        <div class="row justify-content-between mt-3 text-left">
-                            
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        @lang('back.plot_size') <span class="text-danger">*</span>
-    </label>
-    <input type="number" id="plotSize" value="{{ old('plotSize') }}" name="plotSize" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="@lang('Enter_plot_size')">
-    @error('plotSize')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-
-<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label mb-2 px-3 text-dark font-weight-bold">
-        @lang('back.plot_type') <span class="text-danger">*</span>
-    </label>
-    <select class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" id="plotType" name="plot_type">
-        <option value="commercial">@lang('messages.commercial')</option>
-        <option value="warehouse">@lang('messages.warehouse')</option>
-        <option value="shop">@lang('messages.shop')</option>
-        <option value="showroom">@lang('messages.showroom')</option>
-    </select>
-</div>
-
-
-                            @error('plot_type')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            
-                                <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label for="size_type" class="form-control-label mb-2 px-3 text-dark font-weight-bold">
-        @lang('back.size') <span class="text-danger">*</span>
-    </label>
-    <select class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" id="sizeType" name="size_type">
-        <option value="sq_yard">@lang('back.square_yard')</option>
-        <option value="sq_fit">@lang('back.square_fit')</option>
-        <option value="acre">@lang('back.acre')</option>
-    </select>
-</div>
-
-
-                            @error('size_type')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                           
-                        </div>
-
-
-                        <div class="row justify-content-left mt-3 text-left">
-                        <div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label mb-2 px-3 text-dark font-weight-bold">
-        @lang('back.leased_area')
-    </label>
-    <input type="number" id="leasedArea" value="{{ old('leasedArea') }}" name="leasedArea" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_leased_area')">
-    @error('leasedArea')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-12 col-md-6 col-lg-4 flex-column d-flex">
-    <label class="form-control-label mb-2 px-3 text-dark font-weight-bold">
-        @lang('back.nearest_landmark') <span class="text-danger">*</span>
-    </label>
-    <input type="text" id="nearestLand" value="{{ old('nearestLand') }}" name="nearestLand" class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_nearest_landmark')">
-    @error('nearestLand')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-                        </div>
-                        <div class="my-5">
-                            <h3 class="d-flex justify-start my-3">@lang('back.corner')</h3>
-
-
-
-                            <div class="d-flex jutify-content-left my-4">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input border align-items-center  rounded-circle"
-                                        style="padding: 10px !important;" type="radio" name="corner" id="inlineRadio1"
-                                        {{ old('corner') === 'Yes' ? 'checked' : '' }} value="Yes">
-                                    <label class="form-check-label mx-1" for="inlineRadio1"><b>@lang('back.yes')</b></label>
-                                </div>
-                                <div class="form-check form-check-inline mx-2">
-                                    <input class="form-check-input border align-items-center  rounded-circle"
-                                        type="radio" name="corner" style="padding: 10px !important;"
-                                        id="inlineRadio2" {{ old('corner') === 'No' ? 'checked' : '' }} value="No">
-                                    <label class="form-check-label mx-1" for="inlineRadio2"><b>@lang('messages.no')</b></label>
-                                </div>
-                                @error('corner')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                        </div>
-
-
-
-                        <hr class="" style="border:0.1px solid rgb(183, 183, 183); margin-top: 40px !important;">
-
-
-                        
-
-                        <div class="my-2">
-                            <h2 class="d-flex justify-start px-2 my-5" style="border-left: 4px solid blue;">@lang('back.floor_details')</h2>
-                            <div class="row justify-content-between mb-4 mt-0 text-left">
-
-
-                                <div class="container mt-0">
-                                    <div class="d-flex justify-start align-items-center">
-                                        <h3 class="" style="margin-right:20px">@lang('back.add')</h3>
-                                        <button type="button" id="addFloorButtonRent"
-                                            class="btn btn-primary btn-sm ">@lang('back.add') <b>+</b></button>
-                                    </div>
-                                    <a id="propertyForm">
-
-                                        <div id="floorContainerRent"></div>
-                                        @error('contactPerson')
-                                            <div class="type">{{ $message }}</div>
-                                        @enderror
-
-                                    </a>
-                                    @error('type')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <hr class=""
-                                    style="border:0.1px solid rgb(183, 183, 183); margin-top: 40px !important;">
-
-
-
-                                <div class="row justify-content-start mt-3 text-left">
-                                  <!-- Section Title with Border Left -->
-<h2 class="d-flex justify-start px-2 my-5" style="border-left: 4px solid blue;">
-    @lang('back.other_information')
-</h2>
-
-<!-- Parking Capacity Input -->
-<div class="form-group col-sm-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.parking_cap')</b><span class="text-danger">*</span>
-    </label>
-    <input type="number" id="parkingcap" value="{{ old('parkingcap') }}" name="parkingcap" 
-        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_parking_cap')">
-    @error('parkingcap')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.demand_sqft')</b><span class="text-danger">*</span>
-    </label>
-    <input type="number" id="demandSqft" value="{{ old('demandSqft') }}" name="demandSqft"
-        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_demand_sqft')">
-    @error('demandSqft')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-4 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.abs_value')</b>
-    </label>
-    <input type="number" id="absValue" name="absValue" value="{{ old('absValue') }}"
-        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_abs_value')">
-    @error('absValue')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-                                </div>
-                            </div>
-                            <hr class=""
-                                style="border:0.1px solid rgb(183, 183, 183); margin-top: 40px !important;">
-
-                            <h2 class="d-flex justify-start px-2 my-5" style="border-left: 4px solid blue;">@lang('back.agent_details')</h2>
-
-                            <div class="row justify-content-between mt-5 mb-4 text-left">
-
-
-                            <div class="form-group col-sm-3 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.agent_name')</b><span class="text-danger">*</span>
-    </label>
-    <input type="text" id="agentname" name="agentname" value="{{ old('agentname') }}"
-        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_agent_name')">
-    @error('agentname')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-3 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.agent_contact')</b><span class="text-danger">*</span>
-    </label>
-    <input type="number" id="agentcontact" value="{{ old('agentcontact') }}" name="agentcontact"
-        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" 
-        onblur="validateContact()" oninput="maxValidation()" placeholder="@lang('back.enter_agent_contact')">
-    @error('agentcontact')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-3 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.agent_details')</b><span class="text-danger">*</span>
-    </label>
-    <input type="text" id="agentdetail" value="{{ old('agentdetail') }}" name="agentdetail"
-        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_agent_details')">
-    @error('agentdetail')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-<div class="form-group col-sm-3 flex-column d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.contact_person')</b><span class="text-danger">*</span>
-    </label>
-    <input type="text" id="contactPerson" value="{{ old('contactPerson') }}" name="contactPerson"
-        class="form-control form-control-lg rounded-pill border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all p-2" placeholder="@lang('Enter_contact_person')">
-    @error('contactPerson')
-        <div class="text-danger mt-2">{{ $message }}</div>
-    @enderror
-</div>
-
-                            </div>
-                            <div class="row justify-content-between mt-3 text-left">
-
-                            <div class="form-group col-md-12 flex-column my-4 d-flex">
-    <label class="form-control-label px-3 text-dark font-weight-bold">
-        <b>@lang('back.upload_file')</b><span class="text-danger">*</span>
-    </label>
-    <form action="{{ route('admin.dashboard.storeProperty') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-
-        <input type="file" name="images[]" class="form-control-file py-5 col-sm-12 rounded-start border-primary shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" accept="image/jpeg, image/png, image/svg+xml" multiple required>
-
-        @if ($errors->has('images'))
-            <div class="text-danger mt-2">{{ $errors->first('images') }}</div>
-        @endif
-
-        @foreach ($errors->get('images.*') as $error)
-            <div class="text-danger mt-2">{{ $error[0] }}</div>
-        @endforeach
-    </form>
-</div>
-
-                            </div>
-                            <div class="row justify-content-center mt-5 text-left">
-                            <div class="form-group col-sm-4 flex-column d-flex">
-    <button type="submit" onclick="SubmitCheck(event)" class="btn btn-primary btn-sm w-100 py-2 text-white font-weight-bold rounded shadow-lg transition-all hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary">
-        @lang('back.submit')
-    </button>
-</div>
-
+                    
+                       
                    
-                </div>
-                </form>
             </div>
         </div>
     </div>
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+    <form class="form-card" method="POST" action="{{ route('realestate.store') }}" enctype="multipart/form-data">
+    @csrf
+
+    <div class="container">
+        <!-- Property Type -->
+        <div class="card shadow mt-4">
+            <div class="card-header bg-primary text-white font-weight-bold">@lang('Property Details')</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-sm-12 col-md-6">
+                        <label class="form-control-label text-dark font-weight-bold">@lang('What do you want to do?') <span class="text-danger">*</span></label>
+                        <select class="form-control rounded-pill border-primary" name="type">
+                            <option value="sell">@lang('Sell')</option>
+                            <option value="rent">@lang('Rent')</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-6">
+                        <label class="form-control-label text-dark font-weight-bold">@lang('What kind of property do you have?') <span class="text-danger">*</span></label>
+                        <select class="form-control rounded-pill border-primary" id="property_type" name="property_type" onchange="toggleForms()">
+                            <option value="" disabled selected>@lang('Select Property Type')</option>
+                            <option value="plot">@lang('Plot')</option>
+                            <option value="commercial">@lang('Commercial')</option>
+                            <option value="residential">@lang('Residential')</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plot Form -->
+        <div id="plotForm" class="card shadow mt-4 dynamic-form" style="display: none; border-radius: 15px;">
+            <div class="card-header bg-gradient-primary text-black font-weight-bold py-3">@lang('Property Details')</div>
+            <div class="card-body p-4 bg-light">
+
+            <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Type of Plot Property') <span class="text-danger">*</span></label>
+                    <select class="form-control rounded-pill border-primary" name="property_types">
+                        <option value="" disabled selected>@lang('Select Type')</option>
+                        <option value="Residential Plot">@lang('Residential Plot')</option>
+                        <option value="Commercial Plot">@lang('Commercial Plot')</option>
+                        <option value="Agriculture Land">@lang('Agriculture Land')</option>
+                        <option value="Industrial Land">@lang('Industrial Land')</option>
+                        <option value="Warehouse Plot">@lang('Warehouse Plot')</option>
+                        <option value="Farmhouse Plot">@lang('Farmhouse Plot')</option>
+                        <option value="Plot File">@lang('Plot File')</option>
+                        <option value="Amenity Plot">@lang('Amenity Plot')</option>
+                    </select>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('City') <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city') }}" required>
+                    </div>
+
+              
+
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Address')</label>
+    <input type="text" class="form-control rounded-pill border-primary" name="address" placeholder="@lang('Enter Address')">
+
+    <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+</div>
+
+<div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
+                    <select class="form-control rounded-pill border-primary" name="corner_property">
+                        <option value="yes">@lang('Yes')</option>
+                        <option value="no">@lang('No')</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
+                    <select class="form-control rounded-pill border-primary" name="property_size">
+                        <option value="Sq.ft">@lang('Sq. Ft')</option>
+                        <option value="Sq.M">@lang('Sq. M')</option>
+                        <option value="Sq.Yd">@lang('Sq. Yd')</option>
+                        <option value="Marla">@lang('Marla')</option>
+                        <option value="Kanal">@lang('Kanal')</option>
+                        <option value="Acre">@lang('Acre')</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
+                    <input type="number" class="form-control rounded-pill border-primary" name="asking_price" placeholder="@lang('Enter Asking Price')" step="any">
+                </div>
+
+        
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
+                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
+                </div>
+
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
+    <input 
+        type="text" 
+        class="form-control rounded-pill border-primary" 
+        name="contact_no" 
+        placeholder="@lang('Enter Contact Number')" 
+        pattern="^92[0-9]{10}$" 
+        oninput="validatePakistaniNumber(this)" 
+        required
+    >
+    <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
+</div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
+                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
+                </div>
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
+</div>
+
+            </div>
+        </div>
+
+        <!-- Commercial Form -->
+        <div id="commercialForm" class="card shadow mt-4 dynamic-form" style="display: none; border-radius: 15px;">
+            <div class="card-header bg-gradient-primary text-black font-weight-bold py-3">@lang('Commercial Property Details')</div>
+            <div class="card-body p-4 bg-light">
+            <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Type of Commercial Property') <span class="text-danger">*</span></label>
+                    <select class="form-control rounded-pill border-primary" name="property_types">
+                        <option value="" disabled selected>@lang('Select Type')</option>
+                        <option value="Warehouse">@lang('Warehouse')</option>
+                        <option value="Building">@lang('Building')</option>
+                        <option value="Hall">@lang('Hall')</option>
+                        <option value="Plaza">@lang('Plaza')</option>
+                        <option value="Gym">@lang('Gym')</option>
+                        <option value="Restaurant">@lang('Restaurant')</option>
+                        <option value="Hotel">@lang('Hotel')</option>
+                        <option value="Hospital">@lang('Hospital')</option>
+                        <option value="Factory">@lang('Factory')</option>
+                        <option value="Running Business">@lang('Running Business')</option>
+                        <option value="Floor">@lang('Floor')</option>
+                    </select>
+                </div>
+           
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Floor')</label>
+                    <select class="form-control rounded-pill border-primary" name="floor">
+                        <option value="ground">@lang('Basement')</option>
+                        <option value="ground">@lang('Ground')</option>
+                        <option value="ground">@lang('Mezzanine')</option>
+                        <option value="1">@lang('1')</option>
+                        <option value="2">@lang('2')</option>
+                        <option value="3">@lang('3')</option>
+                        <option value="4">@lang('4')</option>
+                        <option value="5">@lang('5')</option>
+                        <option value="6">@lang('6+')</option>
+                    </select>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('City') <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city') }}" >
+                    </div>
+                <div class="form-group mb-4">
+                <label class="form-control-label font-weight-bold">@lang('Address')</label>
+                <input type="text" class="form-control rounded-pill border-primary" name="address" placeholder="@lang('Enter Address')">
+
+                <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+                <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+                </div>
+<div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
+                    <select class="form-control rounded-pill border-primary" name="corner_property">
+                        <option value="yes">@lang('Yes')</option>
+                        <option value="no">@lang('No')</option>
+                    </select>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
+                    <select class="form-control rounded-pill border-primary" name="property_size">
+                        <option value="Sq.ft">@lang('Sq. Ft')</option>
+                        <option value="Sq.M">@lang('Sq. M')</option>
+                        <option value="Sq.Yd">@lang('Sq. Yd')</option>
+                        <option value="Marla">@lang('Marla')</option>
+                        <option value="Kanal">@lang('Kanal')</option>
+                        <option value="Acre">@lang('Acre')</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
+                    <input type="number" class="form-control rounded-pill border-primary" name="asking_price" placeholder="@lang('Enter Asking Price')" step="any">
+                </div>
+
+                <<div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
+    <input 
+        type="text" 
+        class="form-control rounded-pill border-primary" 
+        name="contact_no" 
+        placeholder="@lang('Enter Contact Number')" 
+        pattern="^92[0-9]{10}$" 
+        oninput="validatePakistaniNumber(this)" 
+        required
+    >
+    <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
+</div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
+                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
+                </div>
+
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
+</div>
+
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
+                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <!-- Residential Form -->
+        <div id="residentialForm" class="card shadow mt-4 dynamic-form" style="display: none; border-radius: 15px;">
+            <div class="card-header bg-gradient-primary text-black font-weight-bold py-3">@lang('Residential Property Details')</div>
+            <div class="card-body p-4 bg-light">
+            <div class="form-group mb-4">
+
+                <label class="form-control-label font-weight-bold">@lang('Type of Plot Property') <span class="text-danger">*</span></label>
+                    <select class="form-control rounded-pill border-primary" name="property_types">
+                        <option value="" disabled selected>@lang('Select Type')</option>
+                        <option value="Residential Plot">@lang('House')</option>
+                        <option value="Commercial Plot">@lang('Flat')</option>
+                        <option value="Agriculture Land">@lang('Room')</option>
+                        <option value="Industrial Land">@lang('Farm House  ')</option>
+                        <option value="Warehouse Plot">@lang('Penthouse')</option>
+                        <option value="Farmhouse Plot">@lang('Hostel')</option>
+                        <option value="Plot File">@lang('Basement')</option>
+                    </select>
+                
+    </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Floor')</label>
+                    <select class="form-control rounded-pill border-primary" name="floor">
+                        <option value="ground">@lang('Ground')</option>
+                        <option value="1">@lang('1')</option>
+                        <option value="2">@lang('2')</option>
+                        <option value="3">@lang('3')</option>
+                        <option value="4">@lang('4')</option>
+                        <option value="5">@lang('5')</option>
+                        <option value="6">@lang('6+')</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('City') <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city') }}" required>
+                    </div>
+
+             
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Address')</label>
+    <input type="text" class="form-control rounded-pill border-primary" name="address" placeholder="@lang('Enter Address')">
+
+    <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+</div>
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
+                    <select class="form-control rounded-pill border-primary" name="corner_property">
+                        <option value="yes">@lang('Yes')</option>
+                        <option value="no">@lang('No')</option>
+                    </select>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
+                    <input type="number" class="form-control rounded-pill border-primary" name="asking_price" placeholder="@lang('Enter Asking Price')" step="any">
+                </div>
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
+                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
+                </div>
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('How many Bedrooms?') <span class="text-danger">*</span></label>
+                    <select class="form-control rounded-pill border-primary" name="bedrooms">
+                    <option value="1">@lang('1')</option>
+                        <option value="1">@lang('1')</option>
+                        <option value="2">@lang('2')</option>
+                        <option value="3">@lang('3')</option>
+                        <option value="4">@lang('4')</option>
+                        <option value="5">@lang('5')</option>
+                        <option value="6">@lang('6+')</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('How many Bathrooms?') <span class="text-danger">*</span></label>
+                    <select class="form-control rounded-pill border-primary" name="bathrooms">
+                        <option value="1">@lang('1')</option>
+                        <option value="2">@lang('2')</option>
+                        <option value="3">@lang('3')</option>
+                        <option value="4">@lang('4')</option>
+                        <option value="5">@lang('5')</option>
+                        <option value="6">@lang('6+')</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
+                    <select class="form-control rounded-pill border-primary" name="property_size">
+                        <option value="Sq.ft">@lang('Sq. Ft')</option>
+                        <option value="Sq.M">@lang('Sq. M')</option>
+                        <option value="Sq.Yd">@lang('Sq. Yd')</option>
+                        <option value="Marla">@lang('Marla')</option>
+                        <option value="Kanal">@lang('Kanal')</option>
+                        <option value="Acre">@lang('Acre')</option>
+                    </select>
+                </div>
+
+               
+
+                <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
+                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
+                </div>
+
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
+    <input 
+        type="text" 
+        class="form-control rounded-pill border-primary" 
+        name="contact_no" 
+        placeholder="@lang('Enter Contact Number')" 
+        pattern="^92[0-9]{10}$" 
+        oninput="validatePakistaniNumber(this)" 
+        required
+    >
+    <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
+</div>
+
+
+
+
+<div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
+</div>
+
+                </div>
+            </div>
+            <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg rounded-pill">@lang('Submit')</button>
+        </div>
+        </div>
+    </div>
+    
+</form>
+
+<script>
+    function validatePakistaniNumber(input) {
+        // Sirf numbers allow karna
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Agar 92 se start nahi karta, toh automatically set kare
+        if (!input.value.startsWith('92')) {
+            input.value = '92';
+        }
+
+        // Maximum 12 digits allow karna
+        if (input.value.length > 12) {
+            input.value = input.value.slice(0, 12);
+        }
+    }
+</script>
+<script>
+   function toggleForms() {
+    var propertyType = document.getElementById("property_type").value;
+
+    document.querySelectorAll('.dynamic-form').forEach(form => {
+        form.style.display = 'none';
+        Array.from(form.querySelectorAll('input, select')).forEach(input => {
+            input.disabled = true;
+        });
+    });
+
+    if (propertyType === "plot") {
+        var plotForm = document.getElementById("plotForm");
+        plotForm.style.display = 'block';
+        Array.from(plotForm.querySelectorAll('input, select')).forEach(input => {
+            input.disabled = false;
+        });
+    } else if (propertyType === "commercial") {
+        var commercialForm = document.getElementById("commercialForm");
+        commercialForm.style.display = 'block';
+        Array.from(commercialForm.querySelectorAll('input, select')).forEach(input => {
+            input.disabled = false;
+        });
+    } else if (propertyType === "residential") {
+        var residentialForm = document.getElementById("residentialForm");
+        residentialForm.style.display = 'block';
+        Array.from(residentialForm.querySelectorAll('input, select')).forEach(input => {
+            input.disabled = false;
+        });
+    }
+}
+</script>
+
+
+
+
+
+
+            
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-
-    <script>
-        
-
-        function validateContact(){
-            var agentContact = document.getElementById('agentcontact').value;
-
-            if(agentContact.length !== 11 ){
-                alert('Please enter a valid phone number');
-                event.preventDefault();
-                return false;
-            }
-        }
-
-        function SubmitCheck(event){
-            var agentContact = document.getElementById('agentcontact').value;
-            if(agentContact.length !== 11 ){
-                alert('Please enter a valid phone number');
-                event.preventDefault();
-                return false;
-            }
-
-            var plotType = document.getElementById('plotType').value;
-
-            if ((plotType === 'warehouse') && $('.floor-group').length > 1) {
-                alert('You can only add one floor for Warehouse plot types.');
-                event.preventDefault();
-                return false; // Stop further execution
-            }
-
-            if (( plotType === 'showroom') && $('.floor-group').length > 1) {
-                alert('You can only add one floor for Showroom plot types.');
-                event.preventDefault();
-                return false; // Stop further execution
-            }
-        }
-
-
-        </script>
-
-    <script>
-        $(document).ready(function() {
-    let floorIndex = 0;
-    let floorSuitCombination = {};
-
-
-    
-    $('#addFloorButtonRent').click(function() {
-
-        var plotType = $('#plotType').val();
-
-        
-
-
-
-// Check if plotType is "warehouse" or "showroom"
-            if ((plotType === 'warehouse') && $('.floor-group').length >= 1) {
-                alert('You can only add one floor for Warehouse plot types.');
-                return; // Stop further execution
-            }
-
-            if (( plotType === 'showroom') && $('.floor-group').length >= 1) {
-                alert('You can only add one floor for Showroom plot types.');
-                return; // Stop further execution
-            }
-
-            var sizeType = $('#sizeType').val();
-
-      
-        if(sizeType == 'acre'){
-            var areaLabel = 'Area Acre';
-        }else if(sizeType == 'sq_yard'){
-            var areaLabel = 'Area Sq. Yard';
-        }else if(sizeType == 'sq_fit'){
-            var areaLabel = 'Area Sq. Ft';
-        }
-        else{
-            var areaLabel = 'Area Sq. Ft';
-        }
-
-        floorIndex++;
-        $('#floorContainerRent').append(`
-            <div class="row justify-content-between mb-4 mt-3 text-left floor-group" id="floor${floorIndex}">
-                <div class="form-group col-sm-2 flex-column align-items-center d-flex">
-                    
-                    <label class="form-control-label px-3"><b>@lang('back.floor_no')</b><span style="font-size:11px !important;" class="mx-2 text-danger">0 for ground floor</span></label>
-                    <input type="number" id="floorNo${floorIndex}" name="floors[${floorIndex}][floorNo]"  class="form-control">
-                </div>
-                <div class="form-group col-sm-2 flex-column d-flex">
-                    <label class="form-control-label px-3"><b>@lang('back.suite_no')</b><span style="font-size:11px !important;" class="mx-2 text-danger">0 for ground floor</span></label>
-                    <input type="number" id="suitNo${floorIndex}" name="floors[${floorIndex}][suitNo]" class="form-control">
-                </div>
-                <div class="form-group col-sm-2 flex-column d-flex">
-                    <label class="form-control-label px-3"><b> ${areaLabel} </b><span style="font-size:12px !important;" class="mx-2 text-danger">*</span></label>
-                    <input type="number" id="areaSqft${floorIndex}" name="floors[${floorIndex}][areaSqft]" class="form-control">
-                </div>
-                <div class="form-group col-sm-2 flex-column d-flex">
-                    <label class="form-control-label px-3"><b>@lang('back.rate_sqft')</b><span class="text-danger">*</span></label>
-                    <input type="number" id="rateSqft${floorIndex}" name="floors[${floorIndex}][rateSqft]"  class="form-control">
-                </div>
-                <div class="form-group col-sm-4 flex-column my-4 align-items-center d-flex">
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="form-group d-flex align-items-center">
-                            <!-- Radio button for Rent -->
-                            <div class="form-check mx-4 form-check-inline">
-                                <input class="form-check-input border align-items-center rounded-circle" 
-                                    style="padding: 10px !important;" 
-                                    type="radio" 
-                                    id="rent${floorIndex}" 
-                                    name="floors[${floorIndex}][type]" 
-                                    value="rent">
-                                <label class="form-check-label mx-1" for="rent${floorIndex}"><b>@lang('back.rent')</b></label>
-                            </div>
-                            
-                            <!-- Radio button for Sell -->
-                            <div class="form-check form-check-inline mx-2">
-                                <input class="form-check-input border align-items-center rounded-circle" 
-                                    style="padding: 10px !important;" 
-                                    type="radio" 
-                                    id="sell${floorIndex}" 
-                                    name="floors[${floorIndex}][type]" 
-                                    value="sell">
-                                <label class="form-check-label mx-1" for="sell${floorIndex}"><b>@lang('back.sell')</b></label>
-                            </div>
-
-                            <!-- Cancel button -->
-                           <div class="d-flex " >
-                             <button type="button" class="btn btn-danger btn-sm border rounded-pill align-items-center text-center mx-5 mb-3 cancel-floor" data-index="${floorIndex}" style="padding:2px !important; padding-right:12px !important; padding-bottom:6px !important; padding-left:12px !important;  border:1px solid red;  border-radius:100px !important; " >x</button>
-                            </div>
-                        
-
-                            
-
-
-                        </div>
-                    </div>
-                    @error('floors.*.type')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                
-            </div>
-        `);
-    });
-
-    // Handle Cancel button click
-    $('#floorContainerRent').on('click', '.cancel-floor', function() {
-        const floorIndex = $(this).data('index');
-        $(`#floor${floorIndex}`).remove();
-    });
-
-    $('form').on('submit', function(e) {
-        let floorElements = $(this).find('.floor-group');
-        floorSuitCombination = {};
-
-        floorElements.each(function() {
-            let floorNo = $(this).find('input[name*="[floorNo]"]').val();
-            let suitNo = $(this).find('input[name*="[suitNo]"]').val();
-            let type = $(this).find('input[name*="[type]"]:checked').val();
-
-            if (floorNo && suitNo && type) {
-                let key = `${floorNo}-${suitNo}`;
-
-                if (floorSuitCombination[key] && floorSuitCombination[key] == type) {
-                    alert(`Floor ${floorNo} with Suite ${suitNo} is listed multiple times`);
-                    e.preventDefault(); // Prevent form submission
-                    return false; // Exit each loop
-                }
-
-                floorSuitCombination[key] = type;
-            }
-        });
-    });
-});
-    </script>
 
 
     </body>
