@@ -10,7 +10,48 @@ class PropertyNewFormController extends Controller
 {
    
      // Display all properties
+     public function update(Request $request, $id)
+     {
+         // پراپرٹی تلاش کریں
+         $property = PropertyNewForm::findOrFail($id);
      
+         // ویلیڈیشن (اگر آپ چاہیں تو)
+         $request->validate([
+             'property_type' => 'required|string',
+             'city' => 'required|string',
+             'address' => 'required|string',
+             'property_size' => 'required|string',
+             'asking_price' => 'required|numeric',
+             'agent_name' => 'required|string',
+             'images' => 'nullable|array',
+             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // اگر تصاویر اپ لوڈ ہو رہی ہیں
+         ]);
+     
+         // پراپرٹی اپ ڈیٹ کریں
+         $property->property_type = $request->input('property_type');
+         $property->city = $request->input('city');
+         $property->address = $request->input('address');
+         $property->property_size = $request->input('property_size');
+         $property->asking_price = $request->input('asking_price');
+         $property->agent_name = $request->input('agent_name');
+     
+         // اگر نئی تصاویر ہیں تو اپ لوڈ کریں
+         if ($request->hasFile('images')) {
+             $images = [];
+             foreach ($request->file('images') as $image) {
+                 $images[] = $image->store('property_images', 'public');
+             }
+             $property->images = implode(',', $images);
+         }
+     
+         // پراپرٹی محفوظ کریں
+         $property->save();
+     
+         // سیشن میں اپ ڈیٹ کا پیغام
+         return redirect()->back()->with('update', 'Property updated successfully');
+     }
+     
+
      
          // Display all properties for admin
          public function show(Request $request)
@@ -44,7 +85,7 @@ class PropertyNewFormController extends Controller
                  return redirect()->back()->with('error', 'Property not found!');
              }
          }
-         
+
          public function export()
          {
              return Excel::download(new PropertiesExport, 'properties.xlsx');
@@ -80,6 +121,7 @@ class PropertyNewFormController extends Controller
             'contact_no' => $request->contact_no,
             'agent_name' => $request->agent_name,
             'description' => $request->description,
+           
         ]);
 
         if ($property) {
@@ -100,40 +142,7 @@ class PropertyNewFormController extends Controller
     }
 
     // Update property data
-    public function update(Request $request, $id)
-    {
-        $property = PropertyNewForm::findOrFail($id);
-        
-        // Handle image uploads if any
-        $images = $property->images;
-        if ($request->hasFile('images')) {
-            $images = [];
-            foreach ($request->file('images') as $image) {
-                $images[] = $image->store('property_images', 'public');
-            }
-        }
-
-        $property->update([
-            'property_type' => $request->property_type,
-            'city' => $request->city,
-            'property_types' => $request->property_types,  
-            'address' => $request->address,  
-            'nearest_landmark' => $request->nearest_landmark,  
-            'floor' => $request->floor,  
-            'bedrooms' => $request->bedrooms,  
-            'bathrooms' => $request->bathrooms,  
-            'property_size' => $request->property_size,  
-            'asking_price' => $request->asking_price,  
-            'corner_property' => $request->corner_property === 'yes',
-            'images' => $images,
-            'contact_no' => $request->contact_no,
-            'agent_name' => $request->agent_name,
-            'description' => $request->description,
-        ]);
-
-        return redirect()->route('properties.show', $property->id)->with('success', 'Property updated successfully!');
-    }
-
+  
     // Delete property
    
 }

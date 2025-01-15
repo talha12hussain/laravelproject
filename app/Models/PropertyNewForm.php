@@ -27,6 +27,7 @@ class PropertyNewForm extends Model
         'contact_no',
         'agent_name',
         'description',
+       
     ];
 
     protected $casts = [

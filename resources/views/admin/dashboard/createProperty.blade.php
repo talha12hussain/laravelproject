@@ -51,8 +51,12 @@
         }
 
         .form-control-label {
-            margin-bottom: 0
-        }
+    text-align: left;
+    float: left; /* Aligns the label to the left */
+    margin-right: 10px; /* Optional: Adds spacing between the label and input */
+}
+
+
 
 
 
@@ -163,13 +167,16 @@
 
               
 
-                <div class="form-group mb-4">
-    <label class="form-control-label font-weight-bold">@lang('Address')</label>
-    <input type="text" class="form-control rounded-pill border-primary" name="address" placeholder="@lang('Enter Address')">
+                    <div class="form-group mb-4">
+        <label class="form-control-label font-weight-bold">@lang('Address')</label>
+        <input type="text" id="address" class="form-control rounded-pill border-primary text-left" name="address" placeholder="@lang('Enter Address')">
 
-    <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
-    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
-</div>
+       
+
+        <label class="form-control-label font-weight-bold mt-3 text-left">@lang('Nearest Landmark')</label>
+        <input type="hidden" class="form-control rounded-pill border-primary mt-2 text-left" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+    </div>
+
 
 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
@@ -197,7 +204,10 @@
                     <input type="number" class="form-control rounded-pill border-primary" name="asking_price" placeholder="@lang('Enter Asking Price')" step="any">
                 </div>
 
-        
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
+</div>
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
                     <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
@@ -221,10 +231,7 @@
                     <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
                     <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
                 </div>
-                <div class="form-group mb-4">
-    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
-    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
-</div>
+              
 
             </div>
         </div>
@@ -300,8 +307,15 @@
                     <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
                     <input type="number" class="form-control rounded-pill border-primary" name="asking_price" placeholder="@lang('Enter Asking Price')" step="any">
                 </div>
-
-                <<div class="form-group mb-4">
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
+</div>
+<div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
+                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
+                </div>
+                <div class="form-group mb-4">
     <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
     <input 
         type="text" 
@@ -320,16 +334,10 @@
                     <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
                 </div>
 
-                <div class="form-group mb-4">
-    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
-    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
-</div>
+             
 
 
-                <div class="form-group mb-4">
-                    <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
-                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
-                </div>
+                
             </div>
         </div>
 
@@ -387,13 +395,22 @@
                     </select>
                 </div>
                 <div class="form-group mb-4">
+                    <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
+                    <select class="form-control rounded-pill border-primary" name="property_size">
+                        <option value="Sq.ft">@lang('Sq. Ft')</option>
+                        <option value="Sq.M">@lang('Sq. M')</option>
+                        <option value="Sq.Yd">@lang('Sq. Yd')</option>
+                        <option value="Marla">@lang('Marla')</option>
+                        <option value="Kanal">@lang('Kanal')</option>
+                        <option value="Acre">@lang('Acre')</option>
+                    </select>
+                </div>
+                <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
                     <input type="number" class="form-control rounded-pill border-primary" name="asking_price" placeholder="@lang('Enter Asking Price')" step="any">
                 </div>
-                <div class="form-group mb-4">
-                    <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
-                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
-                </div>
+                
+                
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('How many Bedrooms?') <span class="text-danger">*</span></label>
                     <select class="form-control rounded-pill border-primary" name="bedrooms">
@@ -420,19 +437,10 @@
                 </div>
 
                 <div class="form-group mb-4">
-                    <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
-                    <select class="form-control rounded-pill border-primary" name="property_size">
-                        <option value="Sq.ft">@lang('Sq. Ft')</option>
-                        <option value="Sq.M">@lang('Sq. M')</option>
-                        <option value="Sq.Yd">@lang('Sq. Yd')</option>
-                        <option value="Marla">@lang('Marla')</option>
-                        <option value="Kanal">@lang('Kanal')</option>
-                        <option value="Acre">@lang('Acre')</option>
-                    </select>
-                </div>
-
-               
-
+    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
+</div>
+            
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
                     <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
@@ -452,14 +460,10 @@
     <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
 </div>
 
-
-
-
 <div class="form-group mb-4">
-    <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
-    <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" required>
-</div>
-
+                    <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
+                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
+                </div>
                 </div>
             </div>
             <div class="text-center mt-4">
@@ -518,7 +522,6 @@
     }
 }
 </script>
-
 
 
 
