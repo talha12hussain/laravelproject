@@ -44,13 +44,18 @@
             <table class="table table-striped table-hover align-middle">
                 <thead class="table-dark text-center">
                     <tr>
-                        <th class="border-end">@lang('property_id')</th>
-                        <th class="border-end">@lang('property_type')</th>
-                        <th class="border-end">@lang('city')</th>
-                        <th class="border-end">@lang('address')</th>
-                        <th class="border-end">@lang('size')</th>
-                        <th class="border-end">@lang('price')</th>
-                        <th class="border-end">@lang('agent')</th>
+                        <th class="border-end">@lang('Property_id')</th>
+                        <th class="border-end">@lang('Property_type')</th>
+                        <th class="border-end">@lang('City')</th>
+                        <th class="border-end">@lang('Property_types')</th>
+                        <th class="border-end">@lang('Floor')</th>
+                        <th class="border-end">@lang('Address')</th>
+                        <th class="border-end">@lang('Size')</th>
+                        <th class="border-end">@lang('Price')</th>
+                        <th class="border-end">@lang('Bedrooms')</th>
+                        <th class="border-end">@lang('Bathrooms')</th>
+                        <th class="border-end">@lang('Agent Name')</th>
+                        <th class="border-end">@lang('Contact No')</th>
                         <th class="border-end">@lang('Image')</th>  <!-- Image Column Added -->
                         <th>@lang('actions')</th>
                     </tr>
@@ -61,10 +66,16 @@
                             <td class="text-center border-end">{{ $property->id }}</td>
                             <td class="border-end">{{ $property->property_type }}</td>
                             <td class="border-end">{{ $property->city }}</td>
+                            <td class="border-end">{{ $property->property_types }}</td>
+                            <td class="border-end">{{ $property->floor }}</td>
                             <td class="border-end">{{ $property->address }}</td>
                             <td class="text-center border-end">{{ $property->property_size }}</td>
                             <td class="text-end border-end">{{ number_format($property->asking_price, 2) }} </td>
+                            <td class="border-end">{{ $property->bedrooms }}</td>
+                            <td class="border-end">{{ $property->bathrooms }}</td>
                             <td class="border-end">{{ $property->agent_name }}</td>
+                            <td class="border-end">{{ $property->contact_no }}</td>
+
 
                             <!-- Displaying images -->
                             <td class="border-end">
@@ -74,7 +85,7 @@
         @endphp
         
         @foreach($images as $image)
-            <img src="{{ asset('storage/' . $image) }}" alt="Property Image" width="50" height="50">
+            <img src="{{ asset('storage/' . $image) }}" class="rounded-circle" alt="Property Image" width="50" height="50" >
         @endforeach
     @else
         No images available
@@ -99,13 +110,13 @@
                         </tr>
 
                         <!-- Edit Modal -->
-                      <!-- Edit Modal -->
+ <!-- Edit Modal -->
 <div class="modal fade" id="editModal{{ $property->id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg rounded-3">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="editModalLabel">Edit Property</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('properties.update', $property->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -114,44 +125,61 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="property_type" class="form-label">Property Type</label>
-                            <input type="text" class="form-control" name="property_type" value="{{ $property->property_type }}">
+                            <input type="text" class="form-control form-control-lg border-primary" name="property_type" value="{{ $property->property_type }}">
                         </div>
                         <div class="col-md-6">
                             <label for="city" class="form-label">City</label>
-                            <input type="text" class="form-control" name="city" value="{{ $property->city }}">
+                            <input type="text" class="form-control form-control-lg border-primary" name="city" value="{{ $property->city }}">
                         </div>
                         <div class="col-md-12">
                             <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" name="address" value="{{ $property->address }}">
+                            <input type="text" class="form-control form-control-lg border-primary" name="address" value="{{ $property->address }}">
                         </div>
                         <div class="col-md-6">
-                            <label for="property_size" class="form-label">Size</label>
-                            <input type="text" class="form-control" name="property_size" value="{{ $property->property_size }}">
-                        </div>
+    <label for="property_size" class="form-label">Size</label>
+    <select class="form-control form-control-lg border-primary" name="property_size">
+        <option value="Sq.ft" {{ $property->property_size == 'Sq.ft' ? 'selected' : '' }}>Sq. Ft</option>
+        <option value="Sq.M" {{ $property->property_size == 'Sq.M' ? 'selected' : '' }}>Sq. M</option>
+        <option value="Sq.Yd" {{ $property->property_size == 'Sq.Yd' ? 'selected' : '' }}>Sq. Yd</option>
+        <option value="Marla" {{ $property->property_size == 'Marla' ? 'selected' : '' }}>Marla</option>
+        <option value="Kanal" {{ $property->property_size == 'Kanal' ? 'selected' : '' }}>Kanal</option>
+        <option value="Acre" {{ $property->property_size == 'Acre' ? 'selected' : '' }}>Acre</option>
+    </select>
+</div>
+
                         <div class="col-md-6">
                             <label for="asking_price" class="form-label">Price</label>
-                            <input type="text" class="form-control" name="asking_price" value="{{ $property->asking_price }}">
+                            <input type="text" class="form-control form-control-lg border-primary" name="asking_price" value="{{ $property->asking_price }}">
                         </div>
                         <div class="col-md-12">
                             <label for="agent_name" class="form-label">Agent Name</label>
-                            <input type="text" class="form-control" name="agent_name" value="{{ $property->agent_name }}">
+                            <input type="text" class="form-control form-control-lg border-primary" name="agent_name" value="{{ $property->agent_name }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label for="contact_n0" class="form-label">Contact No</label>
+                            <input type="text" class="form-control form-control-lg border-primary" name="agent_name" value="{{ $property->contact_no }}">
                         </div>
 
                         <!-- Image Upload Field -->
                         <div class="col-md-12">
                             <label for="images" class="form-label">Images</label>
-                            <input type="file" class="form-control" name="images[]" multiple>
-                            @if($property->images)
-        @php
-            $images = is_array($property->images) ? $property->images : explode(',', $property->images);
-        @endphp
-        
-        @foreach($images as $image)
-            <img src="{{ asset('storage/' . $image) }}" alt="Property Image" width="50" height="50">
-        @endforeach
-    @else
-        No images available
-    @endif
+                            <input type="file" class="form-control form-control-lg border-primary" name="images[]" multiple>
+                            <div class="mt-2">
+                                @if($property->images)
+                                    @php
+                                        $images = is_array($property->images) ? $property->images : explode(',', $property->images);
+                                    @endphp
+                                    <div class="row">
+                                        @foreach($images as $image)
+                                            <div class="col-6 col-md-4 mb-3">
+                                                <img src="{{ asset('storage/' . $image) }}" alt="Property Image" class="img-thumbnail rounded-3" width="100" height="100">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted">No images available</p>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

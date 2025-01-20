@@ -95,7 +95,7 @@ class PropertyNewFormController extends Controller
     public function store(Request $request)
     {
 
-        
+       
         // Handle image uploads
         $images = [];
         if ($request->hasFile('images')) {
@@ -121,6 +121,8 @@ class PropertyNewFormController extends Controller
             'contact_no' => $request->contact_no,
             'agent_name' => $request->agent_name,
             'description' => $request->description,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
            
         ]);
 

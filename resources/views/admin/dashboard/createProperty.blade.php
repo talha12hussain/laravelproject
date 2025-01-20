@@ -168,14 +168,18 @@
               
 
                     <div class="form-group mb-4">
-        <label class="form-control-label font-weight-bold">@lang('Address')</label>
-        <input type="text" id="address" class="form-control rounded-pill border-primary text-left" name="address" placeholder="@lang('Enter Address')">
-
-       
-
-        <label class="form-control-label font-weight-bold mt-3 text-left">@lang('Nearest Landmark')</label>
-        <input type="hidden" class="form-control rounded-pill border-primary mt-2 text-left" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+    <label class="form-control-label font-weight-bold">@lang('Address')</label>
+    <div class="input-group">
+        <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" required>
+        <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
     </div>
+
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+    <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+</div>
+
 
 
 <div class="form-group mb-4">
@@ -210,7 +214,7 @@
 </div>
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
-                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
+                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*" required>
                 </div>
 
                 <div class="form-group mb-4">
@@ -270,20 +274,29 @@
                         <option value="3">@lang('3')</option>
                         <option value="4">@lang('4')</option>
                         <option value="5">@lang('5')</option>
-                        <option value="6">@lang('6+')</option>
+                        <option value="6">@lang('6')</option>
+                        <option value="6">@lang('7')</option>
+                        <option value="6">@lang('8')</option>
+                        <option value="6">@lang('9')</option>
+                        <option value="6">@lang('10+')</option>
                     </select>
                 </div>
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('City') <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city') }}" >
+                    <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city') }}" required>
                     </div>
-                <div class="form-group mb-4">
-                <label class="form-control-label font-weight-bold">@lang('Address')</label>
-                <input type="text" class="form-control rounded-pill border-primary" name="address" placeholder="@lang('Enter Address')">
+                    <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Address')</label>
+    <div class="input-group">
+        <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" required>
+        <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
+    </div>
 
-                <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
-                <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
-                </div>
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+    <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+</div>
 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
                     <select class="form-control rounded-pill border-primary" name="corner_property">
@@ -313,7 +326,7 @@
 </div>
 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
-                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
+                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*" required>
                 </div>
                 <div class="form-group mb-4">
     <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
@@ -331,7 +344,7 @@
 
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
-                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
+                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')" required>
                 </div>
 
              
@@ -364,13 +377,21 @@
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Floor')</label>
                     <select class="form-control rounded-pill border-primary" name="floor">
+                    <option value="ground">@lang('Basement')</option>
                         <option value="ground">@lang('Ground')</option>
                         <option value="1">@lang('1')</option>
                         <option value="2">@lang('2')</option>
                         <option value="3">@lang('3')</option>
                         <option value="4">@lang('4')</option>
                         <option value="5">@lang('5')</option>
-                        <option value="6">@lang('6+')</option>
+                        <option value="6">@lang('6')</option>
+                        <option value="6">@lang('7')</option>
+                        <option value="6">@lang('8')</option>
+                        <option value="6">@lang('9')</option>
+                        <option value="6">@lang('10+')</option>
+
+
+
                     </select>
                 </div>
 
@@ -380,12 +401,17 @@
                     </div>
 
              
-                <div class="form-group mb-4">
+                    <div class="form-group mb-4">
     <label class="form-control-label font-weight-bold">@lang('Address')</label>
-    <input type="text" class="form-control rounded-pill border-primary" name="address" placeholder="@lang('Enter Address')">
+    <div class="input-group">
+        <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" required>
+        <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
+    </div>
 
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
     <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
-    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')" required>
 </div>
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
@@ -443,7 +469,7 @@
             
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Upload Images of Your Property')</label>
-                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*">
+                    <input type="file" class="form-control rounded-pill border-primary" name="images[]" multiple accept="image/*" required>
                 </div>
 
                 <div class="form-group mb-4">
@@ -462,7 +488,7 @@
 
 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
-                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
+                    <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')" required>
                 </div>
                 </div>
             </div>
@@ -521,6 +547,37 @@
         });
     }
 }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClG_NqNg-xfP649LdR5002E9eE3rl44NI"></script>
+<script>
+    var geocoder;
+
+    function geocodeAddress() {
+        var address = document.getElementById('address').value;
+        geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+
+                document.getElementById('latitude').value = latitude;
+                document.getElementById('longitude').value = longitude;
+                
+                // Optional: Display a map with the address
+                var map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 15,
+                    center: results[0].geometry.location
+                });
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    }
 </script>
 
 

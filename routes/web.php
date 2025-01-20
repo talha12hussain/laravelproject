@@ -22,7 +22,6 @@ use App\Http\Controllers\RealEstateController;
 use App\Http\Controllers\PropertyNewFormController;
 
 
-
 Route::get('/admin-property', [PropertyNewFormController::class, 'show'])->name('admin.dashboard.propertyTable');
 Route::get('/admin-property/export', [PropertyNewFormController::class, 'export'])->name('admin.property.export');
 Route::put('/admin-property/{id}', [PropertyNewFormController::class, 'update'])->name('properties.update');
