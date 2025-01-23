@@ -24,7 +24,7 @@ class CreatePropertyNewFormsTable extends Migration
             $table->integer('bathrooms')->nullable();
             $table->string('property_size')->nullable();
             $table->decimal('asking_price', 15, 2)->nullable();
-            $table->boolean('corner_property')->default(false);
+            $table->enum('corner_property', ['yes', 'no'])->default('no'); // Update this field
             $table->json('images')->nullable(); // Store images as JSON
             $table->string('contact_no');
             $table->string('agent_name')->nullable();

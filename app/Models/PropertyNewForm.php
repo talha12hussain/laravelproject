@@ -12,6 +12,7 @@ class PropertyNewForm extends Model
     protected $table = 'property_new_forms';
 
     protected $fillable = [
+        'type',
         'property_type',
         'city',
         'property_types',

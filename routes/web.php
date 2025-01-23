@@ -20,7 +20,14 @@ use App\Http\Controllers\NewPropertyController;
 use App\Http\Controllers\PropertyRecordController;
 use App\Http\Controllers\RealEstateController;
 use App\Http\Controllers\PropertyNewFormController;
+use App\Http\Controllers\MapController;
 
+
+Route::get('/map', function () {
+    return view('map'); 
+});
+
+Route::get('/admin-property/properties/{id}/print', [PropertyNewFormController::class, 'printProperty'])->name('properties.print');
 
 Route::get('/admin-property', [PropertyNewFormController::class, 'show'])->name('admin.dashboard.propertyTable');
 Route::get('/admin-property/export', [PropertyNewFormController::class, 'export'])->name('admin.property.export');

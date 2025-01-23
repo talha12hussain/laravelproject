@@ -36,6 +36,7 @@
                 <a href="{{ route('admin.property.export') }}" class="btn btn-success">
                     <i class="fas fa-download"></i> @lang('back.export_all')
                 </a>
+              
             </div>
         </div>
 
@@ -93,20 +94,27 @@
 </td>
 
 
-                            <td class="text-center">
-                                <button type="button" class="btn btn-warning btn-sm me-1" data-bs-toggle="modal"
-                                    data-bs-target="#editModal{{ $property->id }}">
-                                    <i class="fas fa-edit"></i> @lang('back.edit')
-                                </button>
-                                <form action="{{ route('properties.destroy', $property->id) }}" method="POST" 
-                                      style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i> @lang('back.delete')
-                                    </button>
-                                </form>
-                            </td>
+ <!-- Table Actions Buttons -->
+<td class="text-center">
+    <div class="d-inline-flex align-items-center gap-2">
+        <button type="button" class="btn btn-sm btn-warning text-white rounded-pill px-3 shadow-sm" data-bs-toggle="modal"
+            data-bs-target="#editModal{{ $property->id }}">
+            <i class="fas fa-edit"></i> @lang('back.edit')
+        </button>
+        <a href="{{ route('properties.print', $property->id) }}" class="btn btn-sm btn-info text-white rounded-pill px-3 shadow-sm">
+            <i class="fas fa-print"></i> @lang('Print')
+        </a>
+        <form action="{{ route('properties.destroy', $property->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger text-white rounded-pill px-3 shadow-sm">
+                <i class="fas fa-trash"></i> @lang('back.delete')
+            </button>
+        </form>
+    </div>
+</td>
+
+
                         </tr>
 
                         <!-- Edit Modal -->
@@ -131,6 +139,24 @@
                             <label for="city" class="form-label">City</label>
                             <input type="text" class="form-control form-control-lg border-primary" name="city" value="{{ $property->city }}">
                         </div>
+                        <div class="col-md-6">
+    <label for="floor" class="form-label">Floor</label>
+    <select class="form-control form-control-lg border-primary" name="floor">
+        <option value="Ground" {{ $property->floor == 'Ground' ? 'selected' : '' }}>Ground</option>
+        <option value="Mezzanine" {{ $property->floor == 'Mezzanine' ? 'selected' : '' }}>Mezzanine</option>
+        <option value="1" {{ $property->floor == '1' ? 'selected' : '' }}>1</option>
+        <option value="2" {{ $property->floor == '2' ? 'selected' : '' }}>2</option>
+        <option value="3" {{ $property->floor == '3' ? 'selected' : '' }}>3</option>
+        <option value="4" {{ $property->floor == '4' ? 'selected' : '' }}>4</option>
+        <option value="5" {{ $property->floor == '5' ? 'selected' : '' }}>5</option>
+        <option value="6" {{ $property->floor == '6' ? 'selected' : '' }}>6</option>
+        <option value="7" {{ $property->floor == '7' ? 'selected' : '' }}>7</option>
+        <option value="8" {{ $property->floor == '8' ? 'selected' : '' }}>8</option>
+        <option value="9" {{ $property->floor == '9' ? 'selected' : '' }}>9</option>
+        <option value="10+" {{ $property->floor == '10+' ? 'selected' : '' }}>10+</option>
+    </select>
+</div>
+
                         <div class="col-md-12">
                             <label for="address" class="form-label">Address</label>
                             <input type="text" class="form-control form-control-lg border-primary" name="address" value="{{ $property->address }}">

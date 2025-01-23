@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\PropertyNewForm;
 use App\Exports\PropertiesExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class PropertyNewFormController extends Controller
 {
@@ -17,12 +19,14 @@ class PropertyNewFormController extends Controller
      
          // ویلیڈیشن (اگر آپ چاہیں تو)
          $request->validate([
+            
              'property_type' => 'required|string',
              'city' => 'required|string',
              'address' => 'required|string',
              'property_size' => 'required|string',
              'asking_price' => 'required|numeric',
              'agent_name' => 'required|string',
+             'floor' => 'nullable|string',  // فلور فیلڈ شامل کریں
              'images' => 'nullable|array',
              'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // اگر تصاویر اپ لوڈ ہو رہی ہیں
          ]);
@@ -34,6 +38,8 @@ class PropertyNewFormController extends Controller
          $property->property_size = $request->input('property_size');
          $property->asking_price = $request->input('asking_price');
          $property->agent_name = $request->input('agent_name');
+         $property->floor = $request->input('floor'); // فلور فیلڈ اپ ڈیٹ کریں
+
      
          // اگر نئی تصاویر ہیں تو اپ لوڈ کریں
          if ($request->hasFile('images')) {
@@ -90,8 +96,54 @@ class PropertyNewFormController extends Controller
          {
              return Excel::download(new PropertiesExport, 'properties.xlsx');
          }
+
+         public function printProperty($id)
+         {
+             $property = PropertyNewForm::findOrFail($id);
          
+             // اگر تصاویر کی فہرست ایک اسٹرنگ میں ہے، تو اسے array میں تبدیل کریں
+             if (is_string($property->images)) {
+                 $images = explode(',', $property->images);
+             } elseif (is_array($property->images)) {
+                 $images = $property->images;
+             } else {
+                 $images = [];
+             }
+         
+             // تصاویر کی paths کو base64 میں تبدیل کریں
+             foreach ($images as $key => $image) {
+                 $path = public_path('storage/' . $image);
+         
+                 // چیک کریں کہ تصویر موجود ہے یا نہیں
+                 if (file_exists($path)) {
+                     $type = pathinfo($path, PATHINFO_EXTENSION);
+                     $data = file_get_contents($path);
+                     // Base64 encode کر کے تصاویر کا URL بنائیں
+                     $images[$key] = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                 } else {
+                     // اگر تصویر نہ ہو تو null سیٹ کریں
+                     $images[$key] = null;
+                 }
+             }
+         
+             // پراپرٹی کی تصاویر کو دوبارہ سیٹ کریں
+             $property->images = $images;
+             $mapUrl = 'https://maps.googleapis.com/maps/api/staticmap?center=' . $property->latitude . ',' . $property->longitude .
+             '&zoom=15&size=600x400&markers=' . $property->latitude . ',' . $property->longitude . '&key=AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8';
      
+         // Google Map کی Static Image کو Base64 میں تبدیل کریں
+         $mapPath = file_get_contents($mapUrl);
+         $mapBase64 = 'data:image/jpeg;base64,' . base64_encode($mapPath);
+     
+         // Map image کو property کے ساتھ شامل کریں
+         $property->mapImage = $mapBase64;
+         
+             // PDF تیار کریں اور ڈاؤن لوڈ کے لیے واپس کریں
+             $pdf = PDF::loadView('admin.dashboard.print', compact('property'));
+             return $pdf->download('property_' . $id . '.pdf');
+         }
+         
+         
     public function store(Request $request)
     {
 
@@ -106,6 +158,8 @@ class PropertyNewFormController extends Controller
 
         // Save the property data
         $property = PropertyNewForm::create([
+
+            'type' => $request->type, // Add 'type'
             'property_type' => $request->property_type,
             'city' => $request->city,
             'property_types' => $request->property_types,  
@@ -116,7 +170,7 @@ class PropertyNewFormController extends Controller
             'bathrooms' => $request->bathrooms,  
             'property_size' => $request->property_size,  
             'asking_price' => $request->asking_price,  
-            'corner_property' => $request->corner_property === 'yes',
+            'corner_property' => $request->corner_property === 'yes' ? 'yes' : 'no', // Store 'yes' or 'no'
             'images' => $images,
             'contact_no' => $request->contact_no,
             'agent_name' => $request->agent_name,

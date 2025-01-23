@@ -173,9 +173,10 @@
         <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" required>
         <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
     </div>
+    <input type="hidden" name="latitude" id="latitude_plot">
+<input type="hidden" name="longitude" id="longitude_plot">
+<div id="map_plot" style="width: 100%; height: 400px;"></div>
 
-    <input type="hidden" name="latitude" id="latitude">
-    <input type="hidden" name="longitude" id="longitude">
     <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
     <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
 </div>
@@ -288,15 +289,18 @@
                     <div class="form-group mb-4">
     <label class="form-control-label font-weight-bold">@lang('Address')</label>
     <div class="input-group">
-        <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" required>
+        <input type="text" class="form-control rounded-pill border-primary" name="address" id="address_commercial" placeholder="@lang('Enter Address')" required>
         <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
     </div>
 
-    <input type="hidden" name="latitude" id="latitude">
-    <input type="hidden" name="longitude" id="longitude">
+    <input type="hidden" name="latitude" id="latitude_commercial">
+<input type="hidden" name="longitude" id="longitude_commercial">
+<div id="map_commercial" style="width: 100%; height: 400px;"></div>
+
     <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
     <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
 </div>
+
 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
                     <select class="form-control rounded-pill border-primary" name="corner_property">
@@ -401,18 +405,20 @@
                     </div>
 
              
-                    <div class="form-group mb-4">
+                   <div class="form-group mb-4">
     <label class="form-control-label font-weight-bold">@lang('Address')</label>
     <div class="input-group">
-        <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" required>
+        <input type="text" class="form-control rounded-pill border-primary" name="address" id="address_residential" placeholder="@lang('Enter Address')" required>
         <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
     </div>
+    <input type="hidden" name="latitude" id="latitude_residential">
+<input type="hidden" name="longitude" id="longitude_residential">
+<div id="map_residential" style="width: 100%; height: 400px;"></div>
 
-    <input type="hidden" name="latitude" id="latitude">
-    <input type="hidden" name="longitude" id="longitude">
     <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
-    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')" required>
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" placeholder="@lang('Enter Nearest Landmark')">
 </div>
+
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
                     <select class="form-control rounded-pill border-primary" name="corner_property">
@@ -548,30 +554,50 @@
     }
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClG_NqNg-xfP649LdR5002E9eE3rl44NI"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8"></script>
 <script>
     var geocoder;
 
     function geocodeAddress() {
-        var address = document.getElementById('address').value;
+        var propertyType = document.getElementById("property_type").value;
+        var addressField, latitudeField, longitudeField, mapField;
+
+        if (propertyType === "plot") {
+            addressField = document.getElementById('address');
+            latitudeField = document.getElementById('latitude_plot');
+            longitudeField = document.getElementById('longitude_plot');
+            mapField = document.getElementById('map_plot');
+        } else if (propertyType === "commercial") {
+            addressField = document.getElementById('address_commercial');
+            latitudeField = document.getElementById('latitude_commercial');
+            longitudeField = document.getElementById('longitude_commercial');
+            mapField = document.getElementById('map_commercial');
+        } else if (propertyType === "residential") {
+            addressField = document.getElementById('address_residential');
+            latitudeField = document.getElementById('latitude_residential');
+            longitudeField = document.getElementById('longitude_residential');
+            mapField = document.getElementById('map_residential');
+        }
+
+        var address = addressField.value;
         geocoder = new google.maps.Geocoder();
 
-        geocoder.geocode({'address': address}, function(results, status) {
+        geocoder.geocode({ 'address': address }, function (results, status) {
             if (status === google.maps.GeocoderStatus.OK) {
                 var latitude = results[0].geometry.location.lat();
                 var longitude = results[0].geometry.location.lng();
 
-                document.getElementById('latitude').value = latitude;
-                document.getElementById('longitude').value = longitude;
-                
-                // Optional: Display a map with the address
-                var map = new google.maps.Map(document.getElementById("map"), {
+                latitudeField.value = latitude;
+                longitudeField.value = longitude;
+
+                var map = new google.maps.Map(mapField, {
                     zoom: 15,
-                    center: results[0].geometry.location
+                    center: results[0].geometry.location,
                 });
+
                 var marker = new google.maps.Marker({
                     map: map,
-                    position: results[0].geometry.location
+                    position: results[0].geometry.location,
                 });
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
