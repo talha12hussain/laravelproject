@@ -231,8 +231,7 @@
     >
     <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
 </div>
-
-                <div class="form-group mb-4">
+       <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
                     <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')">
                 </div>

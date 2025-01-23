@@ -144,6 +144,10 @@
             <td>{{ $property->address }}</td>
         </tr>
         <tr>
+            <th>Nearest_Landmark:</th>
+            <td>{{ $property->nearest_landmark }}</td>
+        </tr>
+        <tr>
             <th>Size:</th>
             <td>{{ $property->property_size }}</td>
         </tr>

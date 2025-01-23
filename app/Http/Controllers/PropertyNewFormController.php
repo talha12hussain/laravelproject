@@ -20,28 +20,46 @@ class PropertyNewFormController extends Controller
 // Validation (if you want)
               $request->validate([
             
-             'property_type' => 'required|string',
-             'city' => 'required|string',
-             'address' => 'required|string',
-             'property_size' => 'required|string',
-             'asking_price' => 'required|numeric',
-             'agent_name' => 'required|string',
-             'floor' => 'nullable|string',  
-             'images' => 'nullable|array',
-             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
+            'type' => 'required|string',
+        'property_type' => 'required|string',
+        'city' => 'required|string',
+        'property_types' => 'nullable|string',
+        'address' => 'required|string',
+        'nearest_landmark' => 'nullable|string',
+        'floor' => 'nullable|string',
+        'bedrooms' => 'nullable|integer',
+        'bathrooms' => 'nullable|integer',
+        'property_size' => 'required|string',
+        'asking_price' => 'required|numeric',
+        'corner_property' => 'nullable|string|in:yes,no',
+        'images' => 'nullable|array',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'contact_no' => 'required|string',
+        'agent_name' => 'required|string',
+        'description' => 'nullable|string',
+        'latitude' => 'nullable|numeric',
+        'longitude' => 'nullable|numeric',
          ]);
      
-         // پراپرٹی اپ ڈیٹ کریں
+         $property->type = $request->input('type');
          $property->property_type = $request->input('property_type');
          $property->city = $request->input('city');
+         $property->property_types = $request->input('property_types');
          $property->address = $request->input('address');
+         $property->nearest_landmark = $request->input('nearest_landmark');
+         $property->floor = $request->input('floor');
+         $property->bedrooms = $request->input('bedrooms');
+         $property->bathrooms = $request->input('bathrooms');
          $property->property_size = $request->input('property_size');
          $property->asking_price = $request->input('asking_price');
+         $property->corner_property = $request->input('corner_property') === 'yes' ? 'yes' : 'no';
+         $property->contact_no = $request->input('contact_no');
          $property->agent_name = $request->input('agent_name');
-         $property->floor = $request->input('floor'); 
+         $property->description = $request->input('description');
+         $property->latitude = $request->input('latitude');
+         $property->longitude = $request->input('longitude');; 
 
      
-         // اگر نئی تصاویر ہیں تو اپ لوڈ کریں
          if ($request->hasFile('images')) {
              $images = [];
              foreach ($request->file('images') as $image) {

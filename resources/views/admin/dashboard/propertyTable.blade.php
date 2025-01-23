@@ -129,66 +129,111 @@
             <form action="{{ route('properties.update', $property->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="property_type" class="form-label">Property Type</label>
-                            <input type="text" class="form-control form-control-lg border-primary" name="property_type" value="{{ $property->property_type }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="city" class="form-label">City</label>
-                            <input type="text" class="form-control form-control-lg border-primary" name="city" value="{{ $property->city }}">
-                        </div>
-                        <div class="col-md-6">
-    <label for="floor" class="form-label">Floor</label>
-    <select class="form-control form-control-lg border-primary" name="floor">
-        <option value="Ground" {{ $property->floor == 'Ground' ? 'selected' : '' }}>Ground</option>
-        <option value="Mezzanine" {{ $property->floor == 'Mezzanine' ? 'selected' : '' }}>Mezzanine</option>
-        <option value="1" {{ $property->floor == '1' ? 'selected' : '' }}>1</option>
-        <option value="2" {{ $property->floor == '2' ? 'selected' : '' }}>2</option>
-        <option value="3" {{ $property->floor == '3' ? 'selected' : '' }}>3</option>
-        <option value="4" {{ $property->floor == '4' ? 'selected' : '' }}>4</option>
-        <option value="5" {{ $property->floor == '5' ? 'selected' : '' }}>5</option>
-        <option value="6" {{ $property->floor == '6' ? 'selected' : '' }}>6</option>
-        <option value="7" {{ $property->floor == '7' ? 'selected' : '' }}>7</option>
-        <option value="8" {{ $property->floor == '8' ? 'selected' : '' }}>8</option>
-        <option value="9" {{ $property->floor == '9' ? 'selected' : '' }}>9</option>
-        <option value="10+" {{ $property->floor == '10+' ? 'selected' : '' }}>10+</option>
+                <div class="container">
+        <!-- Property Type -->
+        <div class="card shadow mt-4">
+            <div class="card-header bg-primary text-white font-weight-bold">@lang('Property Details')</div>
+            <div class="card-body">
+                <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+    <label class="form-control-label text-dark font-weight-bold">@lang('What do you want to do?') <span class="text-danger">*</span></label>
+    <select class="form-control rounded-pill border-primary" name="type">
+        <option value="sell" {{ old('type', $property->type) == 'sell' ? 'selected' : '' }}>@lang('Sell')</option>
+        <option value="rent" {{ old('type', $property->type) == 'rent' ? 'selected' : '' }}>@lang('Rent')</option>
     </select>
 </div>
 
-                        <div class="col-md-12">
-                            <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control form-control-lg border-primary" name="address" value="{{ $property->address }}">
-                        </div>
-                        <div class="col-md-6">
-    <label for="property_size" class="form-label">Size</label>
-    <select class="form-control form-control-lg border-primary" name="property_size">
-        <option value="Sq.ft" {{ $property->property_size == 'Sq.ft' ? 'selected' : '' }}>Sq. Ft</option>
-        <option value="Sq.M" {{ $property->property_size == 'Sq.M' ? 'selected' : '' }}>Sq. M</option>
-        <option value="Sq.Yd" {{ $property->property_size == 'Sq.Yd' ? 'selected' : '' }}>Sq. Yd</option>
-        <option value="Marla" {{ $property->property_size == 'Marla' ? 'selected' : '' }}>Marla</option>
-        <option value="Kanal" {{ $property->property_size == 'Kanal' ? 'selected' : '' }}>Kanal</option>
-        <option value="Acre" {{ $property->property_size == 'Acre' ? 'selected' : '' }}>Acre</option>
-    </select>
+
+<div class="form-group col-sm-12 col-md-6">
+    <label class="form-control-label text-dark font-weight-bold">@lang('What kind of property do you have?') <span class="text-danger">*</span></label>
+    <select 
+                            class="form-control" 
+                            id="property_type_{{ $property->id }}" 
+                            name="property_type" 
+                            onchange="toggleForms('{{ $property->id }}')">
+                            <option value="" disabled selected>Select Property Type</option>
+                            <option value="plot" {{ old('property_type', $property->property_type) == 'plot' ? 'selected' : '' }}>Plot</option>
+                            <option value="commercial" {{ old('property_type', $property->property_type) == 'commercial' ? 'selected' : '' }}>Commercial</option>
+                            <option value="residential" {{ old('property_type', $property->property_type) == 'residential' ? 'selected' : '' }}>Residential</option>
+                        </select>
 </div>
 
-                        <div class="col-md-6">
-                            <label for="asking_price" class="form-label">Price</label>
-                            <input type="text" class="form-control form-control-lg border-primary" name="asking_price" value="{{ $property->asking_price }}">
-                        </div>
-                        <div class="col-md-12">
-                            <label for="agent_name" class="form-label">Agent Name</label>
-                            <input type="text" class="form-control form-control-lg border-primary" name="agent_name" value="{{ $property->agent_name }}">
-                        </div>
-                        <div class="col-md-12">
-                            <label for="contact_n0" class="form-label">Contact No</label>
-                            <input type="text" class="form-control form-control-lg border-primary" name="agent_name" value="{{ $property->contact_no }}">
-                        </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Image Upload Field -->
-                        <div class="col-md-12">
-                            <label for="images" class="form-label">Images</label>
+      <!-- Plot Form -->
+<div id="plotForm_{{ $property->id }}" class="card shadow mt-4 dynamic-form" style="display: none; border-radius: 15px;">
+    <div class="card-header bg-gradient-primary text-black font-weight-bold py-3">@lang('Property Details')</div>
+    <div class="card-body p-4 bg-light">
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Type of Plot Property') <span class="text-danger">*</span></label>
+            <select class="form-control rounded-pill border-primary" name="property_types">
+                <option value="" disabled selected>@lang('Select Type')</option>
+                <option value="Residential Plot" {{ old('property_types', $property->property_types) == 'Residential Plot' ? 'selected' : '' }}>@lang('Residential Plot')</option>
+                <option value="Commercial Plot" {{ old('property_types', $property->property_types) == 'Commercial Plot' ? 'selected' : '' }}>@lang('Commercial Plot')</option>
+                <option value="Agriculture Land" {{ old('property_types', $property->property_types) == 'Agriculture Land' ? 'selected' : '' }}>@lang('Agriculture Land')</option>
+                <option value="Industrial Land" {{ old('property_types', $property->property_types) == 'Industrial Land' ? 'selected' : '' }}>@lang('Industrial Land')</option>
+                <option value="Warehouse Plot" {{ old('property_types', $property->property_types) == 'Warehouse Plot' ? 'selected' : '' }}>@lang('Warehouse Plot')</option>
+                <option value="Farmhouse Plot" {{ old('property_types', $property->property_types) == 'Farmhouse Plot' ? 'selected' : '' }}>@lang('Farmhouse Plot')</option>
+                <option value="Plot File" {{ old('property_types', $property->property_types) == 'Plot File' ? 'selected' : '' }}>@lang('Plot File')</option>
+                <option value="Amenity Plot" {{ old('property_types', $property->property_types) == 'Amenity Plot' ? 'selected' : '' }}>@lang('Amenity Plot')</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('City') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city', $property->city) }}" required>
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Address')</label>
+            <div class="input-group">
+                <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" value="{{ old('address', $property->address) }}" required>
+                <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
+            </div>
+            <input type="hidden" name="latitude" id="latitude_plot" value="{{ old('latitude', $property->latitude) }}">
+            <input type="hidden" name="longitude" id="longitude_plot" value="{{ old('longitude', $property->longitude) }}">
+            <div id="map_plot" style="width: 100%; height: 400px;"></div>
+
+            <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+            <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" value="{{ old('nearest_landmark', $property->nearest_landmark) }}" placeholder="@lang('Enter Nearest Landmark')">
+        </div>
+
+        <!-- Other form fields remain the same with old() or direct values -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
+            <select class="form-control rounded-pill border-primary" name="corner_property">
+                <option value="yes" {{ old('corner_property', $property->corner_property) == 'yes' ? 'selected' : '' }}>@lang('Yes')</option>
+                <option value="no" {{ old('corner_property', $property->corner_property) == 'no' ? 'selected' : '' }}>@lang('No')</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
+            <select class="form-control rounded-pill border-primary" name="property_size">
+                <option value="Sq.ft" {{ old('property_size', $property->property_size) == 'Sq.ft' ? 'selected' : '' }}>@lang('Sq. Ft')</option>
+                <option value="Sq.M" {{ old('property_size', $property->property_size) == 'Sq.M' ? 'selected' : '' }}>@lang('Sq. M')</option>
+                <option value="Sq.Yd" {{ old('property_size', $property->property_size) == 'Sq.Yd' ? 'selected' : '' }}>@lang('Sq. Yd')</option>
+                <option value="Marla" {{ old('property_size', $property->property_size) == 'Marla' ? 'selected' : '' }}>@lang('Marla')</option>
+                <option value="Kanal" {{ old('property_size', $property->property_size) == 'Kanal' ? 'selected' : '' }}>@lang('Kanal')</option>
+                <option value="Acre" {{ old('property_size', $property->property_size) == 'Acre' ? 'selected' : '' }}>@lang('Acre')</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
+            <input type="number" class="form-control rounded-pill border-primary" name="asking_price" placeholder="@lang('Enter Asking Price')" value="{{ old('asking_price', $property->asking_price) }}" step="any">
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+            <input type="text" class="form-control rounded border-primary" name="description" placeholder="@lang('Enter description')" value="{{ old('description', $property->description) }}" required>
+        </div>
+
+        <div class="form-group mb-4">
+        <label for="images" class="form-label">Images</label>
                             <input type="file" class="form-control form-control-lg border-primary" name="images[]" multiple>
                             <div class="mt-2">
                                 @if($property->images)
@@ -206,12 +251,333 @@
                                     <p class="text-muted">No images available</p>
                                 @endif
                             </div>
-                        </div>
-                    </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
+            <input 
+                type="text" 
+                class="form-control rounded-pill border-primary" 
+                name="contact_no" 
+                placeholder="@lang('Enter Contact Number')" 
+                pattern="^92[0-9]{10}$" 
+                oninput="validatePakistaniNumber(this)" 
+                value="{{ old('contact_no', $property->contact_no) }}" 
+                required
+            >
+            <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
+            <input type="text" class="form-control rounded-pill border-primary" name="agent_name" placeholder="@lang('Enter Agent Name')" value="{{ old('agent_name', $property->agent_name) }}">
+        </div>
+
+    </div>
+</div>
+
+       <!-- Commercial Form -->
+<div id="commercialForm_{{ $property->id }}" class="card shadow mt-4 dynamic-form" style="display: none; border-radius: 15px;">
+    <div class="card-header bg-gradient-primary text-black font-weight-bold py-3">@lang('Commercial Property Details')</div>
+    <div class="card-body p-4 bg-light">
+        
+        <!-- Type of Commercial Property -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Type of Commercial Property') <span class="text-danger">*</span></label>
+            <select class="form-control rounded-pill border-primary" name="property_types">
+                <option value="" disabled selected>@lang('Select Type')</option>
+                <option value="Warehouse" {{ old('property_types', $property->property_types) == 'Warehouse' ? 'selected' : '' }}>@lang('Warehouse')</option>
+                <option value="Building" {{ old('property_types', $property->property_types) == 'Building' ? 'selected' : '' }}>@lang('Building')</option>
+                <option value="Hall" {{ old('property_types', $property->property_types) == 'Hall' ? 'selected' : '' }}>@lang('Hall')</option>
+                <option value="Plaza" {{ old('property_types', $property->property_types) == 'Plaza' ? 'selected' : '' }}>@lang('Plaza')</option>
+                <option value="Gym" {{ old('property_types', $property->property_types) == 'Gym' ? 'selected' : '' }}>@lang('Gym')</option>
+                <option value="Restaurant" {{ old('property_types', $property->property_types) == 'Restaurant' ? 'selected' : '' }}>@lang('Restaurant')</option>
+                <option value="Hotel" {{ old('property_types', $property->property_types) == 'Hotel' ? 'selected' : '' }}>@lang('Hotel')</option>
+                <option value="Hospital" {{ old('property_types', $property->property_types) == 'Hospital' ? 'selected' : '' }}>@lang('Hospital')</option>
+                <option value="Factory" {{ old('property_types', $property->property_types) == 'Factory' ? 'selected' : '' }}>@lang('Factory')</option>
+                <option value="Running Business" {{ old('property_types', $property->property_types) == 'Running Business' ? 'selected' : '' }}>@lang('Running Business')</option>
+                <option value="Floor" {{ old('property_types', $property->property_types) == 'Floor' ? 'selected' : '' }}>@lang('Floor')</option>
+            </select>
+        </div>
+
+        <!-- Floor -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Floor')</label>
+            <select class="form-control rounded-pill border-primary" name="floor">
+                <option value="ground" {{ old('floor', $property->floor) == 'ground' ? 'selected' : '' }}>@lang('Basement')</option>
+                <option value="ground" {{ old('floor', $property->floor) == 'ground' ? 'selected' : '' }}>@lang('Ground')</option>
+                <option value="mezzanine" {{ old('floor', $property->floor) == 'mezzanine' ? 'selected' : '' }}>@lang('Mezzanine')</option>
+                <option value="1" {{ old('floor', $property->floor) == '1' ? 'selected' : '' }}>@lang('1')</option>
+                <option value="2" {{ old('floor', $property->floor) == '2' ? 'selected' : '' }}>@lang('2')</option>
+                <option value="3" {{ old('floor', $property->floor) == '3' ? 'selected' : '' }}>@lang('3')</option>
+                <option value="4" {{ old('floor', $property->floor) == '4' ? 'selected' : '' }}>@lang('4')</option>
+                <option value="5" {{ old('floor', $property->floor) == '5' ? 'selected' : '' }}>@lang('5')</option>
+                <option value="6" {{ old('floor', $property->floor) == '6' ? 'selected' : '' }}>@lang('6')</option>
+                <option value="7" {{ old('floor', $property->floor) == '7' ? 'selected' : '' }}>@lang('7')</option>
+                <option value="8" {{ old('floor', $property->floor) == '8' ? 'selected' : '' }}>@lang('8')</option>
+                <option value="9" {{ old('floor', $property->floor) == '9' ? 'selected' : '' }}>@lang('9')</option>
+                <option value="10+" {{ old('floor', $property->floor) == '10+' ? 'selected' : '' }}>@lang('10+')</option>
+            </select>
+        </div>
+
+        <!-- City -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('City') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city', $property->city) }}" required>
+        </div>
+
+        <!-- Address -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Address')</label>
+            <div class="input-group">
+                <input type="text" class="form-control rounded-pill border-primary" name="address" id="address_commercial" placeholder="@lang('Enter Address')" value="{{ old('address', $property->address) }}" required>
+                <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
+            </div>
+            <input type="hidden" name="latitude" id="latitude_commercial" value="{{ old('latitude', $property->latitude) }}">
+            <input type="hidden" name="longitude" id="longitude_commercial" value="{{ old('longitude', $property->longitude) }}">
+            <div id="map_commercial" style="width: 100%; height: 400px;"></div>
+            <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+            <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" value="{{ old('nearest_landmark', $property->nearest_landmark) }}" placeholder="@lang('Enter Nearest Landmark')">
+        </div>
+
+        <!-- Corner Property -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
+            <select class="form-control rounded-pill border-primary" name="corner_property">
+                <option value="yes" {{ old('corner_property', $property->corner_property) == 'yes' ? 'selected' : '' }}>@lang('Yes')</option>
+                <option value="no" {{ old('corner_property', $property->corner_property) == 'no' ? 'selected' : '' }}>@lang('No')</option>
+            </select>
+        </div>
+
+        <!-- Size of Property -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
+            <select class="form-control rounded-pill border-primary" name="property_size">
+                <option value="Sq.ft" {{ old('property_size', $property->property_size) == 'Sq.ft' ? 'selected' : '' }}>@lang('Sq. Ft')</option>
+                <option value="Sq.M" {{ old('property_size', $property->property_size) == 'Sq.M' ? 'selected' : '' }}>@lang('Sq. M')</option>
+                <option value="Sq.Yd" {{ old('property_size', $property->property_size) == 'Sq.Yd' ? 'selected' : '' }}>@lang('Sq. Yd')</option>
+                <option value="Marla" {{ old('property_size', $property->property_size) == 'Marla' ? 'selected' : '' }}>@lang('Marla')</option>
+                <option value="Kanal" {{ old('property_size', $property->property_size) == 'Kanal' ? 'selected' : '' }}>@lang('Kanal')</option>
+                <option value="Acre" {{ old('property_size', $property->property_size) == 'Acre' ? 'selected' : '' }}>@lang('Acre')</option>
+            </select>
+        </div>
+
+        <!-- Asking Price -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
+            <input type="number" class="form-control rounded-pill border-primary" name="asking_price" value="{{ old('asking_price', $property->asking_price) }}" placeholder="@lang('Enter Asking Price')" step="any">
+        </div>
+
+        <!-- Description -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+            <input type="text" class="form-control rounded border-primary" name="description" value="{{ old('description', $property->description) }}" placeholder="@lang('Enter description')" required>
+        </div>
+
+        <!-- Upload Images -->
+        <div class="form-group mb-4">
+        <label for="images" class="form-label">Images</label>
+                            <input type="file" class="form-control form-control-lg border-primary" name="images[]" multiple>
+                            <div class="mt-2">
+                                @if($property->images)
+                                    @php
+                                        $images = is_array($property->images) ? $property->images : explode(',', $property->images);
+                                    @endphp
+                                    <div class="row">
+                                        @foreach($images as $image)
+                                            <div class="col-6 col-md-4 mb-3">
+                                                <img src="{{ asset('storage/' . $image) }}" alt="Property Image" class="img-thumbnail rounded-3" width="100" height="100">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted">No images available</p>
+                                @endif
+                            </div>
+        </div>
+
+        <!-- Contact No -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control rounded-pill border-primary" name="contact_no" value="{{ old('contact_no', $property->contact_no) }}" placeholder="@lang('Enter Contact Number')" pattern="^92[0-9]{10}$" oninput="validatePakistaniNumber(this)" required>
+            <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
+        </div>
+
+        <!-- Agent Name -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
+            <input type="text" class="form-control rounded-pill border-primary" name="agent_name" value="{{ old('agent_name', $property->agent_name) }}" placeholder="@lang('Enter Agent Name')" required>
+        </div>
+        
+    </div>
+</div>
+
+        <!-- Residential Form -->
+        <div id="residentialForm_{{ $property->id }}" class="card shadow mt-4 dynamic-form" style="display: none; border-radius: 15px;">
+            <div class="card-header bg-gradient-primary text-black font-weight-bold py-3">@lang('Residential Property Details')</div>
+            <div class="card-body p-4 bg-light">
+            <div class="form-group mb-4">
+
+                <label class="form-control-label font-weight-bold">@lang('Type of Plot Property') <span class="text-danger">*</span></label>
+                    <select class="form-control rounded-pill border-primary" name="property_types">
+                        <option value="" disabled selected>@lang('Select Type')</option>
+                        <option value="House" {{ old('property_types', $property->property_types) ==  'House' ? 'selected' : '' }} >@lang('House')</option>
+                        <option value="Flat" {{ old('property_types', $property->property_types) ==  'Flat' ? 'selected' : '' }}>@lang('Flat')</option>
+                        <option value="Room" {{ old('property_types', $property->property_types) ==  'Room' ? 'selected' : '' }}>@lang('Room')</option>
+                        <option value="Farm House" {{ old('property_types', $property->property_types)  == 'Farm House ' ? 'selected' : '' }}>@lang('Farm House  ')</option>
+                        <option value="Penthouse" {{ old('property_types', $property->property_types)  == 'Penthouse' ? 'selected' : '' }}>@lang('Penthouse')</option>
+                        <option value="Hostel" {{ old('property_types', $property->property_types)  == 'Hostel' ? 'selected' : '' }}>@lang('Hostel')</option>
+                        <option value="Basement" {{ old('property_types', $property->property_types)  == 'Basement' ? 'selected' : '' }}>@lang('Basement')</option>
+                    </select>
+                
+    </div>
+
+                <!-- Floor -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Floor')</label>
+            <select class="form-control rounded-pill border-primary" name="floor">
+                <option value="ground" {{ old('floor', $property->floor) == 'ground' ? 'selected' : '' }}>@lang('Basement')</option>
+                <option value="ground" {{ old('floor', $property->floor) == 'ground' ? 'selected' : '' }}>@lang('Ground')</option>
+                <option value="mezzanine" {{ old('floor', $property->floor) == 'mezzanine' ? 'selected' : '' }}>@lang('Mezzanine')</option>
+                <option value="1" {{ old('floor', $property->floor) == '1' ? 'selected' : '' }}>@lang('1')</option>
+                <option value="2" {{ old('floor', $property->floor) == '2' ? 'selected' : '' }}>@lang('2')</option>
+                <option value="3" {{ old('floor', $property->floor) == '3' ? 'selected' : '' }}>@lang('3')</option>
+                <option value="4" {{ old('floor', $property->floor) == '4' ? 'selected' : '' }}>@lang('4')</option>
+                <option value="5" {{ old('floor', $property->floor) == '5' ? 'selected' : '' }}>@lang('5')</option>
+                <option value="6" {{ old('floor', $property->floor) == '6' ? 'selected' : '' }}>@lang('6')</option>
+                <option value="7" {{ old('floor', $property->floor) == '7' ? 'selected' : '' }}>@lang('7')</option>
+                <option value="8" {{ old('floor', $property->floor) == '8' ? 'selected' : '' }}>@lang('8')</option>
+                <option value="9" {{ old('floor', $property->floor) == '9' ? 'selected' : '' }}>@lang('9')</option>
+                <option value="10+" {{ old('floor', $property->floor) == '10+' ? 'selected' : '' }}>@lang('10+')</option>
+            </select>
+        </div>
+
+                  <!-- City -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('City') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control rounded-pill border-primary" name="city" value="{{ old('city', $property->city) }}" required>
+        </div>
+
+              <!-- Address -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Address')</label>
+            <div class="input-group">
+                <input type="text" class="form-control rounded-pill border-primary" name="address" id="address_commercial" placeholder="@lang('Enter Address')" value="{{ old('address', $property->address) }}" required>
+                <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
+            </div>
+            <input type="hidden" name="latitude" id="latitude_commercial" value="{{ old('latitude', $property->latitude) }}">
+            <input type="hidden" name="longitude" id="longitude_commercial" value="{{ old('longitude', $property->longitude) }}">
+            <div id="map_commercial" style="width: 100%; height: 400px;"></div>
+            <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+            <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" value="{{ old('nearest_landmark', $property->nearest_landmark) }}" placeholder="@lang('Enter Nearest Landmark')">
+        </div>
+
+                <!-- Corner Property -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Corner Property')</label>
+            <select class="form-control rounded-pill border-primary" name="corner_property">
+                <option value="yes" {{ old('corner_property', $property->corner_property) == 'yes' ? 'selected' : '' }}>@lang('Yes')</option>
+                <option value="no" {{ old('corner_property', $property->corner_property) == 'no' ? 'selected' : '' }}>@lang('No')</option>
+            </select>
+        </div>
+
+                <!-- Size of Property -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Size of Property')</label>
+            <select class="form-control rounded-pill border-primary" name="property_size">
+                <option value="Sq.ft" {{ old('property_size', $property->property_size) == 'Sq.ft' ? 'selected' : '' }}>@lang('Sq. Ft')</option>
+                <option value="Sq.M" {{ old('property_size', $property->property_size) == 'Sq.M' ? 'selected' : '' }}>@lang('Sq. M')</option>
+                <option value="Sq.Yd" {{ old('property_size', $property->property_size) == 'Sq.Yd' ? 'selected' : '' }}>@lang('Sq. Yd')</option>
+                <option value="Marla" {{ old('property_size', $property->property_size) == 'Marla' ? 'selected' : '' }}>@lang('Marla')</option>
+                <option value="Kanal" {{ old('property_size', $property->property_size) == 'Kanal' ? 'selected' : '' }}>@lang('Kanal')</option>
+                <option value="Acre" {{ old('property_size', $property->property_size) == 'Acre' ? 'selected' : '' }}>@lang('Acre')</option>
+            </select>
+        </div>
+                 <!-- Asking Price -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Asking Price (PKR)')</label>
+            <input type="number" class="form-control rounded-pill border-primary" name="asking_price" value="{{ old('asking_price', $property->asking_price) }}" placeholder="@lang('Enter Asking Price')" step="any">
+        </div>
+                
+                <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('How many Bedrooms?') <span class="text-danger">*</span></label>
+    <select class="form-control rounded-pill border-primary" name="bedrooms">
+        <option value="1" {{ old('bedrooms', $property->bedrooms) == '1' ? 'selected' : '' }}>@lang('1')</option>
+        <option value="2" {{ old('bedrooms', $property->bedrooms) == '2' ? 'selected' : '' }}>@lang('2')</option>
+        <option value="3" {{ old('bedrooms', $property->bedrooms) == '3' ? 'selected' : '' }}>@lang('3')</option>
+        <option value="4" {{ old('bedrooms', $property->bedrooms) == '4' ? 'selected' : '' }}>@lang('4')</option>
+        <option value="5" {{ old('bedrooms', $property->bedrooms) == '5' ? 'selected' : '' }}>@lang('5')</option>
+        <option value="6" {{ old('bedrooms', $property->bedrooms) == '6' ? 'selected' : '' }}>@lang('6')</option>
+        <option value="7" {{ old('bedrooms', $property->bedrooms) == '7' ? 'selected' : '' }}>@lang('7')</option>
+        <option value="8" {{ old('bedrooms', $property->bedrooms) == '8' ? 'selected' : '' }}>@lang('8')</option>
+        <option value="9" {{ old('bedrooms', $property->bedrooms) == '9' ? 'selected' : '' }}>@lang('9')</option>
+        <option value="10+" {{ old('bedrooms', $property->bedrooms) == '6+' ? 'selected' : '' }}>@lang('6+')</option>
+    </select>
+</div>
+
+<div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('How many Bathrooms?') <span class="text-danger">*</span></label>
+    <select class="form-control rounded-pill border-primary" name="bathrooms">
+        <option value="1" {{ old('bathrooms', $property->bathrooms) == '1' ? 'selected' : '' }}>@lang('1')</option>
+        <option value="2" {{ old('bathrooms', $property->bathrooms) == '2' ? 'selected' : '' }}>@lang('2')</option>
+        <option value="3" {{ old('bathrooms', $property->bathrooms) == '3' ? 'selected' : '' }}>@lang('3')</option>
+        <option value="4" {{ old('bathrooms', $property->bathrooms) == '4' ? 'selected' : '' }}>@lang('4')</option>
+        <option value="5" {{ old('bathrooms', $property->bathrooms) == '5' ? 'selected' : '' }}>@lang('5')</option>
+        <option value="6" {{ old('bathrooms', $property->bathrooms) == '6' ? 'selected' : '' }}>@lang('6')</option>
+        <option value="7" {{ old('bathrooms', $property->bathrooms) == '7' ? 'selected' : '' }}>@lang('7')</option>
+        <option value="8" {{ old('bathrooms', $property->bathrooms) == '8' ? 'selected' : '' }}>@lang('8')</option>
+        <option value="9" {{ old('bathrooms', $property->bathrooms) == '9' ? 'selected' : '' }}>@lang('9')</option>
+        <option value="10+" {{ old('bathrooms', $property->bathrooms) == '6+' ? 'selected' : '' }}>@lang('10+')</option>
+    </select>
+</div>
+
+                <!-- Description -->
+        <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Add some description about the Property')</label>
+            <input type="text" class="form-control rounded border-primary" name="description" value="{{ old('description', $property->description) }}" placeholder="@lang('Enter description')" required>
+        </div>
+            
+               
+        <!-- Upload Images -->
+        <div class="form-group mb-4">
+        <label for="images" class="form-label">Images</label>
+                            <input type="file" class="form-control form-control-lg border-primary" name="images[]" multiple>
+                            <div class="mt-2">
+                                @if($property->images)
+                                    @php
+                                        $images = is_array($property->images) ? $property->images : explode(',', $property->images);
+                                    @endphp
+                                    <div class="row">
+                                        @foreach($images as $image)
+                                            <div class="col-6 col-md-4 mb-3">
+                                                <img src="{{ asset('storage/' . $image) }}" alt="Property Image" class="img-thumbnail rounded-3" width="100" height="100">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted">No images available</p>
+                                @endif
+                            </div>
+        </div>
+
+                <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Contact No.') <span class="text-danger">*</span></label>
+            <input type="text" class="form-control rounded-pill border-primary" name="contact_no" value="{{ old('contact_no', $property->contact_no) }}" placeholder="@lang('Enter Contact Number')" pattern="^92[0-9]{10}$" oninput="validatePakistaniNumber(this)" required>
+            <small class="text-muted">@lang('Number must start with 92 and have 12 digits in total.')</small>
+        </div>
+
+ <!-- Agent Name -->
+ <div class="form-group mb-4">
+            <label class="form-control-label font-weight-bold">@lang('Agent Name')</label>
+            <input type="text" class="form-control rounded-pill border-primary" name="agent_name" value="{{ old('agent_name', $property->agent_name) }}" placeholder="@lang('Enter Agent Name')" required>
+        </div>
                 </div>
+            </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+                </div>
                 </div>
             </form>
         </div>
@@ -228,4 +594,114 @@
             {{ $properties->links() }}
         </div>
     </div>
+
+    
+<script>
+    function validatePakistaniNumber(input) {
+        // Sirf numbers allow karna
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Agar 92 se start nahi karta, toh automatically set kare
+        if (!input.value.startsWith('92')) {
+            input.value = '92';
+        }
+
+        // Maximum 12 digits allow karna
+        if (input.value.length > 12) {
+            input.value = input.value.slice(0, 12);
+        }
+    }
+</script>
+<script>
+   function toggleForms(propertyId) {
+    var propertyType = document.getElementById("property_type_" + propertyId).value;
+
+    // Hide all dynamic forms within this modal
+    document.querySelectorAll(`#editModal${propertyId} .dynamic-form`).forEach(function (form) {
+        form.style.display = 'none';
+        form.querySelectorAll('input, select').forEach(function (input) {
+            input.disabled = true;
+        });
+    });
+
+    // Show the selected form
+    var selectedForm = null;
+    if (propertyType === "plot") {
+        selectedForm = document.getElementById("plotForm_" + propertyId);
+    } else if (propertyType === "commercial") {
+        selectedForm = document.getElementById("commercialForm_" + propertyId);
+    } else if (propertyType === "residential") {
+        selectedForm = document.getElementById("residentialForm_" + propertyId);
+    }
+
+    if (selectedForm) {
+        selectedForm.style.display = 'block';
+        selectedForm.querySelectorAll('input, select').forEach(function (input) {
+            input.disabled = false;
+        });
+    }
+}
+document.querySelectorAll('.modal').forEach(function (modal) {
+    modal.addEventListener('show.bs.modal', function () {
+        var propertyId = modal.getAttribute('id').replace('editModal', ''); // Extract ID from modal ID
+        toggleForms(propertyId);
+    });
+});
+
+</script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8"></script>
+<script>
+    var geocoder;
+
+    function geocodeAddress() {
+        var propertyType = document.getElementById("property_type").value;
+        var addressField, latitudeField, longitudeField, mapField;
+
+        if (propertyType === "plot") {
+            addressField = document.getElementById('address');
+            latitudeField = document.getElementById('latitude_plot');
+            longitudeField = document.getElementById('longitude_plot');
+            mapField = document.getElementById('map_plot');
+        } else if (propertyType === "commercial") {
+            addressField = document.getElementById('address_commercial');
+            latitudeField = document.getElementById('latitude_commercial');
+            longitudeField = document.getElementById('longitude_commercial');
+            mapField = document.getElementById('map_commercial');
+        } else if (propertyType === "residential") {
+            addressField = document.getElementById('address_residential');
+            latitudeField = document.getElementById('latitude_residential');
+            longitudeField = document.getElementById('longitude_residential');
+            mapField = document.getElementById('map_residential');
+        }
+
+        var address = addressField.value;
+        geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                var latitude = results[0].geometry.location.lat();
+                var longitude = results[0].geometry.location.lng();
+
+                latitudeField.value = latitude;
+                longitudeField.value = longitude;
+
+                var map = new google.maps.Map(mapField, {
+                    zoom: 15,
+                    center: results[0].geometry.location,
+                });
+
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location,
+                });
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+    }
+</script>
+
+
 @endsection
