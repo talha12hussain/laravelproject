@@ -104,12 +104,6 @@ body {
                     style="width:100%; height:500px; background-size:cover;" alt="">
             </div>
 
-
-
-
-
-
-
             <div class=" col-md-12 d-flex justify-content-center ">
 
                 <div class="row">
