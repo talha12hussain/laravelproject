@@ -14,11 +14,11 @@ class PropertyNewFormController extends Controller
      // Display all properties
      public function update(Request $request, $id)
      {
-         // پراپرٹی تلاش کریں
+         // Search for property
          $property = PropertyNewForm::findOrFail($id);
      
-         // ویلیڈیشن (اگر آپ چاہیں تو)
-         $request->validate([
+// Validation (if you want)
+              $request->validate([
             
              'property_type' => 'required|string',
              'city' => 'required|string',
@@ -26,9 +26,9 @@ class PropertyNewFormController extends Controller
              'property_size' => 'required|string',
              'asking_price' => 'required|numeric',
              'agent_name' => 'required|string',
-             'floor' => 'nullable|string',  // فلور فیلڈ شامل کریں
+             'floor' => 'nullable|string',  
              'images' => 'nullable|array',
-             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // اگر تصاویر اپ لوڈ ہو رہی ہیں
+             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
          ]);
      
          // پراپرٹی اپ ڈیٹ کریں
@@ -38,7 +38,7 @@ class PropertyNewFormController extends Controller
          $property->property_size = $request->input('property_size');
          $property->asking_price = $request->input('asking_price');
          $property->agent_name = $request->input('agent_name');
-         $property->floor = $request->input('floor'); // فلور فیلڈ اپ ڈیٹ کریں
+         $property->floor = $request->input('floor'); 
 
      
          // اگر نئی تصاویر ہیں تو اپ لوڈ کریں
@@ -50,10 +50,8 @@ class PropertyNewFormController extends Controller
              $property->images = implode(',', $images);
          }
      
-         // پراپرٹی محفوظ کریں
          $property->save();
      
-         // سیشن میں اپ ڈیٹ کا پیغام
          return redirect()->back()->with('update', 'Property updated successfully');
      }
      
@@ -62,9 +60,8 @@ class PropertyNewFormController extends Controller
          // Display all properties for admin
          public function show(Request $request)
          {
-             $query = PropertyNewForm::query(); // تمام پراپرٹیز کو حاصل کرنے کے لیے کوئری بنائیں
+             $query = PropertyNewForm::query(); 
      
-             // اگر سرچ انپٹ موجود ہو تو فلٹر لگائیں
              if ($request->filled('search')) {
                  $query->where('property_type', 'like', '%' . $request->search . '%')
                        ->orWhere('city', 'like', '%' . $request->search . '%')
@@ -72,10 +69,8 @@ class PropertyNewFormController extends Controller
                        ->orWhere('agent_name', 'like', '%' . $request->search . '%');
              }
      
-             // کوئری سے ڈیٹا حاصل کریں اور پیجینیشن کریں
              $properties = $query->paginate(10);
      
-             // ڈیٹا کو ویو کے ساتھ واپس کریں
              return view('admin.dashboard.propertyTable', compact('properties'));
          }
      
@@ -101,7 +96,6 @@ class PropertyNewFormController extends Controller
          {
              $property = PropertyNewForm::findOrFail($id);
          
-             // اگر تصاویر کی فہرست ایک اسٹرنگ میں ہے، تو اسے array میں تبدیل کریں
              if (is_string($property->images)) {
                  $images = explode(',', $property->images);
              } elseif (is_array($property->images)) {
@@ -110,23 +104,19 @@ class PropertyNewFormController extends Controller
                  $images = [];
              }
          
-             // تصاویر کی paths کو base64 میں تبدیل کریں
              foreach ($images as $key => $image) {
                  $path = public_path('storage/' . $image);
          
-                 // چیک کریں کہ تصویر موجود ہے یا نہیں
                  if (file_exists($path)) {
                      $type = pathinfo($path, PATHINFO_EXTENSION);
                      $data = file_get_contents($path);
                      // Base64 encode کر کے تصاویر کا URL بنائیں
                      $images[$key] = 'data:image/' . $type . ';base64,' . base64_encode($data);
                  } else {
-                     // اگر تصویر نہ ہو تو null سیٹ کریں
                      $images[$key] = null;
                  }
              }
          
-             // پراپرٹی کی تصاویر کو دوبارہ سیٹ کریں
              $property->images = $images;
              $mapUrl = 'https://maps.googleapis.com/maps/api/staticmap?center=' . $property->latitude . ',' . $property->longitude .
              '&zoom=15&size=600x400&markers=' . $property->latitude . ',' . $property->longitude . '&key=AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8';
