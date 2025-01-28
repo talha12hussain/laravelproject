@@ -106,6 +106,7 @@
 
                     <a href="{{ route('agent.dashboard.agentPropertyTable') }}" class="nav-item nav-link"><i
                             class="fa fa-table me-2"></i>@lang('back.property')</a>
+                            
                     <a href="{{ route('admin.dashboard.agentCreateProperty') }}" class="nav-item nav-link"><i
                             class="fa fa-keyboard me-2"></i>@lang('back.create_property')</a>
                     {{-- <a href="{{route('admin.dashboard.agentRequest')}}" class="nav-item nav-link"><i class="fa fa-user me-2"></i>Agent Requests</a>

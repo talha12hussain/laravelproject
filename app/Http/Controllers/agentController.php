@@ -18,7 +18,9 @@ use App\Models\Agent;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\PropertyNewForm;
+use App\Exports\PropertiesExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -50,22 +52,69 @@ class agentController extends Controller
         if (Auth::guard('agent')->check()) {
             $agent_id = Auth::guard('agent')->user()->id;
     
-            // Get search query from the request
-            $search = $request->input('search');
+            // Query for retrieving properties specific to the logged-in agent
+            $query = PropertyNewForm::where('agent_id', $agent_id);
     
-          
-            $properties = Property::where('agent_id', $agent_id)
-                ->when($search, function ($query) use ($search) {
-                    $query->where('name', 'like', "%$search%")
-                          ->orWhere('address', 'like', "%$search%");
-                })
-                ->paginate(10); 
+            // Apply search filters if provided
+            if ($request->filled('search')) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('property_type', 'like', '%' . $request->search . '%')
+                      ->orWhere('city', 'like', '%' . $request->search . '%')
+                      ->orWhere('address', 'like', '%' . $request->search . '%')
+                      ->orWhere('agent_name', 'like', '%' . $request->search . '%');
+                });
+            }
     
-            return view('agent.dashboard.agentPropertyTable', compact('properties', 'search'));
+            // Paginate the filtered properties
+            $properties = $query->paginate(10);
+    
+            // Return the view with the agent's properties
+            return view('agent.dashboard.agentPropertyTable', compact('properties'));
         }
     
-
+        // Redirect if agent is not logged in
+        return redirect()->route('admin.agent-login.login')->with('error', 'Please log in first.');
     }
+    
+    public function update(Request $request, $id)
+    {
+        // Search for property
+        $property = PropertyNewForm::findOrFail($id);
+  
+    
+        $property->type = $request->input('type');
+        $property->property_type = $request->input('property_type');
+        $property->city = $request->input('city');
+        $property->property_types = $request->input('property_types');
+        $property->address = $request->input('address');
+        $property->nearest_landmark = $request->input('nearest_landmark');
+        $property->floor = $request->input('floor');
+        $property->bedrooms = $request->input('bedrooms');
+        $property->bathrooms = $request->input('bathrooms');
+        $property->property_size = $request->input('property_size');
+        $property->asking_price = $request->input('asking_price');
+        $property->corner_property = $request->input('corner_property') === 'yes' ? 'yes' : 'no';
+        $property->contact_no = $request->input('contact_no');
+        $property->agent_name = $request->input('agent_name');
+        $property->description = $request->input('description');
+         // Update latitude and longitude only if present
+   $property->latitude = $request->input('latitude');
+   $property->longitude = $request->input('longitude');
+
+    
+        if ($request->hasFile('images')) {
+            $images = [];
+            foreach ($request->file('images') as $image) {
+                $images[] = $image->store('property_images', 'public');
+            }
+            $property->images = implode(',', $images);
+        }
+    
+        $property->save();
+    
+        return redirect()->back()->with('update', 'Property updated successfully');
+    }
+    
     
 
     public function export() 
@@ -92,28 +141,24 @@ class agentController extends Controller
         // Get the authenticated agent
         $user = Auth::guard('agent')->user();
     
-        // Retrieve all properties for the agent
-        $properties = Property::where('agent_id', "=", $user->id)->get(); // This returns a collection of Property objects
-    
-        // Count the total number of properties
-        $totalProperties = $properties->count(); // This gives you the number of properties
-    
-        // Initialize total floors count
-        $totalFloors = 0;
-    
-        // Loop through each property to count its floors
-        foreach ($properties as $property) {
-            $totalFloors += Floor::where('property_id', '=', $property->id)->count(); // Count floors for each property
-        }
-    
-        // Pass the totals to the view
-        return view('agent.dashboard.agentHome', compact('totalProperties', 'totalFloors'));
-    }
+        // Retrieve all properties for the agent (from Property model)
+        $properties = PropertyNewForm::where('agent_id', $user->id)->get();
 
-    public function agentShowProperty(string $id){
-        $propertyshow = Property::findOrFail($id);
-        return view('agent.dashboard.agentShowProperty', compact('propertyshow'));
+        \Log::info('Properties:', $properties->toArray());
+
+    // Count the total number of properties
+    $totalProperties = $properties->count(); // This gives you the number of properties
+        
+        // Initialize total floors count
+      
+        
+        // Count the total number of PropertyNewForm records for the agent
+        // Count PropertyNewForm records where id exists
+
+        // Pass the totals to the view
+        return view('agent.dashboard.agentHome', compact('totalProperties',));
     }
+    
 
 
     public function storeAgent(Request $request){
@@ -260,149 +305,53 @@ class agentController extends Controller
                 ->withInput($request->except('password')); // Keep email input, but not the password
         }
     }
-
-public function storePropertyForm(Request $request): RedirectResponse
-{
-    \DB::beginTransaction(); // Start a database transaction
-
-    try {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'plotSize' => 'required|numeric',
-            'dimFront' => 'required|numeric',
-            'dimWidth' => 'required|numeric',
-            'totalSize' => 'required|string|max:255',
-            'leasedArea' => 'numeric',
-            'nearestLand' => 'required|string|max:255',
-            'corner' => 'required|string',
-            'parkingcap' => 'required|numeric',
-            'demandSqft' => 'required|numeric',
-            'absValue' => 'required|numeric',
-            'agentName' => 'required|string|max:255',
-            'agentcontact' => 'required|numeric',
-            'plot_type' => 'nullable|in:commercial,warehouse,shop,showroom',
-            'size_type' => 'nullable|in:sq_yard,acre,sq_fit',
-            'agentdetail' => 'required|string',
-            'contactPerson' => 'required|string',
-            'images.*' => 'required|file|mimes:jpeg,png,svg|max:4048',
-            'floors.*.floorNo' => 'required|numeric',
-            'floors.*.suitNo' => 'required|numeric',
-            'floors.*.areaSqft' => 'required|numeric',
-            'floors.*.rateSqft' => 'required|numeric',
-            'floors.*.type' => 'required|string|in:rent,sell',
-        ]);
-
-        $agent = Auth::guard('agent')->user();
-
-        if($request->plot_type == 'warehouse' || $request->plot_type == 'showroom'){
-            
-        }
-
-
-        if ($request->plot_type == 'warehouse' || $request->plot_type == 'showroom') {
-            // Count existing 'warehouse' or 'showroom' entries in the database
-            $existingPlotTypeCount = Property::where('plot_type', $request->plot_type)->count();
-    
-            // If there is already one existing entry, redirect back with error
-            if ($existingPlotTypeCount >= 1) {
-                return redirect()->back()->withErrors([
-                    'plot_type' => 'Only one ' . $request->plot_type . ' is allowed.'
-                ])->withInput();
-            }
-        }
-
-        if(strlen($request->agentcontact) != 11){
-            return redirect()->back()->with('error', 'Agent contact number must be 11 digits');
-        }
-        // Create Property
-        $property = Property::create([
-            'name' => $request->name,
-            'address' => $request->address,
-            'plotSize' => $request->plotSize,
-            'dimFront' => $request->dimFront,
-            'dimWidth' => $request->dimWidth,
-            'totalSize' => $request->totalSize,
-            'leasedArea' => $request->leasedArea,
-            'nearestLand' => $request->nearestLand,
-            'corner' => $request->corner,
-            'plot_type' => $request->plot_type,
-            'size_type' => $request->size_type,
-            'parkingcap' => $request->parkingcap,
-            'demandSqft' => $request->demandSqft,
-            'absValue' => $request->absValue,
-            'agent_id' => $agent->id,
-            'agentname' => $request->agentName,
-            'agentcontact' => $request->agentcontact,
-            'agentdetail' => $request->agentdetail,
-            'contactPerson' => $request->contactPerson,
-        ]);
-
-        // Handle Images
+    public function storePropertyForm(Request $request): RedirectResponse
+    {
+        $images = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $fileExtension = $image->getClientOriginalExtension();
-                $filename = time()."_".uniqid().".".$fileExtension;
-                $file_path = $image->storeAs('upload/property_images', $filename, 'public');
-
-                PropertyImages::create([
-                    "property_id" => $property->id,
-                    "file_path" => $file_path,
-                ]);
+                $images[] = $image->store('property_images', 'public');
             }
         }
-
-        // Handle Floors
-        $floors = $request->floors;
-        $floorSuitCombination = [];
-
-        foreach ($floors as $floor) {
-            $key = "{$floor['floorNo']}-{$floor['suitNo']}";
-
-            if (isset($floorSuitCombination[$key])) {
-                if ($floorSuitCombination[$key] == $floor['type']) {
-                    \DB::rollBack(); // Rollback transaction on error
-                    return redirect()->back()->withErrors(['floors.*.type' => 'Floor with this suite number already exists with a different type in the same property'])->withInput();
-                }
-            } else {
-                $floorSuitCombination[$key] = $floor['type'];
-
-                $existingFloor = Floor::where('property_id', $property->id)
-                    ->where('floorNo', $floor['floorNo'])
-                    ->where('suitNo', $floor['suitNo'])
-                    ->first();
-
-                if ($existingFloor) {
-                    \DB::rollBack(); // Rollback transaction on error
-                    return redirect()->back()->with('error', 'Floor with this suite number already exists with the same type in the same property');
-                }
-            }
-        }
-
-        foreach ($floors as $floor) {
-            Floor::create([
-                'property_id' => $property->id,
-                'floorNo' => $floor['floorNo'],
-                'suitNo' => $floor['suitNo'],
-                'areaSqft' => $floor['areaSqft'],
-                'rateSqft' => $floor['rateSqft'],
-                'type' => $floor['type'],
-            ]);
-        }
-
-        \DB::commit(); 
-
-        return redirect()->back()->with('success', 'Property details added successfully');
-    } catch (Exception $e) {
-        \DB::rollBack(); // Ensure rollback in case of any exception
-        \Log::error('Error saving property:', ['exception' => $e]);
     
-            $errorMessage = 'An error occurred while adding the property: ' . $e->getMessage();
-
-            return redirect()->back()->with('error', $errorMessage)->withInput();
+        try {
+            // لاگ ان شدہ ایجنٹ کا ID حاصل کریں
+            $agent_id = Auth::guard('agent')->user()->id;
+    
+            // پراپرٹی کا ریکارڈ بنائیں
+            $property = PropertyNewForm::create([
+                'type' => $request->type,
+                'property_type' => $request->property_type,
+                'city' => $request->city,
+                'property_types' => $request->property_types,
+                'address' => $request->address,
+                'nearest_landmark' => $request->nearest_landmark,
+                'floor' => $request->floor,
+                'bedrooms' => $request->bedrooms,
+                'bathrooms' => $request->bathrooms,
+                'property_size' => $request->property_size,
+                'asking_price' => $request->asking_price,
+                'corner_property' => $request->corner_property === 'yes' ? 'yes' : 'no',
+                'images' => implode(',', $images), // تصاویر کو implode کرکے محفوظ کریں
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'agent_id' => $agent_id, // لاگ ان شدہ ایجنٹ کا ID محفوظ کریں
+                'agent_name' => $request->agent_name,
+                'contact_no' => $request->contact_no,
+                'description' => $request->description,
+            ]);
+    
+            // کامیابی کا پیغام واپس کریں۔
+            return redirect()->back()->with('success', 'Property added successfully.');
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'Failed to add property: ' . $e->getMessage());
+        }
+    
+        // اگر کسی وجہ سے یہ پوائنٹ پہنچے، تو بھی ایک ریسپانس واپس کریں۔
+        return redirect()->back()->with('error', 'An unexpected error occurred.');
     }
-}
-
+    
 
     /**
      * Show the form for creating a new resource.
@@ -620,11 +569,7 @@ public function storePropertyForm(Request $request): RedirectResponse
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
+   
     /**
      * Remove the specified resource from storage.
      */

@@ -28,6 +28,7 @@ class PropertyNewForm extends Model
         'contact_no',
         'agent_name',
         'description',
+        'agent_id',
         'latitude',
         'longitude',
        

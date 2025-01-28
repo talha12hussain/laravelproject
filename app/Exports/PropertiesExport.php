@@ -23,6 +23,7 @@ class PropertiesExport implements FromCollection, WithHeadings, WithTitle, WithS
         // Get all fields from the Property model
         return PropertyNewForm::select(
             'id',
+            'type',
             'property_type',
             'city',
             'property_types',
@@ -48,16 +49,17 @@ class PropertiesExport implements FromCollection, WithHeadings, WithTitle, WithS
     {
         return [
             'ID',
+            'Type',
             'Property Type',
             'City',
-            'Property Sub Type',
+            'Property Types',
             'Address',
             'Nearest Landmark',
             'Floor',
             'Bedrooms',
             'Bathrooms',
-            'Property Size (sq ft)',
-            'Asking Price (USD)',
+            'Property Size ',
+            'Asking Price',
             'Corner Property',
             'Contact No',
             'Agent Name',

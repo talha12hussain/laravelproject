@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\PropertyNewForm;
 
 class AdminController extends Controller
 {
@@ -20,7 +21,7 @@ class AdminController extends Controller
      */
 
      public function home(){
-       $home_detail =  Property::count();
+       $home_detail =  PropertyNewForm::count();
        $floor_detail =  Floor::count();
        $agent_request = Agent::where('status', '=', 1)->count();
        $agent_approved = Agent::where('status', '=', 2)->count();

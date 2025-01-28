@@ -193,14 +193,7 @@
             <th>Contact:</th>
             <td>{{ $property->contact_no }}</td>
         </tr>
-        <tr>
-            <th>Latitude:</th>
-            <td>{{ $property->latitude }}</td>
-        </tr>
-        <tr>
-            <th>Longitude:</th>
-            <td>{{ $property->longitude }}</td>
-        </tr>
+        
     </table>
 
     <!-- Property Images -->

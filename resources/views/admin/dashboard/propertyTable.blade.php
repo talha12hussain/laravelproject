@@ -126,7 +126,7 @@
                 <h5 class="modal-title" id="editModalLabel">Edit Property</h5>
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('properties.update', $property->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('properties.update', $property->id) }}" method="POST"  enctype="multipart/form-data" >
                 @csrf
                 @method('PUT')
                 <div class="container">
@@ -190,11 +190,13 @@
         <div class="form-group mb-4">
             <label class="form-control-label font-weight-bold">@lang('Address')</label>
             <div class="input-group">
-                <input type="text" class="form-control rounded-pill border-primary" name="address" id="address" placeholder="@lang('Enter Address')" value="{{ old('address', $property->address) }}" required>
-                <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
+                <input type="text" class="form-control rounded-pill border-primary" name="address" id="address_{{ $property->id }}" placeholder="@lang('Enter Address')" value="{{ old('address', $property->address) }}" required>
+                <button type="button" onclick="geocodeAddress({{ $property->id }})" class="btn btn-secondary">
+    Geocode Address
+</button>
             </div>
-            <input type="hidden" name="latitude" id="latitude_plot" value="{{ old('latitude', $property->latitude) }}">
-            <input type="hidden" name="longitude" id="longitude_plot" value="{{ old('longitude', $property->longitude) }}">
+            <input type="hidden" name="latitude" id="latitude" value="{{ $property->latitude }}">
+            <input type="hidden" name="longitude" id="longitude" value="{{ $property->longitude }}">
             <div id="map_plot" style="width: 100%; height: 400px;"></div>
 
             <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
@@ -328,17 +330,22 @@
 
         <!-- Address -->
         <div class="form-group mb-4">
-            <label class="form-control-label font-weight-bold">@lang('Address')</label>
-            <div class="input-group">
-                <input type="text" class="form-control rounded-pill border-primary" name="address" id="address_commercial" placeholder="@lang('Enter Address')" value="{{ old('address', $property->address) }}" required>
-                <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
-            </div>
-            <input type="hidden" name="latitude" id="latitude_commercial" value="{{ old('latitude', $property->latitude) }}">
-            <input type="hidden" name="longitude" id="longitude_commercial" value="{{ old('longitude', $property->longitude) }}">
-            <div id="map_commercial" style="width: 100%; height: 400px;"></div>
-            <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
-            <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" value="{{ old('nearest_landmark', $property->nearest_landmark) }}" placeholder="@lang('Enter Nearest Landmark')">
-        </div>
+    <label class="form-control-label font-weight-bold">@lang('Address')</label>
+    <div class="input-group">
+        <input type="text" class="form-control rounded-pill border-primary" 
+               name="address" id="address_{{ $property->id }}"
+               placeholder="@lang('Enter Address')" 
+               value="{{ old('address', $property->address) }}" required>
+        <button type="button" onclick="geocodeAddress({{ $property->id }})" class="btn btn-secondary">
+            Geocode Address
+        </button>
+    </div>
+    <input type="hidden" id="latitude_commercial_{{ $property->id }}" name="latitude_commercial" value="{{ $property->latitude }}">
+    <input type="hidden" id="longitude_commercial_{{ $property->id }}" name="longitude_commercial" value="{{ $property->longitude }}">
+    <div id="map_commercial" style="width: 100%; height: 400px;"></div>
+    <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" value="{{ old('nearest_landmark', $property->nearest_landmark) }}" placeholder="@lang('Enter Nearest Landmark')">
+</div>
 
         <!-- Corner Property -->
         <div class="form-group mb-4">
@@ -459,18 +466,24 @@
         </div>
 
               <!-- Address -->
-        <div class="form-group mb-4">
-            <label class="form-control-label font-weight-bold">@lang('Address')</label>
-            <div class="input-group">
-                <input type="text" class="form-control rounded-pill border-primary" name="address" id="address_commercial" placeholder="@lang('Enter Address')" value="{{ old('address', $property->address) }}" required>
-                <button type="button" class="btn btn-primary ml-2" onclick="geocodeAddress()">Get Location</button>
-            </div>
-            <input type="hidden" name="latitude" id="latitude_commercial" value="{{ old('latitude', $property->latitude) }}">
-            <input type="hidden" name="longitude" id="longitude_commercial" value="{{ old('longitude', $property->longitude) }}">
-            <div id="map_commercial" style="width: 100%; height: 400px;"></div>
-            <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
-            <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" value="{{ old('nearest_landmark', $property->nearest_landmark) }}" placeholder="@lang('Enter Nearest Landmark')">
-        </div>
+              <div class="form-group mb-4">
+    <label class="form-control-label font-weight-bold">@lang('Address')</label>
+    <div class="input-group">
+        <input type="text" class="form-control rounded-pill border-primary" 
+               name="address" id="address_{{ $property->id }}"
+               placeholder="@lang('Enter Address')" 
+               value="{{ old('address', $property->address) }}" required>
+        <button type="button" onclick="geocodeAddress({{ $property->id }})" class="btn btn-secondary">
+            Geocode Address
+        </button>
+    </div>
+    <input type="hidden" id="latitude_residential_{{ $property->id }}" name="latitude_residential" value="{{ $property->latitude }}">
+    <input type="hidden" id="longitude_residential_{{ $property->id }}" name="longitude_residential" value="{{ $property->longitude }}">
+    <div id="map_residential" style="width: 100%; height: 400px;"></div>
+    <label class="form-control-label font-weight-bold mt-3">@lang('Nearest Landmark')</label>
+    <input type="text" class="form-control rounded-pill border-primary mt-2" name="nearest_landmark" value="{{ old('nearest_landmark', $property->nearest_landmark) }}" placeholder="@lang('Enter Nearest Landmark')">
+</div>
+
 
                 <!-- Corner Property -->
         <div class="form-group mb-4">
@@ -639,6 +652,7 @@
         selectedForm.querySelectorAll('input, select').forEach(function (input) {
             input.disabled = false;
         });
+       
     }
 }
 document.querySelectorAll('.modal').forEach(function (modal) {
@@ -653,55 +667,66 @@ document.querySelectorAll('.modal').forEach(function (modal) {
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8"></script>
 <script>
-    var geocoder;
+var geocoder = new google.maps.Geocoder(); // Google Maps Geocoder object کو انیشیلائز کیا
 
-    function geocodeAddress() {
-        var propertyType = document.getElementById("property_type").value;
-        var addressField, latitudeField, longitudeField, mapField;
-
-        if (propertyType === "plot") {
-            addressField = document.getElementById('address');
-            latitudeField = document.getElementById('latitude_plot');
-            longitudeField = document.getElementById('longitude_plot');
-            mapField = document.getElementById('map_plot');
-        } else if (propertyType === "commercial") {
-            addressField = document.getElementById('address_commercial');
-            latitudeField = document.getElementById('latitude_commercial');
-            longitudeField = document.getElementById('longitude_commercial');
-            mapField = document.getElementById('map_commercial');
-        } else if (propertyType === "residential") {
-            addressField = document.getElementById('address_residential');
-            latitudeField = document.getElementById('latitude_residential');
-            longitudeField = document.getElementById('longitude_residential');
-            mapField = document.getElementById('map_residential');
-        }
-
-        var address = addressField.value;
-        geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({ 'address': address }, function (results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-                var latitude = results[0].geometry.location.lat();
-                var longitude = results[0].geometry.location.lng();
-
-                latitudeField.value = latitude;
-                longitudeField.value = longitude;
-
-                var map = new google.maps.Map(mapField, {
-                    zoom: 15,
-                    center: results[0].geometry.location,
-                });
-
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: results[0].geometry.location,
-                });
-            } else {
-                alert("Geocode was not successful for the following reason: " + status);
-            }
-        });
+function geocodeAddress(propertyId) {
+    // پراپرٹی ٹائپ کو ڈائنامکلی حاصل کیا
+    var propertyTypeElement = document.getElementById("property_type_" + propertyId);
+    if (!propertyTypeElement) {
+        console.error("Property type dropdown not found for property ID:", propertyId);
+        alert("Error: Property type dropdown not found.");
+        return;
     }
+
+    var propertyType = propertyTypeElement.value; // منتخب پراپرٹی ٹائپ حاصل کریں
+    console.log("Selected Property Type:", propertyType);
+
+    // ایڈریس فیلڈ حاصل کریں
+    var addressField = document.getElementById('address_' + propertyId);
+    if (!addressField) {
+        console.error("Address field not found for property ID:", propertyId);
+        alert("Error: Address field not found.");
+        return;
+    }
+
+    var address = addressField.value.trim(); // ایڈریس کی ویلیو حاصل کریں
+    if (!address) {
+        alert("Please enter a valid address.");
+        return;
+    }
+
+    // ایڈریس کی جیوکوڈنگ کریں
+    geocoder.geocode({ 'address': address }, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            var latitude = results[0].geometry.location.lat(); // لیٹیٹیوڈ حاصل کریں
+            var longitude = results[0].geometry.location.lng(); // لانگیٹیوڈ حاصل کریں
+
+            console.log("Updated Latitude:", latitude);
+            console.log("Updated Longitude:", longitude);
+
+            // پراپرٹی ٹائپ کے حساب سے لیٹیٹیوڈ اور لانگیٹیوڈ اپڈیٹ کریں
+            if (propertyType === "plot") {
+                document.getElementById('latitude').value = latitude;
+                document.getElementById('longitude').value = longitude;
+            } else if (propertyType === "commercial") {
+                document.getElementById('latitude_commercial_' + propertyId).value = latitude;
+                document.getElementById('longitude_commercial_' + propertyId).value = longitude;
+            } else if (propertyType === "residential") {
+                document.getElementById('latitude_residential_' + propertyId).value = latitude;
+                document.getElementById('longitude_residential_' + propertyId).value = longitude;
+            }
+
+            console.log("Fields Updated Successfully for Property ID:", propertyId);
+        } else {
+            alert("Geocode failed due to: " + status); // اگر جیوکوڈنگ ناکام ہو جائے
+        }
+    });
+}
+
+
 </script>
+
+
 
 
 @endsection

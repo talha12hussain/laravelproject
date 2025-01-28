@@ -16,30 +16,7 @@ class PropertyNewFormController extends Controller
      {
          // Search for property
          $property = PropertyNewForm::findOrFail($id);
-     
-// Validation (if you want)
-              $request->validate([
-            
-            'type' => 'required|string',
-        'property_type' => 'required|string',
-        'city' => 'required|string',
-        'property_types' => 'nullable|string',
-        'address' => 'required|string',
-        'nearest_landmark' => 'nullable|string',
-        'floor' => 'nullable|string',
-        'bedrooms' => 'nullable|integer',
-        'bathrooms' => 'nullable|integer',
-        'property_size' => 'required|string',
-        'asking_price' => 'required|numeric',
-        'corner_property' => 'nullable|string|in:yes,no',
-        'images' => 'nullable|array',
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        'contact_no' => 'required|string',
-        'agent_name' => 'required|string',
-        'description' => 'nullable|string',
-        'latitude' => 'nullable|numeric',
-        'longitude' => 'nullable|numeric',
-         ]);
+   
      
          $property->type = $request->input('type');
          $property->property_type = $request->input('property_type');
@@ -56,8 +33,9 @@ class PropertyNewFormController extends Controller
          $property->contact_no = $request->input('contact_no');
          $property->agent_name = $request->input('agent_name');
          $property->description = $request->input('description');
-         $property->latitude = $request->input('latitude');
-         $property->longitude = $request->input('longitude');; 
+          // Update latitude and longitude only if present
+    $property->latitude = $request->input('latitude');
+    $property->longitude = $request->input('longitude');
 
      
          if ($request->hasFile('images')) {
