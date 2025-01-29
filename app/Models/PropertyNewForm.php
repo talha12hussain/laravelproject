@@ -41,5 +41,10 @@ class PropertyNewForm extends Model
 {
     return $this->hasMany(PropertyImages::class, 'property_id', 'id');
 }
+// PropertyNewForm.php
+public function agent()
+{
+    return $this->belongsTo(Agent::class);
+}
 
 }

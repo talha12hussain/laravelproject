@@ -136,13 +136,13 @@
                     <span class="notify-badge-3 badge bg-white position-absolute border border-dark text-dark px-4">
                         @switch($home->property_type)
                             @case('plot')
-                                @lang('messages.plot')
+                                @lang('Plot')
                                 @break
                             @case('commercial')
-                                @lang('messages.commercial')
+                                @lang('Commercial')
                                 @break
                             @case('residential')
-                                @lang('messages.residential')
+                                @lang('Residential')
                                 @break
                             @default
                                 @lang('messages.no_type')
@@ -151,18 +151,18 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text text-left mx-2 mt-5 text-dark link-underline-opacity-0">
-                        <b>@lang('messages.location'):</b> {{ $home->address }}
+                        <b>@lang('Address'):</b> {{ $home->address }}
                     </p>
                 </div>
                 <div class="card-body border-top d-flex justify-content-between">
                     <a href="#" class="card-link text-dark" style="font-size: 15px; text-decoration: none;">
-                        <b>@lang('messages.area'):</b> {{ $home->property_size }} Sqft
+                        <b>@lang('Property Size'):</b> {{ $home->property_size }} 
                     </a>
                     <a href="#" class="card-link text-dark" style="font-size: 15px; text-decoration: none;">
-                        <b>@lang('messages.corner'):</b> {{ $home->corner_property }}
+                        <b>@lang('Corner'):</b> {{ $home->corner_property }}
                     </a>
                     <a href="#" class="card-link text-dark" style="font-size: 15px; text-decoration: none;">
-                        <b>@lang('messages.price'):</b> {{ number_format($home->asking_price) }} @lang('messages.currency')
+                        <b>@lang('Asking Price'):</b> {{ number_format($home->asking_price) }} 
                     </a>
                 </div>
             </div>

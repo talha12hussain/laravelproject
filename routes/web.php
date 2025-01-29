@@ -147,7 +147,7 @@ Route::get('/', [HomeController::class, 'showHome'])->name('home');
 Route::get('properties', [HomeController::class,'properties'])->name('front.properties');
 Route::get('properties/filter', [HomeController::class,'filterByCity'])->name('front.properties.filter');
 Route::get('single-property/{id}', [HomeController::class,'singleProperty'] )->name('front.single-property');
-Route::get('single-property/{id}/floor/{floorId}', [HomeController::class,'singlefloor'] )->name('front.single-floor');
+Route::get('single-property/{id}/agent/{agent_id}', [HomeController::class,'singlefloor'] )->name('front.single-floor');
 Route::post('contact-us-save', [HomeController::class, 'contactUsSave'])->name('front.contactUsSave');
 
 

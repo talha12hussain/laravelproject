@@ -25,15 +25,12 @@ class HomeController extends Controller
 
     public function showHome(Request $request)
 {
-    // ابتدائی کوئری - PropertyNewForm ماڈل کے ساتھ images کی معلومات
     $query = PropertyNewForm::with('images');
 
-    // اگر 'id' دیا گیا ہے، تو صرف اسی پراپرٹی کو لوڈ کریں
     if ($request->has('id')) {
         $query->where('id', $request->input('id'));
     }
 
-    // اگر 'agent_id' بھی دیا گیا ہے، تو اس کو فلٹر کریں تاکہ وہ پراپرٹی نہ آئے جہاں دونوں 'id' اور 'agent_id' موجود ہوں
     if ($request->has('agent_id') && $request->has('id')) {
         $query->whereNot(function ($q) use ($request) {
             $q->where('id', $request->input('id'))
@@ -88,31 +85,33 @@ class HomeController extends Controller
         return view('front.single-property', compact('single_property'));
     }
     
-
-    public function singlefloor(string $id, string $floorId ){
-
-        // dd($id, $floorId);
-
-        $property = Property::with(['floors', 'images'])->find($id);
-
-        if (!$property) {
+    public function singlefloor(string $id, string $agent_id)
+    {
+        // پراپرٹی اور ایجنٹ حاصل کریں
+        $single_property = PropertyNewForm::with('agent')->find($id);
+    
+        // اگر پراپرٹی نہ ملے تو ری ڈائریکٹ کریں
+        if (!$single_property) {
             return redirect()->back()->with('error', 'Property not found.');
         }
-
-        $floor = $property->floors->where('id',$floorId)->first();
-
-        if (!$floor) {
-            return redirect()->back()->with('error', 'Floor not found.');
+    
+        // ایجنٹ حاصل کریں جو پراپرٹی کی ایجنٹ آئی ڈی کے ساتھ میچ کرے
+        $agent = $single_property->agent;
+    
+        // اگر ایجنٹ نہ ملے تو ری ڈائریکٹ کریں
+        if (!$agent || $agent->id != $agent_id) {
+            return redirect()->back()->with('error', 'Agent not found.');
         }
-
-        $address = $property->address;
-
+    
+        // جیو لوکیشن کے لیے ایڈریس استعمال کریں
+        $address = $single_property->address;
         $coordinates = $this->getCoordinates($address);
+        // This will display the coordinates and stop execution
 
-
-        return view('front.single-floor', compact('floor', 'property', 'coordinates'));
+        // ویو میں ڈیٹا بھیجیں
+        return view('front.single-floor', compact('single_property', 'agent', 'coordinates'));
     }
-
+    
 
     public function getCoordinates($address){
         $apiKey = 'AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8';
@@ -144,18 +143,15 @@ class HomeController extends Controller
         $query->where('id', $request->input('id'));
     }
 
-    // اگر 'agent_id' بھی دیا گیا ہے، تو ایسی پراپرٹی exclude کریں جہاں 'id' اور 'agent_id' دونوں موجود ہوں
     if ($request->has('agent_id') && $request->has('id')) {
         $query->whereNot(function ($q) use ($request) {
             $q->where('id', $request->input('id'))
               ->where('agent_id', $request->input('agent_id'));
         });
     } elseif ($request->has('agent_id')) {
-        // اگر صرف 'agent_id' دیا گیا ہے، تو اسے exclude کریں
         $query->where('agent_id', '!=', $request->input('agent_id'));
     }
 
-    // پراپرٹی کی تلاش (Search by name or address)
     if ($request->filled('search')) {
         $query->where(function ($q) use ($request) {
             $q->where('property_type', 'like', '%' . $request->search . '%')
@@ -165,26 +161,21 @@ class HomeController extends Controller
         });
     }
 
-    // Rent یا Sell کا فلٹر
     if ($request->has('type') && in_array($request->input('type'), ['rent', 'sell'])) {
         $query->where('type', $request->input('type'));
     }
 
-    // پراپرٹی ٹائپ کا فلٹر (Plot, Commercial, Residential, etc.)
     if ($request->has('property_type') && in_array($request->input('property_type'), ['plot', 'commercial', 'residential'])) {
         $query->where('property_type', $request->input('property_type'));
     }
 
-    // per_page کی ویلیو حاصل کریں اور validate کریں
     $perPage = $request->input('per_page', 10);
     if (!is_numeric($perPage) || $perPage <= 0) {
         $perPage = 10;
     }
 
-    // نتائج کو paginate کریں
     $all_home = $query->paginate($perPage);
 
-    // ویو کو رزلٹ بھیجیں
     return view('front.properties', compact('all_home'));
 }
 

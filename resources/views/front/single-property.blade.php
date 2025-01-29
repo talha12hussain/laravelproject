@@ -31,7 +31,7 @@
         <div class="property container-fluid mt-5"
             style="display: flex; justify-content: center; align-items: center; text-align: center; color: #ffffff; font-family: Arial, sans-serif;">
             <div class="row txt-center d-flex justify-content-center">
-                <div class="text-center flex-center mx-3 justify-center align-items-center">
+            <div class="text-center flex-center mx-3 justify-center align-items-center">
                     <div class="card my-3 mx-2" style="width: 24rem;">
                     @if (is_array($single_property->images) && count($single_property->images) > 0)
                         <img class="card-img-top position-relative" src="{{ asset('storage/' . $single_property->images[0]) }}" alt="Card image cap">
@@ -63,10 +63,12 @@
                                     @endif
                                 </h5>
                             </div>
+                            <a href="{{ url('/single-property/' . $single_property->id . '/agent/' . $single_property->agent_id) }}" class="btn btn-primary">View Agent</a>
+
                         </div>
                         <div style="margin-right: 40px" class="card-body border-top d-flex justify-content-between">
     <a href="#" class="card-link" style="font-size: 15px; display: inline-flex; align-items: center; line-height: 1;">
-        <span style="vertical-align: middle;" class="text-dark"><b>@lang('Price') {{ $single_property->asking_price }}</b></span>
+        <span style="vertical-align: middle;" class="text-dark"><b>@lang('Asking Price') {{ $single_property->asking_price }}</b></span>
     </a>
     <a href="#" class="card-link" style="font-size: 15px; display: inline-flex; align-items: center; line-height: 1;">
         <span style="vertical-align: middle;" class="text-dark"><b>@lang('Property_size') {{ $single_property->property_size }}</b></span>

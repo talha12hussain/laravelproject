@@ -7,8 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ asset('assets/front/logo-primary.png') }}" type="image/x-icon">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-    <title>Document</title>
+    <title>Property Details</title>
 </head>
 
 <style>
@@ -22,7 +21,6 @@
     $main-blue: #0076bd !default;
     $main-blue-rgb-015: rgba(0, 118, 189, 0.1) !default;
 
-    /* This pen */
     body {
         font-family: "Baloo 2", cursive;
         font-size: 16px;
@@ -34,12 +32,6 @@
     .dark {
         background: #110f16;
     }
-
-        #map {
-            height: 400px;
-            width: 70%;
-        }
-
 
     .light {
         background: #f3f5f7;
@@ -58,11 +50,9 @@
         font-size: 2.5rem;
     }
 
-    /* Cards */
     .postcard {
         flex-wrap: wrap;
         display: flex;
-
         box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
         border-radius: 10px;
         margin: 0 0 2rem 0;
@@ -242,7 +232,6 @@
             content: "";
             position: absolute;
             display: block;
-
             top: -20%;
             height: 130%;
             width: 55px;
@@ -261,433 +250,189 @@
         }
     }
 
-    /* COLORS */
-    .postcard .postcard__tagbox .green.play:hover {
-        background: $main-green;
-        color: black;
-    }
-
-    .green .postcard__title:hover {
-        color: $main-green;
-    }
-
-    .green .postcard__bar {
-        background-color: $main-green;
-    }
-
-    .green::before {
-        background-image: linear-gradient(-30deg,
-                $main-green-rgb-015,
-                transparent 50%);
-    }
-
-    .green:nth-child(2n)::before {
-        background-image: linear-gradient(30deg, $main-green-rgb-015, transparent 50%);
-    }
-
-    .postcard .postcard__tagbox .blue.play:hover {
-        background: $main-blue;
-    }
-
-    .blue .postcard__title:hover {
-        color: $main-blue;
-    }
-
-    .blue .postcard__bar {
-        background-color: $main-blue;
-    }
-
-    .blue::before {
-        background-image: linear-gradient(-30deg, $main-blue-rgb-015, transparent 50%);
-    }
-
-    .blue:nth-child(2n)::before {
-        background-image: linear-gradient(30deg, $main-blue-rgb-015, transparent 50%);
-    }
-
-    .postcard .postcard__tagbox .red.play:hover {
-        background: $main-red;
-    }
-
-    .red .postcard__title:hover {
-        color: $main-red;
-    }
-
-    .red .postcard__bar {
-        background-color: $main-red;
-    }
-
-    .red::before {
-        background-image: linear-gradient(-30deg, $main-red-rgb-015, transparent 50%);
-    }
-
-    .red:nth-child(2n)::before {
-        background-image: linear-gradient(30deg, $main-red-rgb-015, transparent 50%);
-    }
-
-    .postcard .postcard__tagbox .yellow.play:hover {
-        background: $main-yellow;
-        color: black;
-    }
-
-    .yellow .postcard__title:hover {
-        color: $main-yellow;
-    }
-
-    .yellow .postcard__bar {
-        background-color: $main-yellow;
-    }
-
-    .yellow::before {
-        background-image: linear-gradient(-30deg,
-                $main-yellow-rgb-015,
-                transparent 50%);
-    }
-
-    .yellow:nth-child(2n)::before {
-        background-image: linear-gradient(30deg,
-                $main-yellow-rgb-015,
-                transparent 50%);
-    }
-
-    @media screen and (min-width: 769px) {
-        .green::before {
-            background-image: linear-gradient(-80deg,
-                    $main-green-rgb-015,
-                    transparent 50%);
-        }
-
-        .green:nth-child(2n)::before {
-            background-image: linear-gradient(80deg,
-                    $main-green-rgb-015,
-                    transparent 50%);
-        }
-
-        .blue::before {
-            background-image: linear-gradient(-80deg,
-                    $main-blue-rgb-015,
-                    transparent 50%);
-        }
-
-        .blue:nth-child(2n)::before {
-            background-image: linear-gradient(80deg, $main-blue-rgb-015, transparent 50%);
-        }
-
-        .red::before {
-            background-image: linear-gradient(-80deg, $main-red-rgb-015, transparent 50%);
-        }
-
-        .red:nth-child(2n)::before {
-            background-image: linear-gradient(80deg, $main-red-rgb-015, transparent 50%);
-        }
-
-        .yellow::before {
-            background-image: linear-gradient(-80deg,
-                    $main-yellow-rgb-015,
-                    transparent 50%);
-        }
-
-        .yellow:nth-child(2n)::before {
-            background-image: linear-gradient(80deg,
-                    $main-yellow-rgb-015,
-                    transparent 50%);
-        }
-    }
-
     .corousel-image {
         height: 450px;
         width: 100% !important;
-        /* Adjust as needed */
         object-fit: contain;
-
         margin-top: 20px;
         border: 1px solid rgb(216, 216, 216);
         border-radius: 10px !important;
-        /* Ensures the image covers the area */
     }
 </style>
 
 <body>
-
     <div class="">
         @include('layouts.navbar')
     </div>
 
-
-
     @if (session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
         </div>
     @endif
 
-    <h1 class="mt-5"></h1>
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <div class="container-fluid  mx-3" style="margin-top:70px !important;">
-        {{-- <h2>Property: {{ $property->name }}</h2>
-    <h3>Floor No: {{ $floor->floorNo }}</h3> --}}
-
+    <div class="container-fluid mx-3" style="margin-top:70px !important;">
         <p class="text-dark" style="font-size:18px !important;">
-            <i>property/{{ $property->name }}/floor/{{ $floor->floorNo }}</i></p>
-
+            <i>property/{{ $single_property->name }}</i>
+        </p>
     </div>
 
-    {{--  floor header image  --}}
-
-
-    {{-- <div class="bg-image flex-column"
-        style="background-image: url({{ asset('assets/front/14.jpg') }});
-            background-size:cover;
-            
-            background-position:center;
-            height:30vh;
-            width:100%;
-            background-repeat:no-repeat;
-            display: flex;            
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #ffffff; 
-            font-family: Arial, sans-serif; ">
-
-        <div>
-            <h1 class="text-dark mt-3"> <b>Falaknaz Appartments</b></h1>
-
-        </div>
-
-
-
-    </div> --}}
     <div class="container-fluid d-flex justify-content-between">
-
         <div class="col-md-6 mx-5">
-            {{-- <img  class="card-img-top position-relative mb-4"  src="{{ asset('storage/'.$property->images->first()->file_path ) }}"
-            alt="Card image cap"> --}}
-
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
-                    @if ($property->images->isNotEmpty())
-                    @foreach ($property->images as $key => $image)
-                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img class="corousel-image d-block w-100" src="{{ asset('storage/' . $image->file_path) }}"
-                            alt="First slide">
-                    </div>
-                @endforeach
-                   @else
-                     <img class="card-img-top position-relative" src="{{ asset('assets/front/15.jpg')}}" alt="Card image cap">
+                @if (is_array($single_property->images) && count($single_property->images) > 0)
+                        <img class="card-img-top position-relative" src="{{ asset('storage/' . $single_property->images[0]) }}" alt="Card image cap">
+                    @else
+                        <img class="card-img-top position-relative" src="{{ asset('assets/front/15.jpg') }}" alt="Card image cap">
                     @endif
-                    
-
-
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon color-dark" aria-hidden="true"></span>
-                    <span class="sr-only color-dark">Previous</span>
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next color-dark" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon  color-dark" aria-hidden="true"></span>
-                    <span class="sr-only color-dark">Next</span>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
                 </a>
             </div>
         </div>
-        <div class="col-md-6 mt-5" class="height:400px !important;">
-            <h1 class="text-dark mt-3"> <b>{{ $property->name }} - {{ $floor->floorNo }}</b></h1>
-            <p class="text-dark mt-5" style="font-size:28px !important;"><b>@lang('messages.address') : </b>{{ $property->address }}</p>
-            <p class="text-dark mt-5 align-items-center" style="font-size:26px !important;"><b>@lang('messages.type')</b>
-                @if ($floor->type == 'rent')
-                    
-                    <span
-                        class="notify-badge-1 badge bg-warning mt-2 mx-3 position-absolute text-white px-4">@lang('messages.rent')</span>
+        <div class="col-md-6 mt-5">
+            <h1 class="text-dark mt-3"><b>{{ $single_property->Property_type }}</b></h1>
+            <p class="text-dark mt-5" style="font-size:28px !important;"><b>@lang('messages.address') : </b>{{ $single_property->address }}</p>
+            <p class="text-dark mt-5 align-items-center" style="font-size:26px !important;">
+                <b>@lang('messages.type')</b>
+                @if ($single_property->type == 'rent')
+                    <span class="notify-badge-1 badge bg-warning mt-2 mx-3 position-absolute text-white px-4">@lang('messages.rent')</span>
+                @elseif ($single_property->type == 'sell')
+                    <span class="notify-badge-1 badge bg-success mt-2 mx-3 position-absolute text-white px-4">@lang('messages.sell')</span>
                 @endif
-
-                @if ($floor->type == 'sell')
-                    
-                    <span
-                        class="notify-badge-1 badge bg-success mt-2 mx-3 position-absolute text-white px-4">@lang('messages.sell')</span>
-                @endif
-                </span>
             </p>
-
-            {{-- @php
-                $totalSize = (float) $property->totalSize;
-                $demandSqft = (float) $property->demandSqft;
-
-                $price = $property->totalSize*$property->demandSqft;
-                
-            @endphp --}}
-
-            <p class="text-dark mt-5" style="font-size:32px !important;"><b class="">Demand / {{ $property->size_type == 'sq_fit' ? "square Feet" : $property->size_type }} :</b><span
-                    class="mx-3">Rs {{ $property->demandSqft }}</span></p>
+            <p class="text-dark mt-5" style="font-size:32px !important;">
+                <b>Property Size / {{ $single_property->property_size}} </b>
+            </p>
         </div>
-
     </div>
-    <hr class="" style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
+
+    <hr style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
 
     <div class="container-fluid d-flex justify-content-center">
-
-
         <div class="col-md-6 mx-5 my-3">
             <div class="my-5">
-                <h1 class="text-center" style=""><b>@lang('back.property_details')</b></h1>
+                <h1 class="text-center"><b>@lang('back.property_details')</b></h1>
             </div>
-
-
-            <table style="border:1px solid black; border-radius:15px !important;" class="table border border-dark ">
+            <table style="border:1px solid black; border-radius:15px !important;" class="table border border-dark">
                 <thead>
+                 
+                <tr>
+                        <th scope="col">@lang('Property_Type')</th>
+                        <td scope="col">{{ $single_property->property_type }} </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">@lang('Property_Types')</th>
+                        <td scope="col">{{ $single_property->property_types }} </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">@lang('Floor')</th>
+                        <td scope="col">{{ $single_property->floor }} </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">@lang('Bedrooms')</th>
+                        <td scope="col">{{ $single_property->bedrooms }} </td>
+                    </tr>
+                    <tr>
+                        <th scope="col">@lang('City')</th>
+                        <td scope="col">{{ $single_property->city }} </td>
+                    </tr>
+                    <tr>
+
+                        <th scope="col">@lang('Bathrooms')</th>
+                        <td scope="col">{{ $single_property->bathrooms }} </td>
+                    </tr>
                    
                     <tr>
-                        <th scope="col">@lang('messages.plot_size') </th>
-                        <td scope="col">{{ $property->plotSize }}  {{ $property->size_type == 'sq_fit' ? "square Feet" : $property->size_type }} </td>
+                        <th scope="col">@lang('Nearest_landmark')</th>
+                        <td scope="col">{{ $single_property->nearest_landmark }}</td>
                     </tr>
                     <tr>
-                        <th scope="col">@lang('messages.dimension_front')</th>
-                        <td scope="col">{{ $property->dimFront }}  {{ $property->size_type == 'sq_fit' ? "square Feet" : $property->size_type }} </td>
+                        <th scope="col">@lang('Corner Property')</th>
+                        <td scope="col">{{ $single_property->corner_property }}</td>
                     </tr>
                     <tr>
-                        <th scope="col">@lang('messages.dimension_depth')</th>
-                        <td scope="col">{{ $property->dimWidth }}  {{ $property->size_type == 'sq_fit' ? "square Feet" : $property->size_type }} </td>
+                        <th scope="col">@lang('Contact Number')</th>
+                        <td scope="col">{{ $single_property->contact_no }}</td>
                     </tr>
-                    <tr>
-                        <th scope="col">@lang('messages.total_size')</th>
-                        <td scope="col">{{ $property->totalSize }}  {{ $property->size_type == 'sq_fit' ? "square Feet" : $property->size_type }} </td>
-                    </tr>
-                    <tr>
-                        <th scope="col">@lang('messages.total_size')</th>
-                        <td scope="col">{{ $property->leasedArea }}  {{ $property->size_type == 'sq_fit' ? "square Feet" : $property->size_type }} </td>
-                    </tr>
-                    <tr>
-                        <th scope="col">@lang('messages.nearest_landmark')</th>
-                        <td scope="col">{{ $property->nearestLand }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="col">@lang('messages.corner')</th>
-                        <td scope="col">{{ $property->corner }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="col">@lang('messages.parking_capacity')</th>
-                        <td scope="col">{{ $property->parkingcap }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="col">@lang('messages.demand_sqyard') {{ $property->size_type }} </th>
-                        <td scope="col">{{ $property->demandSqft }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="col">@lang('messages.absolute_value')</th>
-                        <td scope="col">{{ $property->absValue }}</td>
-                    </tr>
-
-
-                    </tbody>
-
+                   
                 </thead>
-
             </table>
         </div>
-
-
     </div>
 
-    <hr class="" style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
+    <hr style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
 
     <h1 class="text-center py-4 m-5">PROPERTY LOCATION</h1>
 
     <div class="d-flex justify-content-center">
-        <div  id="map">
-                
-        </div>
-    </div>
-            
+    <div id="map" style="width: 100%; height: 400px;"></div>  <!-- Map size set -->
+</div>
 
-    <hr class="" style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
-
+    <hr style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
 
     <div class="container-fluid d-flex justify-content-center">
         <div class="col-md-10">
             <section class="white">
                 <div class="container py-4">
                     <h1 class="h1 text-center text-dark" id="pageHeaderTitle">@lang('messages.agent_details')</h1>
-
                     <article class="postcard light blue">
                         <a class="postcard__img_link" href="#">
-                            <img class="postcard__img" src={{ asset('assets/front/provider-user-2.webp') }}
-                                alt="Image Title" />
+                            <img class="postcard__img" src="{{ asset('assets/front/provider-user-2.webp') }}" alt="Agent Image" />
                         </a>
                         <div class="postcard__text">
-                            <h1 class="postcard__title blue text-dark"><a href="#">{{ $property->agentname }}</a>
-                            </h1>
+                            <h1 class="postcard__title blue text-dark"><a href="#">{{ $single_property->agent_name }}</a></h1>
                             <div class="postcard__subtitle small">
-                                <time datetime="2020-05-25 12:00:00 text-dark">
-                                    <i class="fas fa-calendar-alt text-dark mr-2"></i><span class="text-dark">Last
-                                        Active : Today</span>
+                                <time datetime="2020-05-25 12:00:00">
+                                    <i class="fas fa-calendar-alt text-dark mr-2"></i><span class="text-dark">Last Active : Today</span>
                                 </time>
                             </div>
                             <div class="postcard__bar"></div>
-                            <div class="postcard__preview-txt text-dark">@lang('messages.agent_description')
-                            </div>
+                            <div class="postcard__preview-txt text-dark">{{ $single_property->description }}</div>
                             <ul class="postcard__tagbox">
-                                <li class="tag__item"><i class="fas fa-phone mr-2"></i>{{ $property->agentcontact }}
-                                </li>
-                                <li class="tag__item"><i class="fas fa-star mr-2"></i>@lang('messages.top_rated_agent')</li>
-                                <li class="tag__item play blue">
-                                    <a href="#"><i class="fas fa-handshake mr-2"></i>@lang('messages.total_deals') : 10+</a>
-                                </li>
+                                <li class="tag__item"><i class="fas fa-phone mr-2"></i>{{ $single_property->contact_no }}</li>
+                                
                             </ul>
                         </div>
                     </article>
-
                 </div>
             </section>
-            <hr class="" style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
-
-
-
+            <hr style="border:0.1px solid rgb(222, 221, 221); margin-top: 40px !important;">
         </div>
-
     </div>
-
 
     <div class="container-fluid">
         @include('layouts.footer')
     </div>
 
 
-
-
-
-
-
-
-
-
-
-    {{-- 
-<h2>Property: {{ $property->name }}</h2>
-<h3>Floor No: {{ $floor->floorNo }}</h3 --}}
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBorxMHcrLrPMvgzTDgEgLz9HA5UDuNY8&callback=initMap"></script>
 <script>
     function initMap() {
-        // Coordinates passed from the controller
+        // Latitude aur Longitude ko dynamically pass kiya gaya hai
         var location = { lat: {{ $coordinates['latitude'] }}, lng: {{ $coordinates['longitude'] }} };
-
-        // Create a map centered at the location
+        
+        // Google Maps ka map object create karna
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 15,
-            center: location
+            zoom: 15, 
+            center: location  // Map ko center karna hai user ke location par
         });
 
-        // Place a marker at the location
+        // Map par marker place karna
         var marker = new google.maps.Marker({
-            position: location,
+            position: location, 
             map: map
         });
     }
 
-    // Initialize the map on window load
+    // Map ko load karte waqt function call karenge
     window.onload = function() {
         initMap();
     };
