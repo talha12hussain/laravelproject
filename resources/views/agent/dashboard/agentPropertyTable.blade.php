@@ -37,6 +37,7 @@
                 <thead class="table-dark text-center">
                     <tr>
                         <th class="border-end">@lang('Property_id')</th>
+                        <th class="border-end">@lang('type')</th>
                         <th class="border-end">@lang('Property_type')</th>
                         <th class="border-end">@lang('City')</th>
                         <th class="border-end">@lang('Property_types')</th>
@@ -56,6 +57,7 @@
                     @foreach ($properties as $property)
                         <tr>
                             <td class="text-center border-end">{{ $property->id }}</td>
+                            <td class="border-end">{{ $property->type }}</td>
                             <td class="border-end">{{ $property->property_type }}</td>
                             <td class="border-end">{{ $property->city }}</td>
                             <td class="border-end">{{ $property->property_types }}</td>

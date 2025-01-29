@@ -8,6 +8,8 @@ use App\Models\Property;
 use Mail;
 use App\Models\PropertyImages;
 use Illuminate\Http\Request;
+use App\Models\PropertyNewForm;
+
 
 class HomeController extends Controller
 {
@@ -21,13 +23,31 @@ class HomeController extends Controller
         return view("front.home");
     }
 
-    public function showHome(Request $request){
+    public function showHome(Request $request)
+{
+    // ابتدائی کوئری - PropertyNewForm ماڈل کے ساتھ images کی معلومات
+    $query = PropertyNewForm::with('images');
 
-
-        $all_home = Property::all();
-        return view('front.home', compact('all_home'));
-
+    // اگر 'id' دیا گیا ہے، تو صرف اسی پراپرٹی کو لوڈ کریں
+    if ($request->has('id')) {
+        $query->where('id', $request->input('id'));
     }
+
+    // اگر 'agent_id' بھی دیا گیا ہے، تو اس کو فلٹر کریں تاکہ وہ پراپرٹی نہ آئے جہاں دونوں 'id' اور 'agent_id' موجود ہوں
+    if ($request->has('agent_id') && $request->has('id')) {
+        $query->whereNot(function ($q) use ($request) {
+            $q->where('id', $request->input('id'))
+              ->where('agent_id', $request->input('agent_id'));
+        });
+    }
+
+    // پراپرٹیز حاصل کریں
+    $all_home = $query->get();
+
+    // ویو میں ڈیٹا پاس کریں
+    return view('front.home', compact('all_home'));
+}
+
 
     // public function filterByCity(Request $request){
 
@@ -60,25 +80,14 @@ class HomeController extends Controller
     {
         return view('front.contact');
     }
-
     public function singleProperty(string $id, Request $request)
-{
-    $single_property = Property::with(['images'])->findOrFail($id);
-
-    // Check if a filter is applied
-    $floor_type = $request->query('type');
-
-    // Filter floors by type if selected, otherwise retrieve all floors
-    if ($floor_type) {
-        $floors = $single_property->floors->where('type', $floor_type);
-    } else {
-        $floors = $single_property->floors;
+    {
+        // `PropertyNewForm` کے ساتھ تصاویر لوڈ کریں
+        $single_property = PropertyNewForm::with('images')->findOrFail($id);
+    
+        return view('front.single-property', compact('single_property'));
     }
-
-    $floor_count = $floors->count();
-
-    return view('front.single-property', compact('floor_count', 'single_property', 'floors'));
-}
+    
 
     public function singlefloor(string $id, string $floorId ){
 
@@ -125,51 +134,59 @@ class HomeController extends Controller
 
     }
     
-
-
     public function properties(Request $request)
 {
-    // Initial query
-    $query = Property::with(['floors', 'images']);
-    
-    // Search functionality
-    if ($request->has('search')) {
-        $search = $request->input('search');
-        $query->where(function($q) use ($search) {
-            $q->where('name', 'like', '%' . $search . '%')
-              ->orWhere('address', 'like', '%' . $search . '%');
+    // ابتدائی کوئری - PropertyNewForm ماڈل کے ساتھ images کی معلومات
+    $query = PropertyNewForm::with('images');
+
+    // اگر 'id' دیا گیا ہے، تو صرف اسی پراپرٹی کو فلٹر کریں
+    if ($request->has('id')) {
+        $query->where('id', $request->input('id'));
+    }
+
+    // اگر 'agent_id' بھی دیا گیا ہے، تو ایسی پراپرٹی exclude کریں جہاں 'id' اور 'agent_id' دونوں موجود ہوں
+    if ($request->has('agent_id') && $request->has('id')) {
+        $query->whereNot(function ($q) use ($request) {
+            $q->where('id', $request->input('id'))
+              ->where('agent_id', $request->input('agent_id'));
+        });
+    } elseif ($request->has('agent_id')) {
+        // اگر صرف 'agent_id' دیا گیا ہے، تو اسے exclude کریں
+        $query->where('agent_id', '!=', $request->input('agent_id'));
+    }
+
+    // پراپرٹی کی تلاش (Search by name or address)
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('property_type', 'like', '%' . $request->search . '%')
+              ->orWhere('city', 'like', '%' . $request->search . '%')
+              ->orWhere('address', 'like', '%' . $request->search . '%')
+              ->orWhere('agent_name', 'like', '%' . $request->search . '%');
         });
     }
-    
-    // Filter by rent or sell
-    if ($request->has('type')) {
-        $filter = $request->input('type');
-        if ($filter === 'rent') {
-            $query->whereHas('floors', function($q) {
-                $q->where('type', 'rent');
-            });
-        } elseif ($filter === 'sell') {
-            $query->whereHas('floors', function($q) {
-                $q->where('type', 'sell');
-            });
-        }
+
+    // Rent یا Sell کا فلٹر
+    if ($request->has('type') && in_array($request->input('type'), ['rent', 'sell'])) {
+        $query->where('type', $request->input('type'));
     }
 
-    // Filter by property type
-    if ($request->has('property_type')) {
-        $propertyType = $request->input('property_type');
-        if ($propertyType) {
-            $query->where('plot_type', $propertyType);
-        }
+    // پراپرٹی ٹائپ کا فلٹر (Plot, Commercial, Residential, etc.)
+    if ($request->has('property_type') && in_array($request->input('property_type'), ['plot', 'commercial', 'residential'])) {
+        $query->where('property_type', $request->input('property_type'));
     }
 
-    // Paginate the results
-    $all_home = $query->paginate(10);
-    
+    // per_page کی ویلیو حاصل کریں اور validate کریں
+    $perPage = $request->input('per_page', 10);
+    if (!is_numeric($perPage) || $perPage <= 0) {
+        $perPage = 10;
+    }
+
+    // نتائج کو paginate کریں
+    $all_home = $query->paginate($perPage);
+
+    // ویو کو رزلٹ بھیجیں
     return view('front.properties', compact('all_home'));
 }
-    
-
 
 
     public function contactUsSave(Request $request){

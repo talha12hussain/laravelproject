@@ -37,4 +37,9 @@ class PropertyNewForm extends Model
     protected $casts = [
         'images' => 'array',
     ];
+    public function images()
+{
+    return $this->hasMany(PropertyImages::class, 'property_id', 'id');
+}
+
 }
