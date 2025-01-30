@@ -258,6 +258,7 @@
         border: 1px solid rgb(216, 216, 216);
         border-radius: 10px !important;
     }
+    
 </style>
 
 <body>
@@ -278,25 +279,36 @@
     </div>
 
     <div class="container-fluid d-flex justify-content-between">
-        <div class="col-md-6 mx-5">
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                @if (is_array($single_property->images) && count($single_property->images) > 0)
-                        <img class="card-img-top position-relative" src="{{ asset('storage/' . $single_property->images[0]) }}" alt="Card image cap">
-                    @else
-                        <img class="card-img-top position-relative" src="{{ asset('assets/front/15.jpg') }}" alt="Card image cap">
-                    @endif
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+    <div class="col-md-6 mx-5">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @php
+                    // Convert JSON images to an array
+                    $images = json_decode($single_property->images, true);
+                @endphp
+                
+                @foreach ($images as $key => $image)
+                    <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                        <img class="card-img-top position-relative" 
+                             src="{{ asset('storage/' . $image) }}" 
+                             alt="Property Image">
+                    </div>
+                @endforeach
             </div>
+
+            <!-- Carousel Controls -->
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
         </div>
+    </div>
+
+
         <div class="col-md-6 mt-5">
             <h1 class="text-dark mt-3"><b>{{ $single_property->Property_type }}</b></h1>
             <p class="text-dark mt-5" style="font-size:28px !important;"><b>@lang('messages.address') : </b>{{ $single_property->address }}</p>

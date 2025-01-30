@@ -83,17 +83,23 @@
 
                             <!-- Displaying images -->
                             <td class="border-end">
-    @if($property->images)
-        @php
-            $images = is_array($property->images) ? $property->images : explode(',', $property->images);
-        @endphp
-        
+                            @if($property->images)
+    @php
+        // Decode the JSON string into an array
+        $images = json_decode($property->images, true);
+    @endphp
+    
+    @if(is_array($images) && count($images) > 0)
         @foreach($images as $image)
-            <img src="{{ asset('storage/' . $image) }}" class="rounded-circle" alt="Property Image" width="50" height="50" >
+            <img src="{{ asset('storage/' . $image) }}" class="rounded-circle" alt="Property Image" width="50" height="50">
         @endforeach
     @else
-        No images available
+        <p>No images available</p>
     @endif
+@else
+    <p>No images available</p>
+@endif
+
 </td>
 
 
@@ -243,7 +249,7 @@
                             <div class="mt-2">
                                 @if($property->images)
                                     @php
-                                        $images = is_array($property->images) ? $property->images : explode(',', $property->images);
+                                    $images = json_decode($property->images, true);
                                     @endphp
                                     <div class="row">
                                         @foreach($images as $image)
@@ -391,7 +397,7 @@
                             <div class="mt-2">
                                 @if($property->images)
                                     @php
-                                        $images = is_array($property->images) ? $property->images : explode(',', $property->images);
+                                    $images = json_decode($property->images, true);
                                     @endphp
                                     <div class="row">
                                         @foreach($images as $image)
@@ -561,7 +567,7 @@
                             <div class="mt-2">
                                 @if($property->images)
                                     @php
-                                        $images = is_array($property->images) ? $property->images : explode(',', $property->images);
+                                    $images = json_decode($property->images, true);
                                     @endphp
                                     <div class="row">
                                         @foreach($images as $image)

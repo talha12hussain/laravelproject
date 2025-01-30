@@ -107,7 +107,7 @@ class agentController extends Controller
             foreach ($request->file('images') as $image) {
                 $images[] = $image->store('property_images', 'public');
             }
-            $property->images = implode(',', $images);
+            $property->images = json_encode($images); // Store images as JSON
         }
     
         $property->save();
@@ -332,7 +332,7 @@ class agentController extends Controller
                 'property_size' => $request->property_size,
                 'asking_price' => $request->asking_price,
                 'corner_property' => $request->corner_property === 'yes' ? 'yes' : 'no',
-                'images' => implode(',', $images), // تصاویر کو implode کرکے محفوظ کریں
+                'images' => json_encode($images),
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
                 'agent_id' => $agent_id, // لاگ ان شدہ ایجنٹ کا ID محفوظ کریں

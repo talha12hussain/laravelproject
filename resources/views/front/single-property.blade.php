@@ -33,11 +33,17 @@
             <div class="row txt-center d-flex justify-content-center">
             <div class="text-center flex-center mx-3 justify-center align-items-center">
                     <div class="card my-3 mx-2" style="width: 24rem;">
-                    @if (is_array($single_property->images) && count($single_property->images) > 0)
-                        <img class="card-img-top position-relative" src="{{ asset('storage/' . $single_property->images[0]) }}" alt="Card image cap">
-                    @else
-                        <img class="card-img-top position-relative" src="{{ asset('assets/front/15.jpg') }}" alt="Card image cap">
-                    @endif
+                    @php
+                    $images = json_decode($single_property->images, true);
+
+                    $firstImage = collect($images)->first(); 
+                    @endphp
+<img class="card-img-top position-relative" 
+     src="{{ $firstImage ? asset('storage/' . $firstImage) : asset('assets/front/15.jpg') }}" 
+     alt="Property Image">
+
+
+
 
                         <div class="card-body" style="text-decoration: none;">
                             <h5 class="text-dark text-left"><b>

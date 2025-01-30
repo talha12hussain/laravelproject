@@ -80,27 +80,34 @@ class HomeController extends Controller
     public function singleProperty(string $id, Request $request)
     {
         // `PropertyNewForm` کے ساتھ تصاویر لوڈ کریں
-        $single_property = PropertyNewForm::with('images')->findOrFail($id);
+        $single_property = PropertyNewForm::with('images')->find($id);
     
         return view('front.single-property', compact('single_property'));
     }
     
-    public function singlefloor(string $id, string $agent_id)
+    public function singlefloor(string $id, string $agent_id = null)
     {
         // پراپرٹی اور ایجنٹ حاصل کریں
-        $single_property = PropertyNewForm::with('agent')->find($id);
-    
+        $single_property = PropertyNewForm::with('agent','images')->find($id);
+
+
+
         // اگر پراپرٹی نہ ملے تو ری ڈائریکٹ کریں
         if (!$single_property) {
             return redirect()->back()->with('error', 'Property not found.');
         }
     
         // ایجنٹ حاصل کریں جو پراپرٹی کی ایجنٹ آئی ڈی کے ساتھ میچ کرے
-        $agent = $single_property->agent;
+        if ($agent_id) {
+            $agent = $single_property->agent;
     
         // اگر ایجنٹ نہ ملے تو ری ڈائریکٹ کریں
         if (!$agent || $agent->id != $agent_id) {
             return redirect()->back()->with('error', 'Agent not found.');
+        }}
+        else {
+            // اگر `agent_id` نہیں ہے تو agent کو `null` کر دیں
+            $agent = null;
         }
     
         // جیو لوکیشن کے لیے ایڈریس استعمال کریں

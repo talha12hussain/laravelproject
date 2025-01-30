@@ -43,8 +43,8 @@ class PropertyNewFormController extends Controller
              foreach ($request->file('images') as $image) {
                  $images[] = $image->store('property_images', 'public');
              }
-             $property->images = implode(',', $images);
-         }
+             $property->images = json_encode($images); // Store images as JSON
+            }
      
          $property->save();
      
@@ -91,15 +91,15 @@ class PropertyNewFormController extends Controller
          public function printProperty($id)
          {
              $property = PropertyNewForm::findOrFail($id);
-         
              if (is_string($property->images)) {
-                 $images = explode(',', $property->images);
-             } elseif (is_array($property->images)) {
-                 $images = $property->images;
-             } else {
-                 $images = [];
-             }
-         
+                // اگر یہ JSON ہے تو اسے decode کریں
+                $images = json_decode($property->images, true);
+            } elseif (is_array($property->images)) {
+                // اگر یہ already array ہے تو اس کو use کریں
+                $images = $property->images;
+            } else {
+                $images = [];
+            }
              foreach ($images as $key => $image) {
                  $path = public_path('storage/' . $image);
          
@@ -157,7 +157,7 @@ class PropertyNewFormController extends Controller
             'property_size' => $request->property_size,  
             'asking_price' => $request->asking_price,  
             'corner_property' => $request->corner_property === 'yes' ? 'yes' : 'no', // Store 'yes' or 'no'
-            'images' => $images,
+            'images' => json_encode($images),
             'contact_no' => $request->contact_no,
             'agent_name' => $request->agent_name,
             'description' => $request->description,

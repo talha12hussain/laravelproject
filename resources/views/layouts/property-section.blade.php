@@ -7,64 +7,63 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Top Properties</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         /* Badge styling */
         .notify-badge-1 {
             position: absolute;
-            right: 8px;
-            top: 8px;
-            opacity: 1.0;
-            text-align: center;
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 12px;
+            right: 10px;
+            top: 10px;
+            padding: 6px 14px;
+            font-size: 14px;
+            background-color: #ff9800; /* Improved visibility */
+            color: white;
+            border-radius: 15px;
             font-weight: bold;
-        }
-
-        /* Card image styling */
-        .card-img-top {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
-        /* Container and row adjustments */
-        .property.container-fluid {
-            display: flex;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .row.d-flex {
-            justify-content: center !important;
         }
 
         /* Card Styling */
         .card {
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
+            overflow: hidden;
         }
 
         .card:hover {
             transform: translateY(-5px);
         }
 
+        /* Image Styling */
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover; /* Ensures proper scaling */
+        }
+
+        /* Center text and adjust font */
         .card-body {
-            padding: 15px;
+            text-align: center;
+            font-size: 14px;
         }
 
         .card-body h5 {
             font-size: 18px;
             font-weight: bold;
-            margin-bottom: 10px;
         }
 
-        .card-text {
-            font-size: 14px;
-            margin-bottom: 5px;
+        /* Responsive Fixes */
+        .property .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .col-lg-4 {
+                width: 100%;
+            }
         }
 
         /* Explore More Button */
@@ -76,6 +75,8 @@
             background-color: #007bff;
             color: white;
             text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
         }
 
         .explore-btn:hover {
@@ -103,17 +104,21 @@
 
             @foreach ($all_home as $home)
                 @if ($prop < $max_prop_to_show)
-                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex justify-content-center">
                         <a href="{{ url('/single-property/' . $home->id) }}" style="text-decoration: none;">
                             <div class="card h-100">
                                 <div class="position-relative">
                                     @php
-                                        $firstImage = collect($home->images)->first();
+                                        // Convert JSON images to an array
+                                        $images = json_decode($home->images, true);
+                                        $firstImage = collect($images)->first(); 
                                     @endphp
+
                                     <img class="card-img-top"
-                                        src="{{ $firstImage ? asset('storage/' . $firstImage) : asset('assets/front/15.jpg') }}"
-                                        alt="Property Image">
-                                    <span class="notify-badge-1 badge bg-warning text-white">
+                                         src="{{ $firstImage ? asset('storage/' . $firstImage) : asset('assets/front/15.jpg') }}"
+                                         alt="Property Image">
+
+                                    <span class="notify-badge-1">
                                         {{ $home->type }}
                                     </span>
                                 </div>
@@ -134,7 +139,7 @@
             @endforeach
 
             @if ($all_home->count() > $max_prop_to_show)
-                <div class="col-md-12 text-center mt-4">
+                <div class="col-md-12 text-center">
                     <a href="/properties" class="explore-btn">
                         @lang('messages.explore_all')
                     </a>

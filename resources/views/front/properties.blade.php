@@ -119,11 +119,12 @@
         <a href="{{ url('/single-property/'.$home->id) }}" style="text-decoration: none;" class="link-underline-opacity-0">
             <div class="card h-100 d-flex justify-content-center align-items-center">
                 <div class="">
-                    @if (is_array($home->images) && count($home->images) > 0)
-                        <img class="card-img-top position-relative" src="{{ asset('storage/' . $home->images[0]) }}" alt="Card image cap">
-                    @else
-                        <img class="card-img-top position-relative" src="{{ asset('assets/front/15.jpg') }}" alt="Card image cap">
-                    @endif
+                @php
+                                        // Convert JSON images to an array
+                                        $images = json_decode($home->images, true);
+                                        $firstImage = collect($images)->first(); 
+                                    @endphp
+            <img class="card-img-top position-relative" src="{{ $firstImage ? asset('storage/' . $firstImage) : asset('assets/front/15.jpg') }}" alt="Card image cap">
 
                     <!-- Type Badge (Rent or Sell) -->
                     @if ($home->type == 'rent')
