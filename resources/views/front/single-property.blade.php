@@ -56,9 +56,9 @@
 
                             <div class="d-flex justify-content-between align-items-center">
                                 @if ($single_property->property_type == 'commercial' || $single_property->property_type == 'residential')
-                                    <p class="card-text text-dark text-left mt-2" style="text-decoration: none;">@lang('messages.property_type') : {{ ucfirst($single_property->property_type) }}</p>
+                                    <p class="card-text text-dark text-left mt-2" style="text-decoration: none;">@lang('Property Type') : {{ ucfirst($single_property->property_type) }}</p>
                                 @else
-                                    <p class="card-text text-dark text-left mt-2" style="text-decoration: none;">@lang('messages.plot_size') : {{ $single_property->property_size }}</p>
+                                    <p class="card-text text-dark text-left mt-2" style="text-decoration: none;">@lang('Property City') : {{ $single_property->city }}</p>
                                 @endif
 
                                 <h5>

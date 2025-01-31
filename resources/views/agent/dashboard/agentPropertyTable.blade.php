@@ -515,7 +515,7 @@
         <option value="7" {{ old('bedrooms', $property->bedrooms) == '7' ? 'selected' : '' }}>@lang('7')</option>
         <option value="8" {{ old('bedrooms', $property->bedrooms) == '8' ? 'selected' : '' }}>@lang('8')</option>
         <option value="9" {{ old('bedrooms', $property->bedrooms) == '9' ? 'selected' : '' }}>@lang('9')</option>
-        <option value="10+" {{ old('bedrooms', $property->bedrooms) == '6+' ? 'selected' : '' }}>@lang('6+')</option>
+        <option value="10+" {{ old('bedrooms', $property->bedrooms) == '10+' ? 'selected' : '' }}>@lang('6+')</option>
     </select>
 </div>
 
@@ -531,7 +531,7 @@
         <option value="7" {{ old('bathrooms', $property->bathrooms) == '7' ? 'selected' : '' }}>@lang('7')</option>
         <option value="8" {{ old('bathrooms', $property->bathrooms) == '8' ? 'selected' : '' }}>@lang('8')</option>
         <option value="9" {{ old('bathrooms', $property->bathrooms) == '9' ? 'selected' : '' }}>@lang('9')</option>
-        <option value="10+" {{ old('bathrooms', $property->bathrooms) == '6+' ? 'selected' : '' }}>@lang('10+')</option>
+        <option value="10+" {{ old('bathrooms', $property->bathrooms) == '10+' ? 'selected' : '' }}>@lang('10+')</option>
     </select>
 </div>
 

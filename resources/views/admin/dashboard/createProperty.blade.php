@@ -446,24 +446,35 @@
                     <label class="form-control-label font-weight-bold">@lang('How many Bedrooms?') <span class="text-danger">*</span></label>
                     <select class="form-control rounded-pill border-primary" name="bedrooms">
                     <option value="1">@lang('1')</option>
-                        <option value="1">@lang('1')</option>
-                        <option value="2">@lang('2')</option>
-                        <option value="3">@lang('3')</option>
+                        <option value="1">@lang('2')</option>
+                        <option value="2">@lang('3')</option>
                         <option value="4">@lang('4')</option>
                         <option value="5">@lang('5')</option>
-                        <option value="6">@lang('6+')</option>
+                        <option value="6">@lang('6')</option>
+                        <option value="7">@lang('7')</option>
+                        <option value="8">@lang('8')</option>
+                        <option value="9">@lang('9')</option>
+                        <option value="10">@lang('10')</option>
+
+
+
+
                     </select>
                 </div>
 
                 <div class="form-group mb-4">
                     <label class="form-control-label font-weight-bold">@lang('How many Bathrooms?') <span class="text-danger">*</span></label>
                     <select class="form-control rounded-pill border-primary" name="bathrooms">
-                        <option value="1">@lang('1')</option>
+                    <option value="1">@lang('1')</option>
                         <option value="2">@lang('2')</option>
                         <option value="3">@lang('3')</option>
                         <option value="4">@lang('4')</option>
                         <option value="5">@lang('5')</option>
-                        <option value="6">@lang('6+')</option>
+                        <option value="6">@lang('6')</option>
+                        <option value="7">@lang('7')</option>
+                        <option value="8">@lang('8')</option>
+                        <option value="9">@lang('9')</option>
+                        <option value="10">@lang('10')</option>
                     </select>
                 </div>
 
