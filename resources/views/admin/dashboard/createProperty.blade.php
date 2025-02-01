@@ -366,13 +366,13 @@
                 <label class="form-control-label font-weight-bold">@lang('Type of Plot Property') <span class="text-danger">*</span></label>
                     <select class="form-control rounded-pill border-primary" name="property_types">
                         <option value="" disabled selected>@lang('Select Type')</option>
-                        <option value="Residential Plot">@lang('House')</option>
-                        <option value="Commercial Plot">@lang('Flat')</option>
-                        <option value="Agriculture Land">@lang('Room')</option>
-                        <option value="Industrial Land">@lang('Farm House  ')</option>
-                        <option value="Warehouse Plot">@lang('Penthouse')</option>
-                        <option value="Farmhouse Plot">@lang('Hostel')</option>
-                        <option value="Plot File">@lang('Basement')</option>
+                        <option value="House">@lang('House')</option>
+                        <option value="Flat">@lang('Flat')</option>
+                        <option value="Room">@lang('Room')</option>
+                        <option value="Farm House">@lang('Farm House  ')</option>
+                        <option value="Penthouse">@lang('Penthouse')</option>
+                        <option value="Hostel">@lang('Hostel')</option>
+                        <option value="Basement">@lang('Basement')</option>
                     </select>
                 
     </div>
