@@ -14,6 +14,12 @@ class PropertyNewFormController extends Controller
      // Display all properties
      public function update(Request $request, $id)
      {
+
+        $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            // Add other validation rules as needed
+        ]);
          // Search for property
          $property = PropertyNewForm::findOrFail($id);
    
